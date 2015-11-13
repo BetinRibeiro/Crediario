@@ -2,6 +2,7 @@ package Janela.Compra;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Point;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -10,9 +11,9 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import Bin.Compra.Compra;
 import Bin.Produto.Produto;
 import Janela.Pesquisa.JFrmPesProduto;
-import Model.Tabela.ModelTabelaFuncionario;
 import Model.Tabela.ModelTabelaProduto;
 import Persistence.Dao;
 
@@ -26,6 +27,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
@@ -41,9 +46,9 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 	private JTextField txtQuantidade;
 	private JTextField txtValorProduto;
 	private JButton btnBuscar;
-	private ModelTabelaProduto model =new ModelTabelaProduto();
+	private ModelTabelaProduto model = new ModelTabelaProduto();
 	private JButton btnInserir;
-	private Dao banco=new Dao();
+	private Dao banco = new Dao();
 	private JButton btnFinalizar;
 
 	/**
@@ -76,17 +81,14 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 
 			tableProduto = new JTable(model);
 			scrollPane.setViewportView(tableProduto);
-			
+
 			JPopupMenu popupMenu = new JPopupMenu();
 			addPopup(tableProduto, popupMenu);
 
-			JMenuItem mntmAlterar = new JMenuItem("Alterar");
-			popupMenu.add(mntmAlterar);
-
 			JMenuItem mntmRemover = new JMenuItem("Remover");
+			mntmRemover.addActionListener(this);
 			popupMenu.add(mntmRemover);
 
-			
 		}
 
 		JLabel lblCdigo = new JLabel("C\u00F3digo");
@@ -160,17 +162,17 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 		JLabel lblValorUnitario = new JLabel("Valor Unitario");
 		lblValorUnitario.setBounds(106, 110, 280, 14);
 		contentPanel.add(lblValorUnitario);
-		
+
 		btnInserir = new JButton("Inserir");
 		btnInserir.setActionCommand("Inserir");
 		btnInserir.setBounds(205, 130, 89, 20);
 		btnInserir.addActionListener(this);
 		contentPanel.add(btnInserir);
-		
+
 		btnInserir.setEnabled(false);
 		txtQuantidade.setEnabled(false);
 		txtValorProduto.setEnabled(false);
-		
+
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -227,57 +229,130 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 		case "Finalizar":
 			salvar();
 			break;
-		case"Inserir":
+		case "Inserir":
 			inserir();
+			valorTotal();
+			break;
+
+		case "Remover":
+			remover();
+			valorTotal();
 			break;
 		default:
 			break;
 		}
 	}
 
-	private void inserir() {
-		Produto produto = (Produto) banco.buscarPorId(Produto.class,Integer.parseInt(txtProdutoId.getText()));
-		produto.setCusto(Float.parseFloat(txtValorProduto.getText()));
-		produto.setQuantidade(Float.parseFloat(txtQuantidade.getText()));
-		boolean liberado =true;
-		for (int i = 0; i < model.getRowCount(); i++) {
-			if (produto.getId().equals(model.getValueAt(i, 0))) {
-				JOptionPane.showMessageDialog(contentPanel, "Produto Igual, remova o produto inserido.");
-				liberado=false;
+	private void valorTotal() {
+		try {
+
+			float valor = 0;
+
+			for (int i = 0; i < model.getRowCount(); i++) {
+				valor = valor + ((Float) model.getValueAt(i, 4));
 			}
-		}if (liberado) {
-			model.addRow(produto);
-			btnFinalizar.setEnabled(true);
+			txtValorTotal.setText(String.valueOf(valor));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente ");
+			dispose();
 		}
-		limpatxt();
+	}
+
+	private void remover() {
+		try {
+			model.removeRow(tableProduto.getSelectedRow());
+			if (model.getRowCount() <= 0) {
+				btnFinalizar.setEnabled(false);
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente ");
+			dispose();
+		}
+	}
+
+	private void inserir() {
+		try {
+			Produto produto = (Produto) banco.buscarPorId(Produto.class, Integer.parseInt(txtProdutoId.getText()));
+			produto.setCusto(Float.parseFloat(txtValorProduto.getText().replace(",", ".")));
+			produto.setQuantidade(Float.parseFloat(txtQuantidade.getText().replace(",", ".")));
+			boolean liberado = true;
+			for (int i = 0; i < model.getRowCount(); i++) {
+				if (produto.getId().equals(model.getValueAt(i, 0))) {
+					JOptionPane.showMessageDialog(contentPanel, "Produto Igual, remova o produto inserido.");
+					liberado = false;
+				}
+			}
+			if (liberado) {
+				model.addRow(produto);
+				btnFinalizar.setEnabled(true);
+			}
+			limpatxt();
+		} catch (java.lang.NumberFormatException e) {
+			JOptionPane.showMessageDialog(contentPanel, "Insira numeros validos nos campos de quantidade e valor.");
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente ");
+			dispose();
+		}
 	}
 
 	private void limpatxt() {
-		txtProdutoId.setText("");
-		txtProdutoDescricao.setText("");
-		txtQuantidade.setText("");
-		txtValorProduto.setText("");
-		btnInserir.setEnabled(false);
-		txtQuantidade.setEnabled(false);
-		txtValorProduto.setEnabled(false);
+		try {
+			txtProdutoId.setText("");
+			txtProdutoDescricao.setText("");
+			txtQuantidade.setText("");
+			txtValorProduto.setText("");
+			btnInserir.setEnabled(false);
+			txtQuantidade.setEnabled(false);
+			txtValorProduto.setEnabled(false);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente ");
+			dispose();
+		}
 	}
 
 	private void buscar() {
-		JFrmPesProduto prod = new JFrmPesProduto();
-		prod.moduloEscolher();
-		prod.setModal(true);
-		prod.setVisible(true);
-		Produto p = (Produto) prod.getObj();
-		txtProdutoId.setText(String.valueOf(p.getId()));
-		txtProdutoDescricao.setText(String.valueOf(p.getDescricao()));
-		prod.dispose();
-		btnInserir.setEnabled(true);
-		txtQuantidade.setEnabled(true);
-		txtValorProduto.setEnabled(true);
+		try {
+
+			JFrmPesProduto prod = new JFrmPesProduto();
+			prod.moduloEscolher();
+			prod.setModal(true);
+			prod.setVisible(true);
+			Produto p = (Produto) prod.getObj();
+			txtProdutoId.setText(String.valueOf(p.getId()));
+			txtProdutoDescricao.setText(String.valueOf(p.getDescricao()));
+			prod.dispose();
+			btnInserir.setEnabled(true);
+			txtQuantidade.setEnabled(true);
+			txtValorProduto.setEnabled(true);
+		} catch (java.lang.NullPointerException e) {
+			JOptionPane.showMessageDialog(contentPanel, "Escolha um produto para inserir");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente ");
+			dispose();
+		}
+
 	}
 
 	private void salvar() {
-		// TODO Auto-generated method stub
+		// para organizar melhor a logistica de 2 setores essa função tem que
+		// disparar duas ações a primeira no financeiro que chame-se pendencia
+		// de pagamento e a segunda no estoque que chama-se recebimento de
+		// produto
+		List<String[]> listaCompra = new ArrayList<>();
 		
+		for (int i = 0; i <= model.getRowCount(); i++) {
+			String[] listaInterna = {(String) model.getValueAt(i, 0),(String) model.getValueAt(i, 1),(String) model.getValueAt(i, 2)};
+			listaCompra.add(listaInterna);
+			System.out.println(listaInterna);
+		}
+		System.out.println(listaCompra);
+		
+		Date data=(Date) dtCompra.getDate();
+		float valor=Float.parseFloat(txtValorTotal.getText());
+		Compra compra = new Compra(data, valor, listaCompra);
+		
+		
+
 	}
 }

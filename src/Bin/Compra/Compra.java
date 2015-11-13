@@ -1,12 +1,14 @@
 package Bin.Compra;
 
 import java.sql.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 @Entity
 @Table(name = "compra")
 public class Compra {
@@ -15,19 +17,20 @@ public class Compra {
 	private Integer id;
 	private Date data ;
 	private float valor;
-	private String[][] listaCompra;
+	//tres atributos o primeiro idString[] segundo o custounitario e o terceiro a quantidade
+	private List<String[]> listaCompra;
 	
 	
-	public Compra() {
-		super();
-	}
-
-
-	public Compra(Date data, float valor, String[][] listaCompra) {
+	public Compra(Date data, float valor, List<String[]> listaCompra) {
 		super();
 		this.data = data;
 		this.valor = valor;
 		this.listaCompra = listaCompra;
+	}
+
+
+	public Compra() {
+		super();
 	}
 
 
@@ -61,15 +64,16 @@ public class Compra {
 	}
 
 
-	public String[][] getListaCompra() {
+	public List<String[]> getListaCompra() {
 		return listaCompra;
 	}
 
 
-	public void setListaCompra(String[][] listaCompra) {
+	public void setListaCompra(List<String[]> listaCompra) {
 		this.listaCompra = listaCompra;
 	}
-	
+
+
 	
 	
 
