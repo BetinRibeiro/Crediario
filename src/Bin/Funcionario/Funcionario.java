@@ -23,14 +23,17 @@ public class Funcionario {
 	private String sobrenome;
 	@Embedded
 	private Endereco endereco;
-	@Column(name = "telefone1",length=80)
+	@Column(name = "telefone1",length=12)
 	private long telefone1;
-	@Column(name = "telefone2",length=80)
+	@Column(name = "telefone2",length=12)
 	private long telefone2;
 	
 	
 	
 	
+	public Funcionario() {
+		super();
+	}
 	public Funcionario(String nome, String sobrenome, Endereco endereco, long telefone1, long telefone2) {
 		super();
 		this.nome = nome;

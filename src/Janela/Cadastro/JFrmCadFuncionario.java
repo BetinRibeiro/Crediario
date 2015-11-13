@@ -12,6 +12,7 @@ import javax.swing.border.EmptyBorder;
 
 import Bin.Endereco;
 import Bin.Funcionario.Funcionario;
+import Persistence.Dao;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -35,6 +36,7 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 	String[] uf = { "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE",
 			"PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO" };
 	private JLabel msn;
+	private Dao banco = new Dao();
 
 	/**
 	 * Launch the application.
@@ -224,9 +226,15 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 			String lougradouro = txtLougradouro.getText();
 			String cidade = txtCidade.getText();
 			String bairro = txtBairro.getText();
-			String ufEndereco = boxUF.getName();
+			String ufEndereco = (String) boxUF.getSelectedItem();
 			String cep = txtCidade.getText();
-			Endereco endereco = new Endereco(numero, lougradouro, cidade, bairro, ufEndereco, cep);
+			Endereco endereco = new Endereco();
+			endereco.setNumero(numero);
+			endereco.setCep(cep);
+			endereco.setCidade(cidade);
+			endereco.setLougradouro(lougradouro);
+			endereco.setBairro(bairro);
+			endereco.setUfEndereco(ufEndereco);
 			long telefone1 = Long.parseLong(txtFone1.getText());
 			long telefone2 = Long.parseLong(txtFone2.getText());
 			String[] lista = { numero, lougradouro, cidade, bairro, ufEndereco, cep, nome, sobrenome };
@@ -234,15 +242,24 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 			boolean liberado = verificaValoresVazios(lista);
 
 			if (liberado) {
+				boolean salvou = false;
 				Funcionario funcionario = new Funcionario(nome, sobrenome, endereco, telefone1, telefone2);
 				if (txtId.getText().length() > 0) {
 					funcionario.setId(Integer.parseInt(txtId.getText()));
-					// quando entrar nesse caso temos que fazer uma alteração
+					salvou = (banco.salvarOuAtualizarObjeto(funcionario));
+				} else {
+					salvou = (banco.salvarObjeto(funcionario));
 				}
-				// TODO verifique quando colocar no banco se a quantidade de
-				// caracteres realmente bate com o que esta espeficicado no
-				// banco
+				if (!salvou) {
+					JOptionPane.showMessageDialog(contentPanel, "Sistema Não Conseguiu salvar Funcionario no banco.");
+				}
+				if (salvou) {
+					JOptionPane.showMessageDialog(contentPanel, "Funcionario Criado no banco com sucesso.");
+					dispose();
+				}
 
+			} else {
+				msn.setVisible(true);
 			}
 
 		} catch (java.lang.NumberFormatException e) {
@@ -253,6 +270,7 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 
 	private boolean verificaValoresVazios(String[] lista) {
 		for (int i = 0; i < lista.length; i++) {
+			System.out.println(lista[i]);
 			if (lista[i].length() <= 0) {
 				msn.setVisible(true);
 				return false;
@@ -261,5 +279,30 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 		}
 
 		return true;
+	}
+	
+	//função utilizada de fora da classe para inserir produtos que serão alterados 
+	public boolean inserir(Funcionario funcionario) {
+		try {
+			setTitle("Alteração de dados Funcionario");
+			txtId.setText(String.valueOf(funcionario.getId()));
+			txtBairro.setText(String.valueOf(funcionario.getEndereco().getBairro()));
+			txtCidade.setText(String.valueOf(funcionario.getEndereco().getCep()));
+			txtFone1.setText(String.valueOf(funcionario.getTelefone1()));
+			txtFone2.setText(String.valueOf(funcionario.getTelefone2()));
+			txtLougradouro.setText(String.valueOf(funcionario.getEndereco().getLougradouro()));
+			txtNome.setText(String.valueOf(funcionario.getNome()));
+			txtSobrenome.setText(String.valueOf(funcionario.getSobrenome()));
+			txtNumero.setText(String.valueOf(funcionario.getEndereco().getNumero()));
+			txtBairro.setText(String.valueOf(funcionario.getEndereco().getBairro()));
+			boxUF.setSelectedItem(funcionario.getEndereco().getUfEndereco());
+			return true;
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(contentPanel, "Erro no sistema");
+			dispose();
+			return false;
+		}
+		
+		
 	}
 }

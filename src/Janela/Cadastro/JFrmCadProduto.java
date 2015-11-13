@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Bin.Produto.Produto;
+import Persistence.Dao;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -25,6 +26,8 @@ public class JFrmCadProduto extends JDialog implements ActionListener{
 	private JTextField txtPreco;
 	private JTextField txtEstMin;
 	private JLabel msn;
+	
+	private Dao banco = new Dao();
 
 	/**
 	 * Launch the application.
@@ -150,23 +153,43 @@ public class JFrmCadProduto extends JDialog implements ActionListener{
 		float preco=Float.parseFloat(txtPreco.getText());
 		
 		if (descricao.length()>0) {
+			boolean salvou=false;
 			Produto produto = new Produto(descricao, estoqueMin, preco);
 			if (txtID.getText().length() > 0) {
 				produto.setId(Integer.parseInt(txtID.getText()));
-				// quando entrar nesse caso temos que fazer uma alteração
+				salvou=banco.salvarOuAtualizarObjeto(produto);
+			}else {
+				salvou=banco.salvarObjeto(produto);
 			}
-			// TODO verifique quando colocar no banco se a quantidade de
-			// caracteres realmente bate com o que esta espeficicado no
-			// banco
+			
+			if (!salvou) {
+				JOptionPane.showMessageDialog(contentPanel, "Sistema Não Conseguiu salvar Produto no banco.");
+			}
+			if (salvou) {
+				JOptionPane.showMessageDialog(contentPanel, "Produto Criado no banco com sucesso.");
+				dispose();
+			}
 		}else {
 			msn.setVisible(true);
 		}
-		
-		
 		} catch (java.lang.NumberFormatException e) {
 			JOptionPane.showMessageDialog(contentPanel, "Inserir valores validos nos campos numericos");
 		}
-		
 	}
-
+	
+	//função utilizada de fora da classe para inserir produtos que serão alterados 
+	public boolean inserir(Produto produto) {
+		try {
+			setTitle("Alteração de dados Produto");
+			txtID.setText(String.valueOf(produto.getId()));
+			txtEstMin.setText(String.valueOf(produto.getEstoqueMin()));
+			txtDescricao.setText(produto.getDescricao());
+			txtPreco.setText(String.valueOf(produto.getPreco()));
+			return true;
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(contentPanel, "Erro no sistema");
+			dispose();
+			return false;
+		}
+	}
 }

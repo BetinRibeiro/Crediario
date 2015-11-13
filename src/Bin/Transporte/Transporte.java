@@ -30,6 +30,9 @@ public class Transporte {
 	private int anoDocumento;
 	
 	
+	public Transporte() {
+		super();
+	}
 	public Transporte(String modelo, String cor, String ano, String placa, int renavan, String proprietario,
 			int anoDocumento) {
 		super();

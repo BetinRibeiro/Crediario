@@ -7,7 +7,7 @@ import javax.persistence.Table;
 @Embeddable
 @Table(name = "endereco")
 public class Endereco {
-	@Column(name = "lougradouro", length = 6)
+	@Column(name = "numero", length = 3)
 	private String numero;
 	@Column(name = "lougradouro", length = 100)
 	private String lougradouro;
@@ -21,15 +21,15 @@ public class Endereco {
 	private String cep;
 	
 	
-	public Endereco(String numero, String lougradouro, String cidade, String bairro, String ufEndereco, String cep) {
-		super();
-		this.numero = numero;
-		this.lougradouro = lougradouro;
-		this.cidade = cidade;
-		this.bairro = bairro;
-		this.ufEndereco = ufEndereco;
-		this.cep = cep;
-	}
+//	public Endereco(String numero, String lougradouro, String cidade, String bairro, String ufEndereco, String cep) {
+//		super();
+//		this.numero = numero;
+//		this.lougradouro = lougradouro;
+//		this.cidade = cidade;
+//		this.bairro = bairro;
+//		this.ufEndereco = ufEndereco;
+//		this.cep = cep;
+//	}
 	public String getNumero() {
 		return numero;
 	}

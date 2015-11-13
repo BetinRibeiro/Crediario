@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Bin.Transporte.Transporte;
+import Persistence.Dao;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -37,6 +38,8 @@ public class JFrmCadTransporte extends JDialog implements ActionListener {
 	private JTextField txtAnoDoc;
 
 	private JLabel msn;
+
+	private Dao banco=new Dao();
 
 	/**
 	 * Launch the application.
@@ -192,16 +195,27 @@ public class JFrmCadTransporte extends JDialog implements ActionListener {
 			// verifica a existencia de campos vazios
 			boolean liberado = verificaValoresVazios(lista);
 
-			if (liberado) {
-				Transporte transporte = new Transporte(modelo, cor, ano, placa, renavan, proprietario, anoDocumento);
-				if (txtID.getText().length() > 0) {
-					transporte.setId(Integer.parseInt(txtID.getText()));
-					// quando entrar nesse caso temos que fazer uma alteração
+				
+				if (liberado) {
+					boolean salvou = false;
+					Transporte transporte = new Transporte(modelo, cor, ano, placa, renavan, proprietario, anoDocumento);
+					if (txtID.getText().length() > 0) {
+						transporte.setId(Integer.parseInt(txtID.getText()));
+						salvou = (banco.salvarOuAtualizarObjeto(transporte));
+					} else {
+						salvou = (banco.salvarObjeto(transporte));
+					}
+					if (!salvou) {
+						JOptionPane.showMessageDialog(contentPanel, "Sistema Não Conseguiu salvar Transporte no banco.");
+					}
+					if (salvou) {
+						JOptionPane.showMessageDialog(contentPanel, "Transporte Criado no banco com sucesso.");
+						dispose();
+					}
+
+				} else {
+					msn.setVisible(true);
 				}
-				// TODO verifique quando colocar no banco se a quantidade de
-				// caracteres realmente bate com o que esta espeficicado no
-				// banco
-			}
 
 		} catch (java.lang.NumberFormatException e) {
 			JOptionPane.showMessageDialog(contentPanel, "Coloque numeros nos locais de numeros");
@@ -222,10 +236,10 @@ public class JFrmCadTransporte extends JDialog implements ActionListener {
 
 	}
 
-	public void inserirValores(Transporte transporte) {
+	public boolean inserir(Transporte transporte) {
 
 		try {
-
+			setTitle("Alteração de dados transporte");
 			txtAno.setText(transporte.getAno());
 			txtAnoDoc.setText(String.valueOf(transporte.getAnoDocumento()));
 			txtCor.setText(transporte.getCor());
@@ -234,9 +248,12 @@ public class JFrmCadTransporte extends JDialog implements ActionListener {
 			txtPlaca.setText(transporte.getPlaca());
 			txtProprietario.setText(transporte.getProprietario());
 			txtRenavan.setText(String.valueOf(transporte.getRenavan()));
+			return true;
 
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(contentPanel, "ERRO - Abra novamente a aplicação.");
+			dispose();
+			return false;
 		}
 
 	}

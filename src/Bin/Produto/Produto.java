@@ -24,7 +24,12 @@ public class Produto {
 	private float custo;
 	@Column(name = "quantidade",length=10)
 	private float quantidade;
+	
+	
 
+	public Produto() {
+		super();
+	}
 	public Produto(String descricao, float estoqueMin, float preco) {
 		super();
 		this.descricao = descricao;
