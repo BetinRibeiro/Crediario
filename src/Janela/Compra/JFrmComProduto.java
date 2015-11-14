@@ -2,7 +2,6 @@ package Janela.Compra;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.Point;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -12,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
 
 import Bin.Compra.Compra;
+import Bin.Compra.InstanciaCompra;
 import Bin.Produto.Produto;
 import Janela.Pesquisa.JFrmPesProduto;
 import Model.Tabela.ModelTabelaProduto;
@@ -27,8 +27,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JMenuItem;
@@ -335,24 +335,86 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 	}
 
 	private void salvar() {
-		// para organizar melhor a logistica de 2 setores essa função tem que
-		// disparar duas ações a primeira no financeiro que chame-se pendencia
-		// de pagamento e a segunda no estoque que chama-se recebimento de
-		// produto
-		List<String[]> listaCompra = new ArrayList<>();
-		
-		for (int i = 0; i <= model.getRowCount(); i++) {
-			String[] listaInterna = {(String) model.getValueAt(i, 0),(String) model.getValueAt(i, 1),(String) model.getValueAt(i, 2)};
-			listaCompra.add(listaInterna);
-			System.out.println(listaInterna);
+		try {
+
+			// para organizar melhor a logistica de 2 setores essa função tem
+			// que
+			// disparar duas ações a primeira no financeiro que chame-se
+			// pendencia
+			// de pagamento e a segunda no estoque que chama-se recebimento de
+			// produto
+			List<InstanciaCompra> listaCompra = new ArrayList<>();
+			List<Produto> listaProdutos = new ArrayList<>();
+
+			for (int i = 0; i < model.getRowCount(); i++) {
+				Integer idProd = (Integer) tableProduto.getValueAt(i, 0);
+				Produto produto = (Produto) banco.buscarPorId(Produto.class, idProd);
+				float custo = (float) tableProduto.getValueAt(i, 2);
+				float quantidade = (float) tableProduto.getValueAt(i, 3);
+				InstanciaCompra inst = new InstanciaCompra(produto, custo, quantidade);
+				listaCompra.add(inst);
+				
+				
+//				reajusta custo e quantidade do produto mantido no estoque
+				
+				
+				float quantidadeVelha=produto.getQuantidade();
+				float custoUnitarioVelho = produto.getCusto();
+				float quantidadeEntrada = quantidade;
+				float custoUnitarioEntrada = custo;
+				
+				
+				float custoTotalVelho = quantidadeVelha*custoUnitarioVelho;
+				float custoTotalEntrada = quantidadeEntrada*custoUnitarioEntrada;
+				
+				float quantidadeAtual = quantidadeEntrada+quantidadeVelha;
+				float custoTotalAtual = custoTotalEntrada+custoTotalVelho;
+				
+				float custoUnitarioAtual = custoTotalAtual/quantidadeAtual;
+				
+				produto.setCusto(custoUnitarioAtual);
+				produto.setQuantidade(quantidadeAtual);
+				listaProdutos.add(produto);
+				
+				System.out.println(produto.getCusto());
+
+			}
+			// System.out.println(listaCompra);
+
+			Date data = (Date) dtCompra.getDate();
+			System.out.println("Data que inseriiii - "+data);
+			float valor = Float.parseFloat(txtValorTotal.getText());
+			Compra compra = new Compra(data, valor);
+
+			boolean liberado = false;
+//			quando cria a compra no banco retorna verdadeiro para poder atualizar estoque e custo
+			liberado = banco.salvarObjeto(compra);
+			compra.setListaCompra(listaCompra);
+			liberado = banco.salvarOuAtualizarObjeto(compra);
+			boolean prossegue = false;
+			if (liberado) {
+				//aqui simplesmente salva todos os produtos atualizados 
+				for (int i = 0; i < listaProdutos.size(); i++) {
+					prossegue = banco.salvarOuAtualizarObjeto(listaProdutos.get(i));
+					//caso não atualize algum dos produtos para tudo e deleta a compra criada no banco para posterior ajuste
+					if (!prossegue) {
+						JOptionPane.showMessageDialog(contentPanel, "Erro ao atualizar estoque, ajuste manualmente o estoque.");
+						break;
+					}
+				}
+				if (liberado) {
+					JOptionPane.showMessageDialog(contentPanel, "Compra salva no banco com sucesso!");
+					dispose();
+				}if (!liberado) {
+					JOptionPane.showMessageDialog(contentPanel, "Erro Compra não foi salva no banco.");
+				}
+			}
+
+		} catch (Exception e) {
+//			JOptionPane.showMessageDialog(contentPanel, "ERRO! Tente novamente");
+			System.out.println(e);
+			System.out.println(e.getMessage());
 		}
-		System.out.println(listaCompra);
-		
-		Date data=(Date) dtCompra.getDate();
-		float valor=Float.parseFloat(txtValorTotal.getText());
-		Compra compra = new Compra(data, valor, listaCompra);
-		
-		
 
 	}
 }

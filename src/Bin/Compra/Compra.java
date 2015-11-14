@@ -1,12 +1,16 @@
 package Bin.Compra;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -14,35 +18,35 @@ import javax.persistence.Table;
 public class Compra {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_compra",columnDefinition = "serial", nullable = false)
 	private Integer id;
+	@Column(name = "data_compra", nullable = false)
 	private Date data ;
 	private float valor;
 	//tres atributos o primeiro idString[] segundo o custounitario e o terceiro a quantidade
-	private List<String[]> listaCompra;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "compra")
+	private List<InstanciaCompra> listaCompra;
 	
-	
-	public Compra(Date data, float valor, List<String[]> listaCompra) {
+	public Compra(Date data, float valor) {
+		this.data = data;
+		this.valor = valor;
+	}
+
+	public Compra(Date data, float valor, List<InstanciaCompra> listaCompra) {
 		super();
 		this.data = data;
 		this.valor = valor;
 		this.listaCompra = listaCompra;
 	}
 
-
-	public Compra() {
-		super();
-	}
-
-
 	public Integer getId() {
 		return id;
 	}
 
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
 
 	public Date getData() {
 		return data;
@@ -61,15 +65,25 @@ public class Compra {
 
 	public void setValor(float valor) {
 		this.valor = valor;
+		atualizaItenscomId();
 	}
 
 
-	public List<String[]> getListaCompra() {
+	public List<InstanciaCompra> getListaCompra() {
+		
 		return listaCompra;
 	}
 
 
-	public void setListaCompra(List<String[]> listaCompra) {
+	private void atualizaItenscomId() {
+		for (int i = 0; i < listaCompra.size(); i++) {
+			listaCompra.get(i).setCompra(id);
+		}
+		
+	}
+
+
+	public void setListaCompra(List<InstanciaCompra> listaCompra) {
 		this.listaCompra = listaCompra;
 	}
 
