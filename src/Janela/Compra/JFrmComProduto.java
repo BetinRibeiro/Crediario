@@ -395,8 +395,6 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 			// quando cria a compra no banco retorna verdadeiro para poder
 			// atualizar estoque e custo
 			liberado = banco.salvarObjeto(compra);
-			compra.setListaCompra(listaCompra);
-			liberado = banco.salvarOuAtualizarObjeto(compra);
 			boolean prossegue = false;
 			if (liberado) {
 				// aqui simplesmente salva todos os produtos atualizados
@@ -411,6 +409,11 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 					}
 				}
 				if (liberado) {
+					for (int i = 0; i < listaCompra.size(); i++) {
+						listaCompra.get(i).setCompra(compra);
+						banco.salvarObjeto(listaCompra.get(i));
+					}
+					
 					JOptionPane.showMessageDialog(contentPanel, "Compra salva no banco com sucesso!");
 					dispose();
 				}
@@ -432,12 +435,11 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 		txtId.setText(String.valueOf(compra.getId()));
 		dtCompra.setDate(compra.getData());
 		txtValorProduto.setText(String.valueOf(compra.getValor()));
-		System.out.println("tem que aparecer vlr - "+compra.getListaCompra().get(index));
 		
 		
-		List<?> lista = banco.BuscaNome(Compra.class, txtId.getText(), "id_compra");
-		for (int i = 0; i < banco.buscarPorNome(clazz, nome); i++) {
-			InstanciaCompra inst = compra.getListaCompra().get(i);
+		List<?> lista = banco.BuscaNome(InstanciaCompra.class, txtId.getText(), "compra_id");
+		for (int i = 0; i < lista.size(); i++) {
+			InstanciaCompra inst = (InstanciaCompra) lista.get(i);
 			Produto prod = new Produto();
 			prod.setId(inst.getProduto().getId());
 			prod.setCusto(inst.getCusto());

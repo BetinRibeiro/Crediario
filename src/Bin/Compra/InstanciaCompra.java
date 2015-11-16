@@ -31,30 +31,45 @@ public class InstanciaCompra {
 	
 //	@JoinColumn(name = "compra_id", referencedColumnName = "id_compra", nullable = false)
 //	private Integer compra;
+//	
+	@ManyToOne(optional = false)
+	private Compra compra;
+	
 	
 	@ManyToOne(optional = false)
 	private Produto produto;
 	
 	
 	
-	public InstanciaCompra() {
-		super();
-	}
 	public InstanciaCompra(Produto produto, float custo, float quantidade) {
 		super();
-		this.produto = produto;
 		this.custo = custo;
 		this.quantidade = quantidade;
+//		this.compra = compra;
+		this.produto = produto;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	public InstanciaCompra(float custo, float quantidade, Produto produto, Compra compra) {
+		super();
+		this.custo = custo;
+		this.quantidade = quantidade;
+		this.compra = compra;
+		this.produto = produto;
+	}
+
+
+
+
+
+
+	public Compra getCompra() {
+		return compra;
+	}
+
+	public void setCompra(Compra compra) {
+		this.compra = compra;
+	}
+
 	public Integer getId() {
 		return id;
 	}

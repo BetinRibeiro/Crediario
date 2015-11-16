@@ -6,6 +6,7 @@ import Janela.Cadastro.JFrmCadFuncionario;
 import Janela.Cadastro.JFrmCadProduto;
 import Janela.Cadastro.JFrmCadTransporte;
 import Janela.Compra.JFrmComProduto;
+import Janela.Pesquisa.JFrmPesCompra;
 import Janela.Pesquisa.JFrmPesFuncionario;
 import Janela.Pesquisa.JFrmPesProduto;
 import Janela.Pesquisa.JFrmPesTransporte;
@@ -102,6 +103,12 @@ public class JPnlManu extends JPanel {
 		mnPesquisa.add(mntmPesquisaFuncionario);
 		
 		JMenuItem mntmPesquisaCompra = new JMenuItem("Pesquisa Compra");
+		mntmPesquisaCompra.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFrmPesCompra crp = new JFrmPesCompra();
+				crp.setVisible(true);
+			}
+		});
 		mnPesquisa.add(mntmPesquisaCompra);
 		
 		JMenu mnMovimentao = new JMenu("Movimenta\u00E7\u00E3o");

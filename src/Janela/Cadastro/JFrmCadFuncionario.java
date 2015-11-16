@@ -251,10 +251,12 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 			if (liberado) {
 				boolean salvou = false;
 				Funcionario funcionario = new Funcionario(nome, sobrenome, endereco, telefone1, telefone2);
+				System.out.println(txtId.getText().length());
 				if (txtId.getText().length() > 0) {
 					funcionario.setId(Integer.parseInt(txtId.getText()));
 					salvou = (banco.salvarOuAtualizarObjeto(funcionario));
 				} else {
+					System.out.println("ENTROU AQUI");
 					salvou = (banco.salvarObjeto(funcionario));
 				}
 				if (!salvou) {
