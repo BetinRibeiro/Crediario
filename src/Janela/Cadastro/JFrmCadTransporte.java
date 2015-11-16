@@ -64,6 +64,8 @@ public class JFrmCadTransporte extends JDialog implements ActionListener {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
+		setAlwaysOnTop(true);
+		setLocationRelativeTo(null);
 
 		JLabel lblNewLabel = new JLabel("Codigo");
 		lblNewLabel.setBounds(10, 10, 100, 14);

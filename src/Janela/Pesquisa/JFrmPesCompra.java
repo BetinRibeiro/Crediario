@@ -12,9 +12,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Bin.Transporte.Transporte;
-import Janela.Cadastro.JFrmCadTransporte;
-import Model.Tabela.ModelTabelaTransporte;
+import Bin.Compra.Compra;
+import Janela.Compra.JFrmComProduto;
+import Model.Tabela.ModelTabelaCompra;
 import Persistence.Dao;
 
 import javax.swing.JScrollPane;
@@ -23,11 +23,11 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JTextField;
 import java.awt.Component;
 
-public class JFrmPesTransporte extends JDialog implements ActionListener {
+public class JFrmPesCompra extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
-	private ModelTabelaTransporte model = new ModelTabelaTransporte();
+	private ModelTabelaCompra model = new ModelTabelaCompra();
 	private JTextField txtBusca;
 	private Dao banco = new Dao();
 	private JButton btnAlterar;
@@ -37,7 +37,7 @@ public class JFrmPesTransporte extends JDialog implements ActionListener {
 	 */
 	public static void main(String[] args) {
 		try {
-			JFrmPesTransporte dialog = new JFrmPesTransporte();
+			JFrmPesCompra dialog = new JFrmPesCompra();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -48,8 +48,8 @@ public class JFrmPesTransporte extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog.
 	 */
-	public JFrmPesTransporte() {
-		setTitle("Pesquisa Transporte");
+	public JFrmPesCompra() {
+		setTitle("Pesquisa Compra");
 		setBounds(100, 100, 557, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -102,19 +102,19 @@ public class JFrmPesTransporte extends JDialog implements ActionListener {
 	void buscar() {
 		try {
 			model.removeTudo();
-			List<?> lista = banco.BuscaNome(Transporte.class, txtBusca.getText(), "placa");
+			List<?> lista = banco.BuscaNome(Compra.class, txtBusca.getText(), "id");
 			int tamanho=lista.size();
 			if (lista.size()>=30) {
 				tamanho=30;
 			}
 			for (int i = 0; i < tamanho; i++) {
-				Transporte classif = (Transporte) lista.get(i);
+				Compra classif = (Compra) lista.get(i);
 				model.addRow(classif);
 				btnAlterar.setEnabled(true);
 			}
 		} catch (Exception e) {
 			btnAlterar.setEnabled(false);
-			JOptionPane.showMessageDialog(contentPanel, "ERRO ao buscar um Transporte.");
+			JOptionPane.showMessageDialog(contentPanel, "ERRO ao buscar um Compra.");
 		}
 
 	}
@@ -140,12 +140,12 @@ public class JFrmPesTransporte extends JDialog implements ActionListener {
 	}
 
 	private void alterar() {
-		Transporte transporte = (Transporte) banco.buscarPorId(
-				Transporte.class,
+		Compra Compra = (Compra) banco.buscarPorId(
+				Compra.class,
 				(Integer) table.getValueAt(
 						table.getSelectedRow(), 0));
-		JFrmCadTransporte c = new JFrmCadTransporte();
-		c.inserir(transporte);
+		JFrmComProduto c = new JFrmComProduto();
+		c.inserirCompra(Compra);
 		c.setVisible(true);
 	}
 }

@@ -61,6 +61,8 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
+		setAlwaysOnTop(true);
+		setLocationRelativeTo(null);
 		{
 			JLabel lblNewLabel = new JLabel("Codigo");
 			lblNewLabel.setBounds(10, 11, 46, 14);
@@ -237,9 +239,14 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 			endereco.setUfEndereco(ufEndereco);
 			long telefone1 = Long.parseLong(txtFone1.getText());
 			long telefone2 = Long.parseLong(txtFone2.getText());
+		
 			String[] lista = { numero, lougradouro, cidade, bairro, ufEndereco, cep, nome, sobrenome };
 			// verifica a existencia de campos vazios
 			boolean liberado = verificaValoresVazios(lista);
+			if (String.valueOf(telefone1).length()<10||String.valueOf(telefone2).length()<10) {
+				JOptionPane.showMessageDialog(contentPanel, "Digite Pelomenos 10 digitos no telefone incluindo o DDD.");
+				liberado=false;
+			}
 
 			if (liberado) {
 				boolean salvou = false;

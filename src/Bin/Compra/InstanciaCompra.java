@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -26,8 +27,10 @@ public class InstanciaCompra {
 //	@JoinColumn(name = "compra_id", referencedColumnName = "id_compra", nullable = false)
 //	@ManyToOne(optional = false)
 //	private Compra compra;
+//	
 	
-	private Integer compra;
+//	@JoinColumn(name = "compra_id", referencedColumnName = "id_compra", nullable = false)
+//	private Integer compra;
 	
 	@ManyToOne(optional = false)
 	private Produto produto;
@@ -85,13 +88,13 @@ public class InstanciaCompra {
 	public void setQuantidade(float quantidade) {
 		this.quantidade = quantidade;
 	}
-	public Integer getCompra() {
-		return compra;
-	}
-	public void setCompra(Integer compra) {
-		this.compra = compra;
-	}
-	
+//	public Integer getCompra() {
+//		return compra;
+//	}
+//	public void setCompra(Integer compra) {
+//		this.compra = compra;
+//	}
+//	
 	
 	
 

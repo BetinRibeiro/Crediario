@@ -1,5 +1,6 @@
 package Model.Tabela;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,8 @@ public class ModelTabelaProduto extends AbstractTableModel {
 
 	private List<Produto> dados;
 	private String[] colunas = { "Código", "Descrição", "Custo", "Quantidade","Total"};
+	DecimalFormat dfValor = new DecimalFormat("0.00");
+	DecimalFormat dfQuant = new DecimalFormat("0.000");
 
 	// você precisar que os dados também sejam imediatamente alterados no banco
 	// de dados por exemplo,
@@ -84,12 +87,12 @@ public class ModelTabelaProduto extends AbstractTableModel {
 		case 1:
 			return dados.get(linha).getDescricao();
 		case 2:
-			return (dados.get(linha).getCusto());
+			return dfValor.format(dados.get(linha).getCusto());
 
 		case 3:
-			return (dados.get(linha).getQuantidade());
+			return dfQuant.format((dados.get(linha).getQuantidade()));
 		case 4:
-			return (dados.get(linha).getQuantidade()*dados.get(linha).getCusto());
+			return dfValor.format(dados.get(linha).getQuantidade()*dados.get(linha).getCusto());
 		}
 		return null;
 	}

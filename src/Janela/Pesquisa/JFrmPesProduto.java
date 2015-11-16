@@ -56,6 +56,8 @@ public class JFrmPesProduto extends JDialog implements ActionListener {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
+		setAlwaysOnTop(true);
+		setLocationRelativeTo(null);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 0, 541, 229);

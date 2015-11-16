@@ -26,6 +26,7 @@ public class JFrmCadProduto extends JDialog implements ActionListener{
 	private JTextField txtPreco;
 	private JTextField txtEstMin;
 	private JLabel msn;
+	private Produto produto;
 	
 	private Dao banco = new Dao();
 
@@ -46,12 +47,15 @@ public class JFrmCadProduto extends JDialog implements ActionListener{
 	 * Create the dialog.
 	 */
 	public JFrmCadProduto() {
+		produto=new Produto();
 		setTitle("Cadastro de Produto");
 		setBounds(100, 100, 308, 330);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
+		setAlwaysOnTop(true);
+		setLocationRelativeTo(null);
 		{
 			JLabel lblNewLabel = new JLabel("C\u00F3digo");
 			lblNewLabel.setBounds(10, 10, 86, 14);
@@ -154,7 +158,9 @@ public class JFrmCadProduto extends JDialog implements ActionListener{
 		
 		if (descricao.length()>0) {
 			boolean salvou=false;
-			Produto produto = new Produto(descricao, estoqueMin, preco);
+			produto.setDescricao(descricao);
+			produto.setEstoqueMin(estoqueMin);
+			produto.setPreco(preco);
 			if (txtID.getText().length() > 0) {
 				produto.setId(Integer.parseInt(txtID.getText()));
 				salvou=banco.salvarOuAtualizarObjeto(produto);
@@ -180,6 +186,7 @@ public class JFrmCadProduto extends JDialog implements ActionListener{
 	//função utilizada de fora da classe para inserir produtos que serão alterados 
 	public boolean inserir(Produto produto) {
 		try {
+			this.produto = produto;
 			setTitle("Alteração de dados Produto");
 			txtID.setText(String.valueOf(produto.getId()));
 			txtEstMin.setText(String.valueOf(produto.getEstoqueMin()));

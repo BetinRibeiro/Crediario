@@ -47,6 +47,8 @@ public class JFrmCadEquipe extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
+		setAlwaysOnTop(true);
+		setLocationRelativeTo(null);
 		
 		JLabel lblCdigo = new JLabel("C\u00F3digo");
 		lblCdigo.setBounds(10, 10, 46, 14);

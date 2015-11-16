@@ -1,30 +1,34 @@
 package Model.Tabela;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import Bin.Funcionario.*;
+import Bin.Compra.*;
 
 @SuppressWarnings("serial")
-public class ModelTabelaFuncionario extends AbstractTableModel {
+public class ModelTabelaCompra extends AbstractTableModel {
 
-	private List<Funcionario> dados;
-	private String[] colunas = { "Código", "Nome", "Telefone", "Telefone"};
+	private List<Compra> dados;
+	private String[] colunas = { "Código", "Data", "Valor"};
 	
+	DecimalFormat df = new DecimalFormat("0.00");
+    SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy" );
 
 	// você precisar que os dados também sejam imediatamente alterados no banco
 	// de dados por exemplo,
 	// você vai precisar adicionar um TableModelListener ao seu model que
 	// executará o método
 	// tableChanged toda vez que os dados da JTable forem alterados.
-	public ModelTabelaFuncionario() {
-		dados = new ArrayList<Funcionario>();
+	public ModelTabelaCompra() {
+		dados = new ArrayList<Compra>();
 
 	}
 
-	public void addRow(Funcionario p) {
+	public void addRow(Compra p) {
 
 		this.dados.add(p);
 		this.fireTableDataChanged();
@@ -83,16 +87,9 @@ public class ModelTabelaFuncionario extends AbstractTableModel {
 		case 0:
 			return dados.get(linha).getId();
 		case 1:
-			return dados.get(linha).getNome()+" "+dados.get(linha).getSobrenome();
+			return dt.format(dados.get(linha).getData());
 		case 2:
-			String fone = String.valueOf(dados.get(linha).getTelefone1());
-			System.out.println("("+fone.substring(0, 4)+") "+fone.substring(4, 8));
-			return ("("+fone.substring(0, 2)+") "+fone.substring(2, 6)+" - "+fone.substring(6, 10));
-//					(String.valueOf(dados.get(linha).getTelefone1())dados.get(linha).getTelefone1()String.valueOf(dados.get(linha).getTelefone1()).substring(2, 6)+" - "+String.valueOf(dados.get(linha).getTelefone1()).substring(6, 10) );
-
-		case 3:
-			String fone2 = String.valueOf(dados.get(linha).getTelefone2());
-			return ("("+fone2.substring(0, 2)+") "+fone2.substring(2, 6)+" - "+fone2.substring(6, 10));
+			return df.format(dados.get(linha).getValor());
 
 		}
 		return null;

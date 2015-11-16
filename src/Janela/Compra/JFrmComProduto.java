@@ -74,6 +74,8 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
+		setAlwaysOnTop(true);
+		setLocationRelativeTo(null);
 		{
 			JScrollPane scrollPane = new JScrollPane();
 			scrollPane.setBounds(10, 161, 472, 184);
@@ -247,13 +249,14 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 		try {
 
 			float valor = 0;
-
+			System.out.println(valor);
 			for (int i = 0; i < model.getRowCount(); i++) {
-				valor = valor + ((Float) model.getValueAt(i, 4));
+				String a = (String) (model.getValueAt(i, 4));
+				valor = valor + ((Float.parseFloat(a.replace(",", "."))));
 			}
 			txtValorTotal.setText(String.valueOf(valor));
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente ");
+			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente");
 			dispose();
 		}
 	}
@@ -265,7 +268,7 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 				btnFinalizar.setEnabled(false);
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente ");
+			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente");
 			dispose();
 		}
 	}
@@ -291,7 +294,10 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 			JOptionPane.showMessageDialog(contentPanel, "Insira numeros validos nos campos de quantidade e valor.");
 
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente ");
+//			System.out.println(e.getMessage());
+//			System.out.println(e);
+			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a Compra");
+			// compra novamente ");
 			dispose();
 		}
 	}
@@ -349,71 +355,94 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 			for (int i = 0; i < model.getRowCount(); i++) {
 				Integer idProd = (Integer) tableProduto.getValueAt(i, 0);
 				Produto produto = (Produto) banco.buscarPorId(Produto.class, idProd);
-				float custo = (float) tableProduto.getValueAt(i, 2);
-				float quantidade = (float) tableProduto.getValueAt(i, 3);
+				String custostr =(String.valueOf(tableProduto.getValueAt(i, 2)));
+				float custo = Float.parseFloat(custostr.replace(",", "."));
+				String quantstr =(String.valueOf(tableProduto.getValueAt(i, 3)));
+				float quantidade = Float.parseFloat(quantstr.replace(",", "."));
 				InstanciaCompra inst = new InstanciaCompra(produto, custo, quantidade);
 				listaCompra.add(inst);
-				
-				
-//				reajusta custo e quantidade do produto mantido no estoque
-				
-				
-				float quantidadeVelha=produto.getQuantidade();
+
+				// reajusta custo e quantidade do produto mantido no estoque
+
+				float quantidadeVelha = produto.getQuantidade();
 				float custoUnitarioVelho = produto.getCusto();
 				float quantidadeEntrada = quantidade;
 				float custoUnitarioEntrada = custo;
-				
-				
-				float custoTotalVelho = quantidadeVelha*custoUnitarioVelho;
-				float custoTotalEntrada = quantidadeEntrada*custoUnitarioEntrada;
-				
-				float quantidadeAtual = quantidadeEntrada+quantidadeVelha;
-				float custoTotalAtual = custoTotalEntrada+custoTotalVelho;
-				
-				float custoUnitarioAtual = custoTotalAtual/quantidadeAtual;
-				
+
+				float custoTotalVelho = quantidadeVelha * custoUnitarioVelho;
+				float custoTotalEntrada = quantidadeEntrada * custoUnitarioEntrada;
+
+				float quantidadeAtual = quantidadeEntrada + quantidadeVelha;
+				float custoTotalAtual = custoTotalEntrada + custoTotalVelho;
+
+				float custoUnitarioAtual = custoTotalAtual / quantidadeAtual;
+
 				produto.setCusto(custoUnitarioAtual);
 				produto.setQuantidade(quantidadeAtual);
 				listaProdutos.add(produto);
-				
+
 				System.out.println(produto.getCusto());
 
 			}
 			// System.out.println(listaCompra);
 
 			Date data = (Date) dtCompra.getDate();
-			System.out.println("Data que inseriiii - "+data);
+			System.out.println("Data que inseriiii - " + data);
 			float valor = Float.parseFloat(txtValorTotal.getText());
 			Compra compra = new Compra(data, valor);
 
 			boolean liberado = false;
-//			quando cria a compra no banco retorna verdadeiro para poder atualizar estoque e custo
+			// quando cria a compra no banco retorna verdadeiro para poder
+			// atualizar estoque e custo
 			liberado = banco.salvarObjeto(compra);
 			compra.setListaCompra(listaCompra);
 			liberado = banco.salvarOuAtualizarObjeto(compra);
 			boolean prossegue = false;
 			if (liberado) {
-				//aqui simplesmente salva todos os produtos atualizados 
+				// aqui simplesmente salva todos os produtos atualizados
 				for (int i = 0; i < listaProdutos.size(); i++) {
 					prossegue = banco.salvarOuAtualizarObjeto(listaProdutos.get(i));
-					//caso não atualize algum dos produtos para tudo e deleta a compra criada no banco para posterior ajuste
+					// caso não atualize algum dos produtos para tudo e deleta a
+					// compra criada no banco para posterior ajuste
 					if (!prossegue) {
-						JOptionPane.showMessageDialog(contentPanel, "Erro ao atualizar estoque, ajuste manualmente o estoque.");
+						JOptionPane.showMessageDialog(contentPanel,
+								"Erro ao atualizar estoque, ajuste manualmente o estoque.");
 						break;
 					}
 				}
 				if (liberado) {
 					JOptionPane.showMessageDialog(contentPanel, "Compra salva no banco com sucesso!");
 					dispose();
-				}if (!liberado) {
+				}
+				if (!liberado) {
 					JOptionPane.showMessageDialog(contentPanel, "Erro Compra não foi salva no banco.");
 				}
 			}
 
 		} catch (Exception e) {
-//			JOptionPane.showMessageDialog(contentPanel, "ERRO! Tente novamente");
+			// JOptionPane.showMessageDialog(contentPanel, "ERRO! Tente
+			// novamente");
 			System.out.println(e);
 			System.out.println(e.getMessage());
+		}
+
+	}
+
+	public void inserirCompra(Compra compra) {
+		txtId.setText(String.valueOf(compra.getId()));
+		dtCompra.setDate(compra.getData());
+		txtValorProduto.setText(String.valueOf(compra.getValor()));
+		System.out.println("tem que aparecer vlr - "+compra.getListaCompra().get(index));
+		
+		
+		List<?> lista = banco.BuscaNome(Compra.class, txtId.getText(), "id_compra");
+		for (int i = 0; i < banco.buscarPorNome(clazz, nome); i++) {
+			InstanciaCompra inst = compra.getListaCompra().get(i);
+			Produto prod = new Produto();
+			prod.setId(inst.getProduto().getId());
+			prod.setCusto(inst.getCusto());
+			prod.setQuantidade(inst.getQuantidade());
+			model.addRow(prod);
 		}
 
 	}
