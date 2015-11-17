@@ -15,14 +15,22 @@ import Painel.Manu.JPnlManu;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.ComponentOrientation;
 
 @SuppressWarnings("serial")
 public class JFrmPrincipal extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JPanel panelSetorial;
+	private Date data = new Date();
+	SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy" );
 
 	/**
 	 * Launch the application.
@@ -97,26 +105,40 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 		contentPane.add(panelComandas);
 		panelComandas.setLayout(null);
 
-		JButton btnPreparacaoVenda = new JButton("Prepara\u00E7\u00E3o da Venda");
-		btnPreparacaoVenda.setBounds(10, 10, 250, 23);
+		JButton btnPreparacaoVenda = new JButton("Marcadoria da Equipe");
+		btnPreparacaoVenda.setBounds(10, 107, 250, 23);
 		panelComandas.add(btnPreparacaoVenda);
 
-		JButton btnVendas = new JButton("Venda em andamento");
-		btnVendas.setBounds(10, 45, 250, 23);
+		JButton btnVendas = new JButton("Venda e Comiss\u00E3o");
+		btnVendas.setBounds(10, 142, 250, 23);
 		panelComandas.add(btnVendas);
 
-		JButton btnCobrancaAndamento = new JButton("Cobran\u00E7as em Andamento");
-		btnCobrancaAndamento.setBounds(10, 80, 250, 23);
+		JButton btnCobrancaAndamento = new JButton("Presta\u00E7\u00E3o de Contas Venda");
+		btnCobrancaAndamento.setBounds(10, 177, 250, 23);
 		panelComandas.add(btnCobrancaAndamento);
 
-		JButton btnVendasFinalizadas = new JButton("Vendas Finalizadas");
-		btnVendasFinalizadas.setBounds(10, 115, 250, 23);
+		JButton btnVendasFinalizadas = new JButton("Andamento da Cobran\u00E7a e Depositos");
+		btnVendasFinalizadas.setBounds(10, 212, 250, 23);
 		panelComandas.add(btnVendasFinalizadas);
 
 		JPanel panelRodape = new JPanel();
 		panelRodape.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panelRodape.setBounds(5, 675, 1350, 43);
 		contentPane.add(panelRodape);
+		panelRodape.setLayout(null);
+		
+		JLabel lblData = new JLabel(String.valueOf(dt.format(data)));
+		lblData.setBounds(5, 10, 98, 14);
+		lblData.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		lblData.setVerticalAlignment(SwingConstants.TOP);
+		lblData.setHorizontalAlignment(SwingConstants.RIGHT);
+		panelRodape.add(lblData);
+		
+		JLabel lblContato = new JLabel("Rogoberto Ribeiro-(88) 9.8878-0587 / (88) 9.9786-7735");
+		lblContato.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblContato.setForeground(new Color(30, 144, 255));
+		lblContato.setBounds(1000, 10, 340, 14);
+		panelRodape.add(lblContato);
 
 		panelSetorial = new JPanel();
 		panelSetorial.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -137,6 +159,17 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 		btnVendasFinalizadas.setActionCommand("IMOVEIS");
 		btnCobrancaAndamento.addActionListener(this);
 		btnCobrancaAndamento.setActionCommand("LOCATARIOS");
+		
+		JButton btnCarregarEquipe = new JButton("Carregar Equipe");
+		btnCarregarEquipe.setBackground(new Color(220, 220, 220));
+		btnCarregarEquipe.setActionCommand("AGENDAMENTO");
+		btnCarregarEquipe.setBounds(10, 11, 250, 23);
+		panelComandas.add(btnCarregarEquipe);
+		
+		JButton button = new JButton("Cobran\u00E7as e Saldo de Quita\u00E7\u00E3o");
+		button.setActionCommand("IMOVEIS");
+		button.setBounds(10, 246, 250, 23);
+		panelComandas.add(button);
 	}
 
 	@Override
@@ -186,5 +219,4 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 		}
 
 	}
-
 }

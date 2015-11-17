@@ -16,7 +16,7 @@
 		<mapping class="Bin.Endereco" />
 		<mapping class="Bin.Transporte.Transporte" />
 		<mapping class="Bin.Compra.Compra" />
-		<mapping class="Bin.Compra.InstanciaCompra" />
+		<mapping class="Bin.Compra.ItemCompra" />
 		
 
 	</session-factory>

@@ -76,6 +76,7 @@ public class JFrmCadTransporte extends JDialog implements ActionListener {
 		txtID.setBounds(10, 30, 100, 20);
 		contentPanel.add(txtID);
 		txtID.setColumns(10);
+		txtID.setBackground(new Color(255, 250, 205));
 
 		txtModelo = new JTextField();
 		txtModelo.setColumns(10);

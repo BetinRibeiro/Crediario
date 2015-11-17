@@ -64,6 +64,7 @@ public class JFrmCadProduto extends JDialog implements ActionListener{
 		{
 			txtID = new JTextField();
 			txtID.setEnabled(false);
+			txtID.setBackground(new Color(255, 250, 205));
 			txtID.setBounds(10, 30, 86, 20);
 			contentPanel.add(txtID);
 			txtID.setColumns(10);

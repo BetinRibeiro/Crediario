@@ -1,6 +1,7 @@
 package Janela.Compra;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
@@ -11,7 +12,7 @@ import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
 
 import Bin.Compra.Compra;
-import Bin.Compra.InstanciaCompra;
+import Bin.Compra.ItemCompra;
 import Bin.Produto.Produto;
 import Janela.Pesquisa.JFrmPesProduto;
 import Model.Tabela.ModelTabelaInstanciaCompra;
@@ -101,11 +102,14 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 
 		txtId = new JTextField();
 		txtId.setEnabled(false);
+		txtId.setBackground(new Color(255, 250, 205));
 		txtId.setBounds(10, 30, 86, 20);
 		contentPanel.add(txtId);
 		txtId.setColumns(10);
 
 		txtValorTotal = new JTextField();
+		txtValorTotal.setDisabledTextColor(new Color(0, 0, 0));
+		txtValorTotal.setBackground(new Color(255, 250, 205));
 		txtValorTotal.setEnabled(false);
 		txtValorTotal.setColumns(10);
 		txtValorTotal.setBounds(396, 30, 86, 20);
@@ -124,12 +128,16 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 		contentPanel.add(dtCompra);
 
 		txtProdutoId = new JTextField();
+		txtProdutoId.setDisabledTextColor(new Color(0, 0, 0));
+		txtProdutoId.setBackground(new Color(255, 250, 205));
 		txtProdutoId.setEnabled(false);
 		txtProdutoId.setBounds(10, 80, 86, 20);
 		contentPanel.add(txtProdutoId);
 		txtProdutoId.setColumns(10);
 
 		txtProdutoDescricao = new JTextField();
+		txtProdutoDescricao.setDisabledTextColor(new Color(0, 0, 0));
+		txtProdutoDescricao.setBackground(new Color(255, 250, 205));
 		txtProdutoDescricao.setEnabled(false);
 		txtProdutoDescricao.setBounds(106, 80, 280, 20);
 		contentPanel.add(txtProdutoDescricao);
@@ -288,7 +296,7 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 				}
 			}
 			if (liberado) {
-				InstanciaCompra in = new InstanciaCompra(produto, produto.getCusto(), produto.getCusto());
+				ItemCompra in = new ItemCompra(produto, produto.getCusto(), produto.getCusto());
 				model.addRow(in);
 				btnFinalizar.setEnabled(true);
 			}
@@ -352,7 +360,7 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 			// pendencia
 			// de pagamento e a segunda no estoque que chama-se recebimento de
 			// produto
-			List<InstanciaCompra> listaCompra = new ArrayList<>();
+			List<ItemCompra> listaCompra = new ArrayList<>();
 			List<Produto> listaProdutos = new ArrayList<>();
 
 			for (int i = 0; i < model.getRowCount(); i++) {
@@ -362,7 +370,7 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 				float custo = Float.parseFloat(custostr.replace(",", "."));
 				String quantstr = (String.valueOf(tableProduto.getValueAt(i, 3)));
 				float quantidade = Float.parseFloat(quantstr.replace(",", "."));
-				InstanciaCompra inst = new InstanciaCompra(produto, custo, quantidade);
+				ItemCompra inst = new ItemCompra(produto, custo, quantidade);
 				listaCompra.add(inst);
 
 				// reajusta custo e quantidade do produto mantido no estoque
@@ -444,9 +452,9 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 
 			System.out.println(compra.getInstaCompra().size());
 
-			Set<InstanciaCompra> lista = compra.getInstaCompra();
+			Set<ItemCompra> lista = compra.getInstaCompra();
 			System.out.println("Esta é a lista - " + lista);
-			for (InstanciaCompra instanciaCompra : lista) {
+			for (ItemCompra instanciaCompra : lista) {
 				model.addRow(instanciaCompra);
 				
 			}

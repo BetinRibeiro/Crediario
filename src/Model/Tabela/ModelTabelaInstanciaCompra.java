@@ -6,12 +6,12 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import Bin.Compra.InstanciaCompra;
+import Bin.Compra.ItemCompra;
 
 @SuppressWarnings("serial")
 public class ModelTabelaInstanciaCompra extends AbstractTableModel {
 
-	private List<InstanciaCompra> dados;
+	private List<ItemCompra> dados;
 	private String[] colunas = { "Código", "Descrição", "Custo", "Quantidade","Total"};
 	DecimalFormat dfValor = new DecimalFormat("0.00");
 	DecimalFormat dfQuant = new DecimalFormat("0.000");
@@ -22,11 +22,11 @@ public class ModelTabelaInstanciaCompra extends AbstractTableModel {
 	// executará o método
 	// tableChanged toda vez que os dados da JTable forem alterados.
 	public ModelTabelaInstanciaCompra() {
-		dados = new ArrayList<InstanciaCompra>();
+		dados = new ArrayList<ItemCompra>();
 
 	}
 
-	public void addRow(InstanciaCompra p) {
+	public void addRow(ItemCompra p) {
 
 		this.dados.add(p);
 		this.fireTableDataChanged();

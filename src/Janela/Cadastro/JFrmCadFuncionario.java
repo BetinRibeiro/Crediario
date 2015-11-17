@@ -73,6 +73,7 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 			txtId.setEnabled(false);
 			txtId.setBounds(10, 31, 86, 20);
 			contentPanel.add(txtId);
+			txtId.setBackground(new Color(255, 250, 205));
 			txtId.setColumns(10);
 		}
 		{

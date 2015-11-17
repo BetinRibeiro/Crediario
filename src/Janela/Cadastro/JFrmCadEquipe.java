@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import java.awt.Color;
 
 public class JFrmCadEquipe extends JDialog {
 
@@ -55,6 +56,8 @@ public class JFrmCadEquipe extends JDialog {
 		contentPanel.add(lblCdigo);
 		
 		textField = new JTextField();
+		textField.setEnabled(false);
+		textField.setBackground(new Color(255, 250, 205));
 		textField.setBounds(10, 30, 86, 20);
 		contentPanel.add(textField);
 		textField.setColumns(10);
@@ -69,11 +72,17 @@ public class JFrmCadEquipe extends JDialog {
 		contentPanel.add(lblDescrio);
 		
 		textField_2 = new JTextField();
+		textField_2.setEnabled(false);
+		textField_2.setDisabledTextColor(new Color(0, 0, 0));
+		textField_2.setBackground(new Color(224, 255, 255));
 		textField_2.setBounds(10, 121, 86, 20);
 		contentPanel.add(textField_2);
 		textField_2.setColumns(10);
 		
 		textField_3 = new JTextField();
+		textField_3.setEnabled(false);
+		textField_3.setDisabledTextColor(new Color(0, 0, 0));
+		textField_3.setBackground(new Color(224, 255, 255));
 		textField_3.setColumns(10);
 		textField_3.setBounds(106, 121, 247, 20);
 		contentPanel.add(textField_3);
@@ -90,11 +99,17 @@ public class JFrmCadEquipe extends JDialog {
 		scrollPane.setViewportView(table);
 		
 		textField_4 = new JTextField();
+		textField_4.setEnabled(false);
+		textField_4.setDisabledTextColor(new Color(0, 0, 0));
+		textField_4.setBackground(new Color(255, 250, 205));
 		textField_4.setColumns(10);
 		textField_4.setBounds(10, 165, 86, 20);
 		contentPanel.add(textField_4);
 		
 		textField_5 = new JTextField();
+		textField_5.setEnabled(false);
+		textField_5.setDisabledTextColor(new Color(0, 0, 0));
+		textField_5.setBackground(new Color(255, 250, 205));
 		textField_5.setColumns(10);
 		textField_5.setBounds(106, 165, 247, 20);
 		contentPanel.add(textField_5);
