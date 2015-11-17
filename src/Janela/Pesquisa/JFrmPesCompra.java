@@ -104,6 +104,7 @@ public class JFrmPesCompra extends JDialog implements ActionListener {
 			model.removeTudo();
 			List<?> lista = banco.BuscaNome(Compra.class, txtBusca.getText(), "id");
 			int tamanho=lista.size();
+			
 			if (lista.size()>=30) {
 				tamanho=30;
 			}

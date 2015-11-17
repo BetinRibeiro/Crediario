@@ -36,7 +36,7 @@ public class Dao {
 			e.printStackTrace();
 			return null;
 		} finally {
-			sessao.close();
+//			sessao.close();
 		}
 	}
 
@@ -145,6 +145,23 @@ public class Dao {
 				sessao.close();
 			}
 	}
+	
+	public List<?> BuscaInteiro(Class<?> classe, String nomeBuscar, String coluna) {  
+		 try {
+		sessao = HibernateUtil.getSession().openSession();
+				
+			  if (nomeBuscar == null || nomeBuscar.equals(0))  
+			       return  sessao.createCriteria(classe).addOrder(
+							Order.asc(coluna)).list();
+			   return sessao.createCriteria(classe).add(Restrictions.ilike(coluna, nomeBuscar, MatchMode.ANYWHERE)).list();
+					   //(List<?>) this.sessao.createCriteria(classe).add(Restrictions.like(coluna, "%"+nomeBuscar+"%")).list();  
+			    } catch (Exception e) {
+			    	 System.out.println(e);
+			    	 return null;
+			}finally{
+				sessao.close();
+			}
+	}
 
 	public List<?> BuscaNomeHabilitado(Class<?>  classe,
 			String nomeBuscar, String coluna, boolean b) {
@@ -164,4 +181,61 @@ public class Dao {
 					}
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public List<?> buscarInstanciaCompra(Class<?> clazz, String codigo,
+			String coluna) {
+		Integer cod = Integer.parseInt(codigo);
+		try {
+			sessao = HibernateUtil.getSession().openSession();
+			return sessao.createCriteria(clazz)
+					.add(Restrictions.eq(coluna, cod)).list();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			sessao.close();
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

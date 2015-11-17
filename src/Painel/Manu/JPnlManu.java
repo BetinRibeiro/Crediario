@@ -16,6 +16,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
 
 public class JPnlManu extends JPanel {
 
@@ -27,7 +28,7 @@ public class JPnlManu extends JPanel {
 		setLayout(null);
 		
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBounds(0, 0, 1350, 21);
+		menuBar.setBounds(1, 1, 1348, 21);
 		add(menuBar);
 		
 		JMenu mnCadastro = new JMenu("Cadastro");
@@ -124,6 +125,9 @@ public class JPnlManu extends JPanel {
 			}
 		});
 		mnMovimentao.add(mntmComprarProduto);
+		
+		
+		
 
 	}
 }

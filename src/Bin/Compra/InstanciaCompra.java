@@ -1,12 +1,14 @@
 package Bin.Compra;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -18,22 +20,19 @@ public class InstanciaCompra {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_inst_compra",columnDefinition = "serial", nullable = false)
+    @Column(name = "id",columnDefinition = "serial", nullable = false)
 	private Integer id;
 	
 	private float custo;
 	private float quantidade;
 	
-//	@JoinColumn(name = "compra_id", referencedColumnName = "id_compra", nullable = false)
-//	@ManyToOne(optional = false)
-//	private Compra compra;
 //	
 	
-//	@JoinColumn(name = "compra_id", referencedColumnName = "id_compra", nullable = false)
-//	private Integer compra;
-//	
-	@ManyToOne(optional = false)
-	private Compra compra;
+	@ManyToOne
+    @JoinColumn(name="compra_id")
+    private Compra compra;
+//	@ManyToOne(optional = false)
+//	private Compra compra;
 	
 	
 	@ManyToOne(optional = false)
@@ -41,6 +40,10 @@ public class InstanciaCompra {
 	
 	
 	
+	public InstanciaCompra() {
+		super();
+	}
+
 	public InstanciaCompra(Produto produto, float custo, float quantidade) {
 		super();
 		this.custo = custo;

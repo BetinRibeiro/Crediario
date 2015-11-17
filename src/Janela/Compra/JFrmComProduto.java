@@ -14,6 +14,7 @@ import Bin.Compra.Compra;
 import Bin.Compra.InstanciaCompra;
 import Bin.Produto.Produto;
 import Janela.Pesquisa.JFrmPesProduto;
+import Model.Tabela.ModelTabelaInstanciaCompra;
 import Model.Tabela.ModelTabelaProduto;
 import Persistence.Dao;
 
@@ -30,6 +31,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -46,7 +48,7 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 	private JTextField txtQuantidade;
 	private JTextField txtValorProduto;
 	private JButton btnBuscar;
-	private ModelTabelaProduto model = new ModelTabelaProduto();
+	private ModelTabelaInstanciaCompra model = new ModelTabelaInstanciaCompra();
 	private JButton btnInserir;
 	private Dao banco = new Dao();
 	private JButton btnFinalizar;
@@ -286,7 +288,8 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 				}
 			}
 			if (liberado) {
-				model.addRow(produto);
+				InstanciaCompra in = new InstanciaCompra(produto, produto.getCusto(), produto.getCusto());
+				model.addRow(in);
 				btnFinalizar.setEnabled(true);
 			}
 			limpatxt();
@@ -294,8 +297,8 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 			JOptionPane.showMessageDialog(contentPanel, "Insira numeros validos nos campos de quantidade e valor.");
 
 		} catch (Exception e) {
-//			System.out.println(e.getMessage());
-//			System.out.println(e);
+			// System.out.println(e.getMessage());
+			// System.out.println(e);
 			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a Compra");
 			// compra novamente ");
 			dispose();
@@ -355,9 +358,9 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 			for (int i = 0; i < model.getRowCount(); i++) {
 				Integer idProd = (Integer) tableProduto.getValueAt(i, 0);
 				Produto produto = (Produto) banco.buscarPorId(Produto.class, idProd);
-				String custostr =(String.valueOf(tableProduto.getValueAt(i, 2)));
+				String custostr = (String.valueOf(tableProduto.getValueAt(i, 2)));
 				float custo = Float.parseFloat(custostr.replace(",", "."));
-				String quantstr =(String.valueOf(tableProduto.getValueAt(i, 3)));
+				String quantstr = (String.valueOf(tableProduto.getValueAt(i, 3)));
 				float quantidade = Float.parseFloat(quantstr.replace(",", "."));
 				InstanciaCompra inst = new InstanciaCompra(produto, custo, quantidade);
 				listaCompra.add(inst);
@@ -413,7 +416,7 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 						listaCompra.get(i).setCompra(compra);
 						banco.salvarObjeto(listaCompra.get(i));
 					}
-					
+
 					JOptionPane.showMessageDialog(contentPanel, "Compra salva no banco com sucesso!");
 					dispose();
 				}
@@ -432,20 +435,37 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 	}
 
 	public void inserirCompra(Compra compra) {
-		txtId.setText(String.valueOf(compra.getId()));
-		dtCompra.setDate(compra.getData());
-		txtValorProduto.setText(String.valueOf(compra.getValor()));
-		
-		
-		List<?> lista = banco.BuscaNome(InstanciaCompra.class, txtId.getText(), "compra_id");
-		for (int i = 0; i < lista.size(); i++) {
-			InstanciaCompra inst = (InstanciaCompra) lista.get(i);
-			Produto prod = new Produto();
-			prod.setId(inst.getProduto().getId());
-			prod.setCusto(inst.getCusto());
-			prod.setQuantidade(inst.getQuantidade());
-			model.addRow(prod);
-		}
+		setVisible(true);
+		try {
 
+			txtId.setText(String.valueOf(compra.getId()));
+			dtCompra.setDate(compra.getData());
+			txtValorTotal.setText(String.valueOf(compra.getValor()));
+
+			System.out.println(compra.getInstaCompra().size());
+
+			Set<InstanciaCompra> lista = compra.getInstaCompra();
+			System.out.println("Esta é a lista - " + lista);
+			for (InstanciaCompra instanciaCompra : lista) {
+				model.addRow(instanciaCompra);
+				
+			}
+
+			btnBuscar.setEnabled(false);
+			btnFinalizar.setEnabled(false);
+			btnInserir.setEnabled(false);
+			tableProduto.setEnabled(false);
+			txtQuantidade.setEnabled(false);
+			txtValorProduto.setEnabled(false);
+		}catch(
+
+	Exception e)
+
+	{
+		JOptionPane.showMessageDialog(contentPanel, "Erro ao resgatar os produtos na pesquisa, tente novamente ");
+		System.out.println(e);
+		System.out.println(e.getMessage());
+		dispose();
 	}
-}
+
+}}

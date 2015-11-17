@@ -1,13 +1,17 @@
 package Bin.Compra;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -27,10 +31,18 @@ public class Compra {
 	@Column(name = "data_compra", nullable = false)
 	private Date data;
 	private float valor;
-	// tres atributos o primeiro idString[] segundo o custounitario e o terceiro
-	// a quantidade
-	// @ManyToMany(cascade = CascadeType.ALL)
-	// public List<InstanciaCompra> listaCompra;
+	@OneToMany(mappedBy = "compra", fetch=FetchType.LAZY)
+	private Set<InstanciaCompra> instanciaCompra;
+	
+	
+
+	public Set<InstanciaCompra> getInstaCompra() {
+		return instanciaCompra;
+	}
+
+	public void setProjetos(Set<InstanciaCompra> InstaCompra) {
+		this.instanciaCompra = instanciaCompra;
+	}
 
 	public Compra() {
 		super();
