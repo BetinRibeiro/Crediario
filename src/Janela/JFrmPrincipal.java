@@ -18,6 +18,7 @@ import Painel.Dinamico.JPnlEquipeVendaComissao;
 import Painel.Manu.JPnlManu;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -38,6 +39,10 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 	SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy");
 	private Equipe equipe;
 	private JPnlManu panelMenu;
+	private JButton btnMercadoriaEquipe;
+	private JButton btnVendas;
+	private JButton btnCobrancaAndamento;
+	private JButton btnVendasFinalizadas;
 
 	/**
 	 * Launch the application.
@@ -77,7 +82,7 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 						// props.put("logoString", "");
 						// SmartLookAndFeel.setCurrentTheme(props);
 
-					UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+					UIManager.setLookAndFeel("com.jtattoo.plaf.texture.TextureLookAndFeel");
 					JFrmPrincipal frame = new JFrmPrincipal();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -111,19 +116,23 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 		contentPane.add(panelComandas);
 		panelComandas.setLayout(null);
 
-		JButton btnMercadoriaEquipe = new JButton("Marcadoria da Equipe");
+		btnMercadoriaEquipe = new JButton("Marcadoria da Equipe");
+		btnMercadoriaEquipe.setEnabled(false);
 		btnMercadoriaEquipe.setBounds(10, 107, 250, 23);
 		panelComandas.add(btnMercadoriaEquipe);
 
-		JButton btnVendas = new JButton("Venda e Comiss\u00E3o");
+		btnVendas = new JButton("Venda e Comiss\u00E3o");
+		btnVendas.setEnabled(false);
 		btnVendas.setBounds(10, 142, 250, 23);
 		panelComandas.add(btnVendas);
 
-		JButton btnCobrancaAndamento = new JButton("Presta\u00E7\u00E3o de Contas Venda");
+		btnCobrancaAndamento = new JButton("Presta\u00E7\u00E3o de Contas Venda");
+		btnCobrancaAndamento.setEnabled(false);
 		btnCobrancaAndamento.setBounds(10, 177, 250, 23);
 		panelComandas.add(btnCobrancaAndamento);
 
-		JButton btnVendasFinalizadas = new JButton("Andamento da Cobran\u00E7a e Depositos");
+		btnVendasFinalizadas = new JButton("Andamento da Cobran\u00E7a e Depositos");
+		btnVendasFinalizadas.setEnabled(false);
 		btnVendasFinalizadas.setBounds(10, 212, 250, 23);
 		panelComandas.add(btnVendasFinalizadas);
 
@@ -173,6 +182,7 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 		panelComandas.add(btnCarregarEquipe);
 
 		JButton button = new JButton("Cobran\u00E7as e Saldo de Quita\u00E7\u00E3o");
+		button.setEnabled(false);
 		button.setActionCommand("IMOVEIS");
 		button.setBounds(10, 246, 250, 23);
 		panelComandas.add(button);
@@ -192,17 +202,27 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 			equipe = (Equipe) func.getObj();
 			panelMenu.getLblTituloDaEquipe().setText(equipe.getTitulo());
 			panelMenu.getLblTituloDaEquipe().setVisible(true);
-			
+
 			panelSetorial.removeAll();
 			panelSetorial.repaint();
 			panelSetorial.add(new JPnlEquipePrincipal());
 			panelSetorial.validate();
 
+			if (equipe != null) {
+				btnMercadoriaEquipe.setEnabled(true);
+				btnCobrancaAndamento.setEnabled(true);
+
+				btnVendas.setEnabled(true);
+				btnVendasFinalizadas.setEnabled(true);
+			}
+
 			break;
 		case "MERCADORIA":
 			panelSetorial.removeAll();
 			panelSetorial.repaint();
-			panelSetorial.add(new JPnlEquipeMercadoria());
+			JPnlEquipeMercadoria painelEquipe = new JPnlEquipeMercadoria();
+			painelEquipe.setEquipe(equipe);
+			panelSetorial.add(painelEquipe);
 			panelSetorial.validate();
 
 			break;

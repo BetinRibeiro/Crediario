@@ -19,7 +19,7 @@ import Bin.Compra.ItemCompra;
 import Bin.Equipe.Equipe;
 
 @Entity
-@Table(name = "ItemMercadoria")
+@Table(name = "carrada")
 public class Carrada {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +40,59 @@ public class Carrada {
     private Equipe equipe;
 	@OneToMany(mappedBy = "carrada", fetch=FetchType.LAZY)
 	private Set<ItemCarrada> itemCarrada;
+	
+	
+	
+	
+
+
+	public Equipe getEquipe() {
+		return equipe;
+	}
+
+
+	public void setEquipe(Equipe equipe) {
+		this.equipe = equipe;
+	}
+
+
+	public Set<ItemCarrada> getItemCarrada() {
+		return itemCarrada;
+	}
+
+
+	public void setItemCarrada(Set<ItemCarrada> itemCarrada) {
+		this.itemCarrada = itemCarrada;
+	}
+
+
+	public Carrada(Date data, String motorista, float valorTotal, float valorFrete, String cidade, Equipe equipe) {
+		super();
+		this.data = data;
+		this.motorista = motorista;
+		this.valorTotal = valorTotal;
+		this.valorFrete = valorFrete;
+		this.cidade = cidade;
+		this.equipe = equipe;
+	}
+
+
+	public Carrada() {
+		super();
+	}
+
+
+	public Carrada(Date data, String motorista, float valorTotal, float valorFrete, String cidade, Equipe equipe,
+			Set<ItemCarrada> itemCarrada) {
+		super();
+		this.data = data;
+		this.motorista = motorista;
+		this.valorTotal = valorTotal;
+		this.valorFrete = valorFrete;
+		this.cidade = cidade;
+		this.equipe = equipe;
+		this.itemCarrada = itemCarrada;
+	}
 
 
 	public Integer getId() {
@@ -103,11 +156,13 @@ public class Carrada {
 
 
 	public Set<ItemCarrada> getCarrada() {
+		System.out.println(itemCarrada);
 		return itemCarrada;
 	}
 
 
 	public void setCarrada(Set<ItemCarrada> itemcarrada) {
+		this.itemCarrada =null;
 		this.itemCarrada = itemcarrada;
 	}
 	

@@ -3,7 +3,11 @@ package Painel.Dinamico;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import Bin.Equipe.Equipe;
+import Bin.Mercadoria.Carrada;
+import Janela.Cadastro.JFrmCadCarrada;
 import Model.Tabela.ModelTabelaCarrada;
+import Persistence.Dao;
 
 import java.awt.Color;
 import javax.swing.JMenuBar;
@@ -14,13 +18,33 @@ import javax.swing.JTable;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.Set;
 import java.awt.event.ActionEvent;
+import javax.swing.JProgressBar;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JMenuItem;
 
 public class JPnlEquipeMercadoria extends JPanel {
 	private JTable tableCarradas;
-	private JTable tableRetornos;
 	private ModelTabelaCarrada modelCarrada = new ModelTabelaCarrada();
 	private ModelTabelaCarrada modelRetorno = new ModelTabelaCarrada();
+	
+	private Dao banco = new Dao();
+
+	public Equipe getEquipe() {
+		return equipe;
+	}
+
+	public void setEquipe(Equipe equipe) {
+
+		this.equipe = equipe;
+		atualiza();
+	}
+
+	private Equipe equipe;
 
 	/**
 	 * Create the panel.
@@ -29,44 +53,89 @@ public class JPnlEquipeMercadoria extends JPanel {
 		setBorder(new LineBorder(new Color(0, 0, 0)));
 		setBounds(0, 0, 1075, 570);
 		setLayout(null);
-		
+
 		JLabel lblCarradas = new JLabel("Carradas");
 		lblCarradas.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblCarradas.setBounds(10, 36, 216, 14);
 		add(lblCarradas);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 61, 528, 208);
+		scrollPane.setBounds(10, 61, 528, 141);
 		add(scrollPane);
-		
+
 		tableCarradas = new JTable(modelCarrada);
 		scrollPane.setViewportView(tableCarradas);
+
+		JPopupMenu popupMenu = new JPopupMenu();
+		addPopup(tableCarradas, popupMenu);
 		
-		JLabel lblRetorno = new JLabel("Retorno");
-		lblRetorno.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblRetorno.setBounds(10, 304, 216, 14);
-		add(lblRetorno);
+		JMenuItem mntmCancelar = new JMenuItem("Cancelar");
+		popupMenu.add(mntmCancelar);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 329, 528, 208);
-		add(scrollPane_1);
-		
-		tableRetornos = new JTable(modelRetorno);
-		scrollPane_1.setViewportView(tableRetornos);
-		
+		JMenuItem mntmAlterar = new JMenuItem("Alterar");
+		mntmAlterar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Carrada carrada = (Carrada) banco.buscarPorId(Carrada.class, (Integer) tableCarradas.getValueAt(
+						tableCarradas.getSelectedRow(), 0));
+				JFrmCadCarrada cadcarr = new JFrmCadCarrada();
+				cadcarr.inserirCarrada(carrada);
+				cadcarr.setVisible(true);
+			}
+		});
+		popupMenu.add(mntmAlterar);
+
 		JButton btnAdicionarCarrada = new JButton("Adicionar");
 		btnAdicionarCarrada.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
-				
-				
+
+				JFrmCadCarrada carr = new JFrmCadCarrada();
+				carr.setEquipe(equipe);
+				carr.setModal(true);
+				carr.setVisible(true);
+				atualiza();
 			}
+
 		});
 		btnAdicionarCarrada.setBounds(418, 32, 120, 23);
 		add(btnAdicionarCarrada);
-		
-		JButton btnAdicionarRetorno = new JButton("Adicionar");
-		btnAdicionarRetorno.setBounds(418, 300, 120, 23);
-		add(btnAdicionarRetorno);
 
+		JProgressBar progressBar = new JProgressBar();
+		progressBar.setBounds(10, 236, 528, 14);
+		add(progressBar);
+
+		JLabel lblCapacidadeDeVenda = new JLabel("Meta de Venda");
+		lblCapacidadeDeVenda.setBounds(10, 211, 131, 14);
+		add(lblCapacidadeDeVenda);
+
+	}
+
+	private void atualiza() {
+		modelCarrada.removeTudo();
+		Set<Carrada> lista = equipe.getCarradas();
+		for (Carrada carrada : lista) {
+			modelCarrada.addRow(carrada);
+		}
+
+	}
+
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
 	}
 }

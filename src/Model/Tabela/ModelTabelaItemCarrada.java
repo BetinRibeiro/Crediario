@@ -9,16 +9,22 @@ import javax.swing.table.AbstractTableModel;
 
 import Bin.Mercadoria.ItemCarrada;
 
-
-
 @SuppressWarnings("serial")
 public class ModelTabelaItemCarrada extends AbstractTableModel {
 
 	private List<ItemCarrada> dados;
-	private String[] colunas = { "Código", "Descrição", "Quant", "Preço", "Custo", "Total Preço", "Total Custo"};
-	
+	private String[] colunas = { "Código", "Descrição", "Quant", "Custo", "Preço", "Total Custo", "Total Preço" };
+
 	DecimalFormat df = new DecimalFormat("0.00");
-    SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy" );
+	SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy");
+
+	public List<ItemCarrada> getDados() {
+		return dados;
+	}
+
+	public void setDados(List<ItemCarrada> dados) {
+		this.dados = dados;
+	}
 
 	// você precisar que os dados também sejam imediatamente alterados no banco
 	// de dados por exemplo,
@@ -87,7 +93,7 @@ public class ModelTabelaItemCarrada extends AbstractTableModel {
 		switch (coluna) {
 
 		case 0:
-			return dados.get(linha).getId();
+			return dados.get(linha).getProduto().getId();
 		case 1:
 			return (dados.get(linha).getProduto().getDescricao());
 		case 2:
@@ -97,9 +103,9 @@ public class ModelTabelaItemCarrada extends AbstractTableModel {
 		case 4:
 			return (dados.get(linha).getPreco());
 		case 5:
-			return (dados.get(linha).getCusto()*(dados.get(linha).getQuantidade()));
+			return (dados.get(linha).getCusto() * (dados.get(linha).getQuantidade()));
 		case 6:
-			return (dados.get(linha).getPreco()*(dados.get(linha).getQuantidade()));
+			return (dados.get(linha).getPreco() * (dados.get(linha).getQuantidade()));
 
 		}
 		return null;

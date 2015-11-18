@@ -8,6 +8,10 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.toedter.calendar.JDateChooser;
+
+import Bin.Equipe.Equipe;
+import Bin.Mercadoria.Carrada;
 import Bin.Mercadoria.ItemCarrada;
 import Bin.Produto.Produto;
 import Janela.Pesquisa.JFrmPesProduto;
@@ -28,9 +32,15 @@ import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class JFrmCadCarrada extends JDialog implements ActionListener{
+import javax.swing.JMenuItem;
+import javax.swing.SwingConstants;
+
+public class JFrmCadCarrada extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtId;
@@ -43,12 +53,21 @@ public class JFrmCadCarrada extends JDialog implements ActionListener{
 	private JTable table;
 	private JTextField txtTxtfret;
 	private JTextField txtCustoTotal;
-	private ModelTabelaItemCarrada model=new ModelTabelaItemCarrada();
-	private JButton cancelButton;
-	private JButton okButton;
-	private Dao banco=new Dao();
+	private ModelTabelaItemCarrada model = new ModelTabelaItemCarrada();
+	private JButton btnCancelar;
+	private JButton btnFinalizar;
+	private Dao banco = new Dao();
 	private JButton btnBuscar;
 	private JButton btnInserir;
+	private JMenuItem mntmAlterar;
+	private JTextField textField;
+	private JTextField txtMotorista;
+	private JDateChooser dtCarrada;
+	private JTextField txtCidade;
+	private JLabel lblCidade;
+	
+	private Equipe equipe;
+	private Carrada carrada;
 
 	/**
 	 * Launch the application.
@@ -67,12 +86,15 @@ public class JFrmCadCarrada extends JDialog implements ActionListener{
 	 * Create the dialog.
 	 */
 	public JFrmCadCarrada() {
+
 		setTitle("Cadastro de Carrada");
-		setBounds(100, 100, 487, 415);
+		setBounds(100, 100, 692, 486);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
+		setAlwaysOnTop(true);
+		setLocationRelativeTo(null);
 		{
 			JLabel lblCodigo = new JLabel("C\u00F3digo");
 			lblCodigo.setBounds(10, 10, 87, 14);
@@ -149,27 +171,37 @@ public class JFrmCadCarrada extends JDialog implements ActionListener{
 			contentPanel.add(lblCusto);
 		}
 		{
-			 btnBuscar = new JButton("Buscar");
+			btnBuscar = new JButton("Buscar");
 			btnBuscar.setBounds(369, 79, 89, 23);
+			btnBuscar.addActionListener(this);
 			contentPanel.add(btnBuscar);
 		}
 		{
-			 btnInserir = new JButton("Inserir");
+			btnInserir = new JButton("Inserir");
 			btnInserir.setEnabled(false);
 			btnInserir.setBounds(307, 134, 89, 23);
+			btnInserir.addActionListener(this);
 			contentPanel.add(btnInserir);
 		}
 		{
 			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.setBounds(10, 179, 448, 154);
+			scrollPane.setBounds(10, 179, 652, 154);
 			contentPanel.add(scrollPane);
-			{
-				JPopupMenu popupMenu = new JPopupMenu();
-				addPopup(table, popupMenu);
-			}
+
 			{
 				table = new JTable(model);
 				scrollPane.setViewportView(table);
+			}
+			{
+				JPopupMenu popupMenu = new JPopupMenu();
+				addPopup(table, popupMenu);
+
+				JMenuItem mntmRemover = new JMenuItem("Remover");
+				popupMenu.add(mntmRemover);
+				{
+					mntmAlterar = new JMenuItem("Alterar");
+					popupMenu.add(mntmAlterar);
+				}
 			}
 		}
 		{
@@ -177,51 +209,92 @@ public class JFrmCadCarrada extends JDialog implements ActionListener{
 			txtIdEquipe.setBackground(new Color(255, 250, 205));
 			txtIdEquipe.setEnabled(false);
 			txtIdEquipe.setColumns(10);
-			txtIdEquipe.setBounds(371, 30, 87, 20);
+			txtIdEquipe.setBounds(572, 30, 94, 20);
 			contentPanel.add(txtIdEquipe);
+			
 		}
 		{
 			JLabel lblCdigoDaVenda = new JLabel("C\u00F3digo da Equipe");
-			lblCdigoDaVenda.setBounds(371, 10, 87, 14);
+			lblCdigoDaVenda.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblCdigoDaVenda.setBounds(547, 10, 119, 14);
 			contentPanel.add(lblCdigoDaVenda);
+		}
+		{
+			txtCustoTotal = new JTextField();
+			txtCustoTotal.setBounds(572, 78, 94, 22);
+			contentPanel.add(txtCustoTotal);
+			txtCustoTotal.setBackground(new Color(255, 250, 205));
+			txtCustoTotal.setFont(new Font("Tahoma", Font.BOLD, 13));
+			txtCustoTotal.setEnabled(false);
+			txtCustoTotal.setColumns(10);
+		}
+		{
+			JLabel lblCustoTotal = new JLabel("Custo Total");
+			lblCustoTotal.setBounds(572, 60, 94, 14);
+			contentPanel.add(lblCustoTotal);
+		}
+		{
+			JLabel lblValorDoFrete = new JLabel("Valor do Frete");
+			lblValorDoFrete.setBounds(10, 347, 105, 14);
+			contentPanel.add(lblValorDoFrete);
+		}
+		{
+			txtTxtfret = new JTextField();
+			txtTxtfret.setBounds(113, 344, 86, 20);
+			contentPanel.add(txtTxtfret);
+			txtTxtfret.setColumns(10);
+		}
+
+		JLabel lblData = new JLabel("Data");
+		lblData.setBounds(10, 375, 68, 14);
+		contentPanel.add(lblData);
+
+		dtCarrada = new JDateChooser(new java.util.Date());
+		dtCarrada.setBounds(83, 372, 116, 20);
+		contentPanel.add(dtCarrada);
+
+		JLabel lblMotorista = new JLabel("Motorista");
+		lblMotorista.setHorizontalTextPosition(SwingConstants.RIGHT);
+		lblMotorista.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblMotorista.setBounds(242, 347, 127, 14);
+		contentPanel.add(lblMotorista);
+
+		txtMotorista = new JTextField();
+		txtMotorista.setColumns(10);
+		txtMotorista.setBounds(379, 344, 283, 20);
+		contentPanel.add(txtMotorista);
+		{
+			txtCidade = new JTextField();
+			txtCidade.setColumns(10);
+			txtCidade.setBounds(379, 375, 283, 20);
+			contentPanel.add(txtCidade);
+		}
+		{
+			lblCidade = new JLabel("Cidade");
+			lblCidade.setHorizontalTextPosition(SwingConstants.RIGHT);
+			lblCidade.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblCidade.setBounds(242, 378, 127, 14);
+			contentPanel.add(lblCidade);
 		}
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JLabel lblCustoTotal = new JLabel("Custo Total");
-				buttonPane.add(lblCustoTotal);
+				btnFinalizar = new JButton("Finalizar");
+				btnFinalizar.setEnabled(false);
+				btnFinalizar.setActionCommand("Finalizar");
+				buttonPane.add(btnFinalizar);
+				getRootPane().setDefaultButton(btnFinalizar);
+				btnFinalizar.addActionListener(this);
 			}
 			{
-				txtCustoTotal = new JTextField();
-				txtCustoTotal.setBackground(new Color(255, 250, 205));
-				txtCustoTotal.setFont(new Font("Tahoma", Font.BOLD, 13));
-				txtCustoTotal.setEnabled(false);
-				buttonPane.add(txtCustoTotal);
-				txtCustoTotal.setColumns(10);
+				btnCancelar = new JButton("Cancelar");
+				btnCancelar.setActionCommand("Cancelar");
+				buttonPane.add(btnCancelar);
+				btnCancelar.addActionListener(this);
 			}
-			{
-				JLabel lblValorDoFrete = new JLabel("Valor do Frete");
-				buttonPane.add(lblValorDoFrete);
-			}
-			{
-				txtTxtfret = new JTextField();
-				buttonPane.add(txtTxtfret);
-				txtTxtfret.setColumns(10);
-			}
-			{
-				 okButton = new JButton("OK");
-				okButton.setEnabled(false);
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-			{
-				 cancelButton = new JButton("Cancel");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
+			
 		}
 	}
 
@@ -232,6 +305,7 @@ public class JFrmCadCarrada extends JDialog implements ActionListener{
 		switch (acao) {
 		case "Buscar":
 			buscar();
+			System.out.println("fim do buscar");
 			break;
 		case "Cancelar":
 			dispose();
@@ -260,10 +334,11 @@ public class JFrmCadCarrada extends JDialog implements ActionListener{
 			float valor = 0;
 			System.out.println(valor);
 			for (int i = 0; i < model.getRowCount(); i++) {
-				String a = (String) (model.getValueAt(i, 5));
+				String a = String.valueOf(table.getValueAt(i, 5));
+				System.out.println((table.getValueAt(i, 5)).getClass());
 				valor = valor + ((Float.parseFloat(a.replace(",", "."))));
 			}
-			txtCusto.setText(String.valueOf(valor));
+			txtCustoTotal.setText(String.valueOf(valor));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente");
 			dispose();
@@ -274,7 +349,7 @@ public class JFrmCadCarrada extends JDialog implements ActionListener{
 		try {
 			model.removeRow(table.getSelectedRow());
 			if (model.getRowCount() <= 0) {
-				okButton.setEnabled(false);
+				btnFinalizar.setEnabled(false);
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a carrada novamente");
@@ -284,31 +359,35 @@ public class JFrmCadCarrada extends JDialog implements ActionListener{
 
 	private void inserir() {
 		try {
-			ItemCarrada itemCarrada = (ItemCarrada) banco.buscarPorId(ItemCarrada.class, Integer.parseInt(txtItemCarradaID.getText()));
+			Produto prod = (Produto) banco.buscarPorId(Produto.class, Integer.parseInt(txtItemCarradaID.getText()));
+			System.out.println(txtItemCarradaID.getText());
+			System.out.println(prod.getDescricao());
+			ItemCarrada itemCarrada = new ItemCarrada();
+			itemCarrada.setProduto(prod);
 			itemCarrada.setCusto(Float.parseFloat(txtCusto.getText().replace(",", ".")));
 			itemCarrada.setQuantidade(Float.parseFloat(txtQuantidade.getText().replace(",", ".")));
 			itemCarrada.setPreco(Float.parseFloat(txtPreco.getText().replace(",", ".")));
-			boolean liberado = true;
+			boolean salvo = true;
 			for (int i = 0; i < model.getRowCount(); i++) {
-				if (itemCarrada.getId().equals(model.getValueAt(i, 0))) {
-					JOptionPane.showMessageDialog(contentPanel, "ItemCarrada Igual, remova o ItemCarrada inserido.");
-					liberado = false;
+				if (itemCarrada.getProduto().getId().equals(model.getValueAt(i, 0))) {
+					JOptionPane.showMessageDialog(contentPanel, "Produto Igual, remova o ItemCarrada inserido.");
+					salvo = false;
 				}
 			}
-			if (liberado) {
+			if (salvo) {
 				model.addRow(itemCarrada);
-				okButton.setEnabled(true);
+				btnFinalizar.setEnabled(true);
 			}
 			limpatxt();
 		} catch (java.lang.NumberFormatException e) {
 			JOptionPane.showMessageDialog(contentPanel, "Insira numeros validos nos campos de quantidade e valor.");
 
 		} catch (Exception e) {
-			// System.out.println(e.getMessage());
-			// System.out.println(e);
-			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a Compra");
+			System.out.println(e.getMessage());
+			System.out.println(e);
+			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a Carrada");
 			// compra novamente ");
-			dispose();
+			// dispose();
 		}
 	}
 
@@ -320,6 +399,9 @@ public class JFrmCadCarrada extends JDialog implements ActionListener{
 			txtItemCarradaDescricao.setText("");
 			txtItemCarradaID.setText("");
 			btnInserir.setEnabled(false);
+			txtCusto.setEnabled(false);
+			txtQuantidade.setEnabled(false);
+			txtPreco.setEnabled(false);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a carrada novamente ");
 			dispose();
@@ -341,6 +423,7 @@ public class JFrmCadCarrada extends JDialog implements ActionListener{
 			txtQuantidade.setEnabled(true);
 			txtPreco.setEnabled(true);
 			txtCusto.setEnabled(true);
+			System.out.println("aqui");
 		} catch (java.lang.NullPointerException e) {
 			JOptionPane.showMessageDialog(contentPanel, "Escolha um ItemCarrada para inserir");
 		} catch (Exception e) {
@@ -353,142 +436,134 @@ public class JFrmCadCarrada extends JDialog implements ActionListener{
 	private void salvar() {
 		try {
 
-			// para organizar melhor a logistica de 2 setores essa função tem
-			// que
-			// disparar duas ações a primeira no financeiro que chame-se
-			// pendencia
-			// de pagamento e a segunda no estoque que chama-se recebimento de
-			// ItemCarrada
-			List<ItemCarrada> listaCompra = new ArrayList<>();
-			List<ItemCarrada> listaItemCarradas = new ArrayList<>();
+			Equipe equipe = (Equipe) banco.buscarPorId(Equipe.class, Integer.parseInt(txtIdEquipe.getText()));
+			String cidade = txtCidade.getText();
+			float valorFrete = Float.parseFloat(txtTxtfret.getText());
+			float valorTotal = Float.parseFloat(txtCustoTotal.getText());
+			String motorista = txtMotorista.getText();
+			Date data = dtCarrada.getDate();
+			Carrada carrada = new Carrada(data, motorista, valorTotal, valorFrete, cidade, equipe);
+			
+			Set<ItemCarrada> itemcarrada = new HashSet<ItemCarrada>();
 
-			for (int i = 0; i < model.getRowCount(); i++) {
-				Integer idProd = (Integer) table.getValueAt(i, 0);
-				ItemCarrada ItemCarrada = (ItemCarrada) banco.buscarPorId(ItemCarrada.class, idProd);
-				String custostr = (String.valueOf(table.getValueAt(i, 2)));
-				float custo = Float.parseFloat(custostr.replace(",", "."));
-				String quantstr = (String.valueOf(table.getValueAt(i, 3)));
-				float quantidade = Float.parseFloat(quantstr.replace(",", "."));
+			ArrayList<ItemCarrada> array = (ArrayList<ItemCarrada>) model.getDados();
+			for (ItemCarrada itemCarrada2 : array) {
+				itemcarrada.add(itemCarrada2);
+				
+			}
+			
+			
+			carrada.setCarrada(itemcarrada);
 
-				// reajusta custo e quantidade do ItemCarrada mantido no estoque
+			boolean salvo = false;
 
-				float quantidadeVelha = ItemCarrada.getQuantidade();
-				float custoUnitarioVelho = ItemCarrada.getCusto();
-				float quantidadeEntrada = quantidade;
-				float custoUnitarioEntrada = custo;
-
-				float custoTotalVelho = quantidadeVelha * custoUnitarioVelho;
-				float custoTotalEntrada = quantidadeEntrada * custoUnitarioEntrada;
-
-				float quantidadeAtual = quantidadeEntrada + quantidadeVelha;
-				float custoTotalAtual = custoTotalEntrada + custoTotalVelho;
-
-				float custoUnitarioAtual = custoTotalAtual / quantidadeAtual;
-
-				ItemCarrada.setCusto(custoUnitarioAtual);
-				ItemCarrada.setQuantidade(quantidadeAtual);
-				listaItemCarradas.add(ItemCarrada);
-
-				System.out.println(ItemCarrada.getCusto());
+			if (txtId.getText().length() <= 0) {
+				
+				salvo = banco.salvarObjeto(carrada);
 
 			}
-			// System.out.println(listaCompra);
+			if (txtId.getText().length() > 0) {
+				carrada.setId(Integer.parseInt(txtId.getText()));
+				salvo = banco.salvarOuAtualizarObjeto(carrada);
 
-			Date data = (Date) dtCompra.getDate();
-			System.out.println("Data que inseriiii - " + data);
-			float valor = Float.parseFloat(txtValorTotal.getText());
-			Compra compra = new Compra(data, valor);
-
-			boolean liberado = false;
-			// quando cria a compra no banco retorna verdadeiro para poder
-			// atualizar estoque e custo
-			liberado = banco.salvarObjeto(compra);
-			boolean prossegue = false;
-			if (liberado) {
-				// aqui simplesmente salva todos os ItemCarradas atualizados
-				for (int i = 0; i < listaItemCarradas.size(); i++) {
-					prossegue = banco.salvarOuAtualizarObjeto(listaItemCarradas.get(i));
-					// caso não atualize algum dos ItemCarradas para tudo e deleta a
-					// compra criada no banco para posterior ajuste
-					if (!prossegue) {
-						JOptionPane.showMessageDialog(contentPanel,
-								"Erro ao atualizar estoque, ajuste manualmente o estoque.");
-						break;
-					}
-				}
-				if (liberado) {
-					for (int i = 0; i < listaCompra.size(); i++) {
-						listaCompra.get(i).setCompra(compra);
-						banco.salvarObjeto(listaCompra.get(i));
-					}
-
-					JOptionPane.showMessageDialog(contentPanel, "Compra salva no banco com sucesso!");
-					dispose();
-				}
-				if (!liberado) {
-					JOptionPane.showMessageDialog(contentPanel, "Erro Compra não foi salva no banco.");
-				}
+			}
+			for (ItemCarrada insta : array) {
+				insta.setCarrada(carrada);
+				banco.salvarObjeto(insta);
 			}
 
-		} catch (Exception e) {
-			// JOptionPane.showMessageDialog(contentPanel, "ERRO! Tente
-			// novamente");
+			if (salvo) {
+				JOptionPane.showMessageDialog(contentPanel, "Carrada salva no banco com sucesso!");
+				dispose();
+			}
+			if (!salvo) {
+				JOptionPane.showMessageDialog(contentPanel, "Erro Carrada não foi salva no banco.");
+				dispose();
+
+			}
+
+		 } catch (
+		
+		 Exception e)
+		
+		 {
+		 // JOptionPane.showMessageDialog(contentPanel, "ERRO! Tente
+		 // novamente");
+		 System.out.println(e);
+		 System.out.println(e.getMessage());
+		 }
+
+	}
+
+	public void inserirCarrada(Carrada carrada) {
+		try {
+
+			txtId.setText(String.valueOf(carrada.getId()));
+			txtCidade.setText(carrada.getCidade());
+			
+			txtIdEquipe.setText(String.valueOf(carrada.getEquipe().getId()));
+			txtMotorista.setText(carrada.getMotorista());
+			txtTxtfret.setText(String.valueOf(carrada.getValorFrete()));
+			
+			float total=0;
+			Set<ItemCarrada> lista = carrada.getCarrada();
+			for (ItemCarrada inst : lista) {
+				model.addRow(inst);
+				total=total+inst.getTotalCusto();
+			}
+			
+			txtCustoTotal.setText(String.valueOf(total));
+			btnFinalizar.setEnabled(true);
+		} catch (
+
+		Exception e)
+
+		{
+			JOptionPane.showMessageDialog(contentPanel,
+					"Erro ao resgatar os ItemCarrada na pesquisa, tente novamente ");
 			System.out.println(e);
 			System.out.println(e.getMessage());
+			dispose();
 		}
 
 	}
 
-	public void inserirCompra(Compra compra) {
-		setVisible(true);
-		try {
-
-			txtId.setText(String.valueOf(compra.getId()));
-			dtCompra.setDate(compra.getData());
-			txtValorTotal.setText(String.valueOf(compra.getValor()));
-
-			System.out.println(compra.getInstaCompra().size());
-
-			Set<ItemCompra> lista = compra.getInstaCompra();
-			System.out.println("Esta é a lista - " + lista);
-			for (ItemCompra instanciaCompra : lista) {
-				model.addRow(instanciaCompra);
-				
-			}
-
-			btnBuscar.setEnabled(false);
-			btnFinalizar.setEnabled(false);
-			btnInserir.setEnabled(false);
-			tableItemCarrada.setEnabled(false);
-			txtQuantidade.setEnabled(false);
-			txtValorItemCarrada.setEnabled(false);
-		}catch(
-
-	Exception e)
-
-	{
-		JOptionPane.showMessageDialog(contentPanel, "Erro ao resgatar os ItemCarrada na pesquisa, tente novamente ");
-		System.out.println(e);
-		System.out.println(e.getMessage());
-		dispose();
-	}
-
-
-}	private static void addPopup(Component component, final JPopupMenu popup) {
+	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				if (e.isPopupTrigger()) {
 					showMenu(e);
 				}
 			}
+
 			public void mouseReleased(MouseEvent e) {
 				if (e.isPopupTrigger()) {
 					showMenu(e);
 				}
 			}
+
 			private void showMenu(MouseEvent e) {
 				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		});
 	}
 
+	public Equipe getEquipe() {
+		return equipe;
+	}
+
+	public void setEquipe(Equipe equipe) {
+		this.equipe = equipe;
+		txtIdEquipe.setText(String.valueOf(this.equipe.getId()));
+	}
+
+	public Carrada getCarrada() {
+		return carrada;
+	}
+
+	public void setCarrada(Carrada carrada) {
+		this.carrada = carrada;
+	}
+	
+	
+}

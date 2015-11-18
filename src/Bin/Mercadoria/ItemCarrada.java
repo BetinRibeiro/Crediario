@@ -25,7 +25,7 @@ public class ItemCarrada {
 	private float custo;
 	private float quantidade;
 	private float preco;
-	@ManyToOne
+	@ManyToOne(optional = false)
     @JoinColumn(name="carrada_id")
     private Carrada carrada;
 	@ManyToOne(optional = true)
