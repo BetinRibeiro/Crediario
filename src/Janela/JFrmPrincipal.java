@@ -10,6 +10,11 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import Bin.Equipe.Equipe;
+import Janela.Pesquisa.JFrmPesEquipe;
+import Painel.Dinamico.JPnlEquipeMercadoria;
+import Painel.Dinamico.JPnlEquipePrincipal;
+import Painel.Dinamico.JPnlEquipeVendaComissao;
 import Painel.Manu.JPnlManu;
 
 import java.awt.Color;
@@ -30,7 +35,9 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private JPanel panelSetorial;
 	private Date data = new Date();
-	SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy" );
+	SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy");
+	private Equipe equipe;
+	private JPnlManu panelMenu;
 
 	/**
 	 * Launch the application.
@@ -67,11 +74,10 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 						// gelo
 						// com detalhes em preto fosco muito massa
 						// Properties props = new Properties();
-					// props.put("logoString", "");
-					// SmartLookAndFeel.setCurrentTheme(props);
+						// props.put("logoString", "");
+						// SmartLookAndFeel.setCurrentTheme(props);
 
-					UIManager
-							.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+					UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
 					JFrmPrincipal frame = new JFrmPrincipal();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -94,7 +100,7 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JPanel panelMenu = new JPnlManu();
+		panelMenu = new JPnlManu();
 		panelMenu.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panelMenu.setBounds(5, 5, 1350, 90);
 		contentPane.add(panelMenu);
@@ -105,9 +111,9 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 		contentPane.add(panelComandas);
 		panelComandas.setLayout(null);
 
-		JButton btnPreparacaoVenda = new JButton("Marcadoria da Equipe");
-		btnPreparacaoVenda.setBounds(10, 107, 250, 23);
-		panelComandas.add(btnPreparacaoVenda);
+		JButton btnMercadoriaEquipe = new JButton("Marcadoria da Equipe");
+		btnMercadoriaEquipe.setBounds(10, 107, 250, 23);
+		panelComandas.add(btnMercadoriaEquipe);
 
 		JButton btnVendas = new JButton("Venda e Comiss\u00E3o");
 		btnVendas.setBounds(10, 142, 250, 23);
@@ -126,14 +132,14 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 		panelRodape.setBounds(5, 675, 1350, 43);
 		contentPane.add(panelRodape);
 		panelRodape.setLayout(null);
-		
+
 		JLabel lblData = new JLabel(String.valueOf(dt.format(data)));
 		lblData.setBounds(5, 10, 98, 14);
 		lblData.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		lblData.setVerticalAlignment(SwingConstants.TOP);
 		lblData.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelRodape.add(lblData);
-		
+
 		JLabel lblContato = new JLabel("Rogoberto Ribeiro-(88) 9.8878-0587 / (88) 9.9786-7735");
 		lblContato.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblContato.setForeground(new Color(30, 144, 255));
@@ -144,28 +150,28 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 		panelSetorial.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panelSetorial.setBounds(280, 100, 1075, 570);
 		contentPane.add(panelSetorial);
-		
-		
+
 		panelSetorial.setLayout(null);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setBounds(0, 0, screenSize.width, screenSize.height);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-		btnPreparacaoVenda.addActionListener(this);
-		btnPreparacaoVenda.setActionCommand("AGENDAMENTO");
+		btnMercadoriaEquipe.addActionListener(this);
+		btnMercadoriaEquipe.setActionCommand("MERCADORIA");
 		btnVendas.addActionListener(this);
-		btnVendas.setActionCommand("CONTRATOS");
+		btnVendas.setActionCommand("VENDAS");
 		btnVendasFinalizadas.addActionListener(this);
 		btnVendasFinalizadas.setActionCommand("IMOVEIS");
 		btnCobrancaAndamento.addActionListener(this);
 		btnCobrancaAndamento.setActionCommand("LOCATARIOS");
-		
+
 		JButton btnCarregarEquipe = new JButton("Carregar Equipe");
 		btnCarregarEquipe.setBackground(new Color(220, 220, 220));
-		btnCarregarEquipe.setActionCommand("AGENDAMENTO");
+		btnCarregarEquipe.setActionCommand("CARREGAEQUIPE");
+		btnCarregarEquipe.addActionListener(this);
 		btnCarregarEquipe.setBounds(10, 11, 250, 23);
 		panelComandas.add(btnCarregarEquipe);
-		
+
 		JButton button = new JButton("Cobran\u00E7as e Saldo de Quita\u00E7\u00E3o");
 		button.setActionCommand("IMOVEIS");
 		button.setBounds(10, 246, 250, 23);
@@ -175,41 +181,49 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String acao = e.getActionCommand();
+		System.out.println(acao);
 
 		switch (acao) {
-		case "AGENDAMENTO":
-			//contentPane.remove(panelSetorial);
+		case "CARREGAEQUIPE":
+			JFrmPesEquipe func = new JFrmPesEquipe();
+			func.moduloEscolher();
+			func.setModal(true);
+			func.setVisible(true);
+			equipe = (Equipe) func.getObj();
+			panelMenu.getLblTituloDaEquipe().setText(equipe.getTitulo());
+			panelMenu.getLblTituloDaEquipe().setVisible(true);
+			
 			panelSetorial.removeAll();
-			//panelSetorial.add(new JPnlAgenda());
 			panelSetorial.repaint();
+			panelSetorial.add(new JPnlEquipePrincipal());
 			panelSetorial.validate();
 
 			break;
-		case "CONTRATOS":
+		case "MERCADORIA":
 			panelSetorial.removeAll();
 			panelSetorial.repaint();
-			//panelSetorial.add(new JPnlContrato());
+			panelSetorial.add(new JPnlEquipeMercadoria());
 			panelSetorial.validate();
 
 			break;
-		case "IMOVEIS":
-		panelSetorial.removeAll();
-		panelSetorial.repaint();
-		//panelSetorial.add(new JPnlImoveis());
-		panelSetorial.validate();
+		case "VENDAS":
+			panelSetorial.removeAll();
+			panelSetorial.repaint();
+			panelSetorial.add(new JPnlEquipeVendaComissao());
+			panelSetorial.validate();
 
 			break;
 		case "LOCATARIOS":
 			panelSetorial.removeAll();
 			panelSetorial.repaint();
-			//panelSetorial.add(new JPnlLocatarios());
+			// panelSetorial.add(new JPnlLocatarios());
 			panelSetorial.validate();
 
 			break;
 		case "CONTRATOJS":
 			panelSetorial.removeAll();
 			panelSetorial.repaint();
-			//panelSetorial.add(new JPnlContratos());
+			// panelSetorial.add(new JPnlContratos());
 			panelSetorial.validate();
 
 			break;

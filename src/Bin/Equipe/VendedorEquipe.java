@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 import Bin.Funcionario.Funcionario;
 @Entity
-@Table(name = "vendedor_equip")
+@Table(name = "vendedor_equipe")
 public class VendedorEquipe {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,28 +24,30 @@ public class VendedorEquipe {
     @JoinColumn(name="equipe_id")
 	private Equipe equipe;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	private Funcionario vendedor;
-	
+	@Column(name = "venda")
 	private float venda;
-
+	@Column(name = "percentual_comissao_venda")
 	private float percComissaoVenda;
-
+	@Column(name = "vale_local")
 	private float valeLocal;
-
+	@Column(name = "vale_viagem")
 	private float valeViagem;
-
+	@Column(name = "quitado")
 	private float quitado;
-
+	@Column(name = "devolvido")
 	private float devolvido;
-
+	@Column(name = "perca")
 	private float perca;
-
+	@Column(name = "quitado_parcial")
 	private float quitadoParcial;
-
+	@Column(name = "perca_parcial")
 	private float percaParcial;
-
+	@Column(name = "percentual_comissao_cobranca")
 	private float percComissaoCobrancao;
+	@Column(name = "dinheiro_entrada")
+	private float dinheiroEntrada;
 	
 	
 	public Integer getId() {

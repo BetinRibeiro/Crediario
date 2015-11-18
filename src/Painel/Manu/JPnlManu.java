@@ -2,11 +2,13 @@ package Painel.Manu;
 
 import javax.swing.JPanel;
 
+import Janela.Cadastro.JFrmCadEquipe;
 import Janela.Cadastro.JFrmCadFuncionario;
 import Janela.Cadastro.JFrmCadProduto;
 import Janela.Cadastro.JFrmCadTransporte;
 import Janela.Compra.JFrmComProduto;
 import Janela.Pesquisa.JFrmPesCompra;
+import Janela.Pesquisa.JFrmPesEquipe;
 import Janela.Pesquisa.JFrmPesFuncionario;
 import Janela.Pesquisa.JFrmPesProduto;
 import Janela.Pesquisa.JFrmPesTransporte;
@@ -17,8 +19,19 @@ import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 public class JPnlManu extends JPanel {
+
+	private JLabel lblTituloDaEquipe;
+
+	public JLabel getLblTituloDaEquipe() {
+		return lblTituloDaEquipe;
+	}
+
+	public void setLblTituloDaEquipe(JLabel lblTituloDaEquipe) {
+		this.lblTituloDaEquipe = lblTituloDaEquipe;
+	}
 
 	/**
 	 * Create the panel.
@@ -67,6 +80,15 @@ public class JPnlManu extends JPanel {
 		});
 		mnCadastro.add(mntmCadastroFuncionario);
 		
+		JMenuItem mntmCadastroEquipe = new JMenuItem("Cadastro Equipe");
+		mntmCadastroEquipe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFrmCadEquipe ceq= new JFrmCadEquipe();
+				ceq.setVisible(true);
+			}
+		});
+		mnCadastro.add(mntmCadastroEquipe);
+		
 		JMenu mnPesquisa = new JMenu("Pesquisa");
 		menuBar.add(mnPesquisa);
 		
@@ -112,6 +134,15 @@ public class JPnlManu extends JPanel {
 		});
 		mnPesquisa.add(mntmPesquisaCompra);
 		
+		JMenuItem mntmPesquisaEquipe = new JMenuItem("Pesquisa Equipe");
+		mntmPesquisaEquipe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFrmPesEquipe eui = new JFrmPesEquipe();
+				eui.setVisible(true);
+			}
+		});
+		mnPesquisa.add(mntmPesquisaEquipe);
+		
 		JMenu mnMovimentao = new JMenu("Movimenta\u00E7\u00E3o");
 		menuBar.add(mnMovimentao);
 		
@@ -125,6 +156,12 @@ public class JPnlManu extends JPanel {
 			}
 		});
 		mnMovimentao.add(mntmComprarProduto);
+		
+		lblTituloDaEquipe = new JLabel("Titulo da Equipe");
+		lblTituloDaEquipe.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTituloDaEquipe.setVisible(false);
+		lblTituloDaEquipe.setBounds(941, 65, 399, 14);
+		add(lblTituloDaEquipe);
 		
 		
 		

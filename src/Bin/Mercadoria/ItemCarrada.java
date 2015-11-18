@@ -28,7 +28,7 @@ public class ItemCarrada {
 	@ManyToOne
     @JoinColumn(name="carrada_id")
     private Carrada carrada;
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	private Produto produto;
 
 

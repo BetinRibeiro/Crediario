@@ -12,11 +12,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Bin.Funcionario.Funcionario;
-import Bin.Produto.Produto;
-import Bin.Funcionario.Funcionario;
-import Janela.Cadastro.JFrmCadFuncionario;
-import Model.Tabela.ModelTabelaFuncionario;
+import Bin.Equipe.Equipe;
+import Janela.Cadastro.JFrmCadEquipe;
+import Model.Tabela.ModelTabelaEquipe;
 import Persistence.Dao;
 
 import javax.swing.JScrollPane;
@@ -25,22 +23,22 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JTextField;
 import java.awt.Component;
 
-public class JFrmPesFuncionario extends JDialog implements ActionListener {
+public class JFrmPesEquipe extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
-	private ModelTabelaFuncionario model = new ModelTabelaFuncionario();
+	private ModelTabelaEquipe model = new ModelTabelaEquipe();
 	private JTextField txtBusca;
 	private Dao banco = new Dao();
 	private JButton btnAlterar;
-	private Funcionario funcionario;
+	private Equipe equipe;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			JFrmPesFuncionario dialog = new JFrmPesFuncionario();
+			JFrmPesEquipe dialog = new JFrmPesEquipe();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -51,9 +49,8 @@ public class JFrmPesFuncionario extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog.
 	 */
-	public JFrmPesFuncionario() {
-		funcionario= null;
-		setTitle("Pesquisa Funcionario");
+	public JFrmPesEquipe() {
+		setTitle("Pesquisa Equipe");
 		setBounds(100, 100, 557, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -106,19 +103,20 @@ public class JFrmPesFuncionario extends JDialog implements ActionListener {
 	void buscar() {
 		try {
 			model.removeTudo();
-			List<?> lista = banco.BuscaNome(Funcionario.class, txtBusca.getText(), "nome");
+			List<?> lista = banco.BuscaNome(Equipe.class, txtBusca.getText(), "titulo");
 			int tamanho=lista.size();
+			
 			if (lista.size()>=30) {
 				tamanho=30;
 			}
 			for (int i = 0; i < tamanho; i++) {
-				Funcionario classif = (Funcionario) lista.get(i);
+				Equipe classif = (Equipe) lista.get(i);
 				model.addRow(classif);
 				btnAlterar.setEnabled(true);
 			}
 		} catch (Exception e) {
 			btnAlterar.setEnabled(false);
-			JOptionPane.showMessageDialog(contentPanel, "ERRO ao buscar um Funcionario.");
+			JOptionPane.showMessageDialog(contentPanel, "ERRO ao buscar um Equipe.");
 		}
 
 	}
@@ -137,7 +135,7 @@ public class JFrmPesFuncionario extends JDialog implements ActionListener {
 			alterar();
 			break;
 		case "Escolher":
-			funcionario = (Funcionario) banco.buscarPorId(Funcionario.class,
+			equipe = (Equipe) banco.buscarPorId(Equipe.class,
 					(Integer) table.getValueAt(table.getSelectedRow(), 0));
 			setVisible(false);
 			break;
@@ -147,25 +145,23 @@ public class JFrmPesFuncionario extends JDialog implements ActionListener {
 		}
 
 	}
+	public Equipe getObj() {
 
-	private void alterar() {
-		Funcionario funcionario = (Funcionario) banco.buscarPorId(
-				Funcionario.class,
-				(Integer) table.getValueAt(
-						table.getSelectedRow(), 0));
-		JFrmCadFuncionario c = new JFrmCadFuncionario();
-		c.inserir(funcionario);
-		c.setVisible(true);
+		return equipe;
 	}
 
-	public Funcionario getObj() {
-
-		return funcionario;
-	}
 	public void moduloEscolher() {
 		this.btnAlterar.setText("Escolher");
 		this.btnAlterar.setActionCommand("Escolher");
-		
 	}
-	
+
+	private void alterar() {
+		Equipe Equipe = (Equipe) banco.buscarPorId(
+				Equipe.class,
+				(Integer) table.getValueAt(
+						table.getSelectedRow(), 0));
+		JFrmCadEquipe c = new JFrmCadEquipe();
+		c.inserirEquipe(Equipe);
+		c.setVisible(true);
+	}
 }

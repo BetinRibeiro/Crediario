@@ -15,8 +15,17 @@
 		<mapping class="Bin.Funcionario.Funcionario" />
 		<mapping class="Bin.Endereco" />
 		<mapping class="Bin.Transporte.Transporte" />
+		
+		
 		<mapping class="Bin.Compra.Compra" />
 		<mapping class="Bin.Compra.ItemCompra" />
+		
+		
+		<mapping class="Bin.Equipe.Equipe" />	
+		<mapping class="Bin.Equipe.VendedorEquipe" />
+		
+		<mapping class="Bin.Mercadoria.Carrada" />
+		<mapping class="Bin.Mercadoria.ItemCarrada" />
 		
 
 	</session-factory>
