@@ -2,6 +2,7 @@ package Janela;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Image;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
@@ -9,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+
+import org.jboss.jandex.Main;
 
 import Bin.Equipe.Equipe;
 import Janela.Pesquisa.JFrmPesEquipe;
@@ -24,11 +27,14 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.ComponentOrientation;
+import java.awt.Container;
 
 @SuppressWarnings("serial")
 public class JFrmPrincipal extends JFrame implements ActionListener {
@@ -42,7 +48,9 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 	private JButton btnMercadoriaEquipe;
 	private JButton btnVendas;
 	private JButton btnCobrancaAndamento;
-	private JButton btnVendasFinalizadas;
+	private JButton btnInformaInicial;
+	private JLabel foto;
+	private Container painelModular;
 
 	/**
 	 * Launch the application.
@@ -118,23 +126,24 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 
 		btnMercadoriaEquipe = new JButton("Marcadoria da Equipe");
 		btnMercadoriaEquipe.setEnabled(false);
-		btnMercadoriaEquipe.setBounds(10, 107, 250, 23);
+		btnMercadoriaEquipe.setBounds(10, 95, 250, 23);
 		panelComandas.add(btnMercadoriaEquipe);
 
 		btnVendas = new JButton("Venda e Comiss\u00E3o");
 		btnVendas.setEnabled(false);
-		btnVendas.setBounds(10, 142, 250, 23);
+		btnVendas.setBounds(10, 130, 250, 23);
 		panelComandas.add(btnVendas);
 
 		btnCobrancaAndamento = new JButton("Presta\u00E7\u00E3o de Contas Venda");
 		btnCobrancaAndamento.setEnabled(false);
-		btnCobrancaAndamento.setBounds(10, 177, 250, 23);
+		btnCobrancaAndamento.setBounds(10, 165, 250, 23);
 		panelComandas.add(btnCobrancaAndamento);
 
-		btnVendasFinalizadas = new JButton("Andamento da Cobran\u00E7a e Depositos");
-		btnVendasFinalizadas.setEnabled(false);
-		btnVendasFinalizadas.setBounds(10, 212, 250, 23);
-		panelComandas.add(btnVendasFinalizadas);
+		btnInformaInicial = new JButton("Informa\u00E7\u00F5es Iniciais");
+		btnInformaInicial.setEnabled(false);
+		btnInformaInicial.setBounds(10, 60, 250, 23);
+		panelComandas.add(btnInformaInicial);
+		btnInformaInicial.addActionListener(this);
 
 		JPanel panelRodape = new JPanel();
 		panelRodape.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -169,8 +178,7 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 		btnMercadoriaEquipe.setActionCommand("MERCADORIA");
 		btnVendas.addActionListener(this);
 		btnVendas.setActionCommand("VENDAS");
-		btnVendasFinalizadas.addActionListener(this);
-		btnVendasFinalizadas.setActionCommand("IMOVEIS");
+		btnInformaInicial.addActionListener(this);
 		btnCobrancaAndamento.addActionListener(this);
 		btnCobrancaAndamento.setActionCommand("LOCATARIOS");
 
@@ -184,8 +192,18 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 		JButton button = new JButton("Cobran\u00E7as e Saldo de Quita\u00E7\u00E3o");
 		button.setEnabled(false);
 		button.setActionCommand("IMOVEIS");
-		button.setBounds(10, 246, 250, 23);
+		button.setBounds(10, 200, 250, 23);
 		panelComandas.add(button);
+		
+		// imagem no lugar do painel dos modulos
+				foto = new JLabel();
+				foto.setBounds(60, 300, 150, 165);
+				ImageIcon imagem = new ImageIcon(
+						Main.class.getResource("/Imagens/selo.png"));
+				Image img = imagem.getImage().getScaledInstance(foto.getWidth(),
+						foto.getHeight(), Image.SCALE_DEFAULT);
+				foto.setIcon(new ImageIcon(img));
+				panelComandas.add(foto);
 	}
 
 	@Override
@@ -213,7 +231,7 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 				btnCobrancaAndamento.setEnabled(true);
 
 				btnVendas.setEnabled(true);
-				btnVendasFinalizadas.setEnabled(true);
+				btnInformaInicial.setEnabled(true);
 			}
 
 			break;
@@ -222,8 +240,10 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 			panelSetorial.repaint();
 			JPnlEquipeMercadoria painelEquipe = new JPnlEquipeMercadoria();
 			painelEquipe.setEquipe(equipe);
+			painelEquipe.atualiza();
 			panelSetorial.add(painelEquipe);
 			panelSetorial.validate();
+			System.out.println("Atualizou tranquilo - "+painelEquipe.atualiza());
 
 			break;
 		case "VENDAS":
@@ -240,10 +260,10 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 			panelSetorial.validate();
 
 			break;
-		case "CONTRATOJS":
+		case "Informa\u00E7\u00F5es Iniciais":
 			panelSetorial.removeAll();
 			panelSetorial.repaint();
-			// panelSetorial.add(new JPnlContratos());
+			panelSetorial.add(new JPnlEquipePrincipal());
 			panelSetorial.validate();
 
 			break;

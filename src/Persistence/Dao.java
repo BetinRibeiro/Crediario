@@ -17,8 +17,15 @@ public class Dao {
 	private Session sessao;
 	private Transaction tx;
 
-	public Dao() {
+	public Session getSessao() {
+		return sessao;
+	}
 
+	public void setSessao() {
+		sessao.close();
+	}
+
+	public Dao() {
 	}
 
 	public static Dao getInstance() {
@@ -36,7 +43,20 @@ public class Dao {
 			e.printStackTrace();
 			return null;
 		} finally {
-//			sessao.close();
+			sessao.close();
+		}
+	}
+
+	public <T> Object buscarPorIdSessaoAberta(Class<T> clazz, Integer id) {
+		try {
+			sessao = HibernateUtil.getSession().openSession();
+			Object object = sessao.get(clazz, id);
+			return object;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			sessao.close();
 		}
 	}
 
@@ -53,12 +73,10 @@ public class Dao {
 		}
 	}
 
-	public <T> Object buscarPorChaveUnica(Class<T> clazz, Long codigo,
-			String coluna) {
+	public <T> Object buscarPorChaveUnica(Class<T> clazz, Long codigo, String coluna) {
 		try {
 			sessao = HibernateUtil.getSession().openSession();
-			Object object = sessao.createCriteria(clazz)
-					.add(Restrictions.eq(coluna, codigo)).uniqueResult();
+			Object object = sessao.createCriteria(clazz).add(Restrictions.eq(coluna, codigo)).uniqueResult();
 			return object;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -113,11 +131,25 @@ public class Dao {
 		}
 	}
 
+	public <T> boolean deletarObjetoCascata(T objeto) {
+		try {
+			sessao = HibernateUtil.getSession().openSession();
+			tx = sessao.beginTransaction();
+			sessao.delete(objeto);
+			tx.commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			sessao.close();
+		}
+	}
+
 	public List<?> listarObjetos(Class<?> classe, String ordanacao) {
 		try {
 			sessao = HibernateUtil.getSession().openSession();
-			Criteria criteria = sessao.createCriteria(classe).addOrder(
-					Order.asc(ordanacao));
+			Criteria criteria = sessao.createCriteria(classe).addOrder(Order.asc(ordanacao));
 
 			return criteria.list();
 		} catch (Exception e) {
@@ -129,85 +161,65 @@ public class Dao {
 		}
 	}
 
-	public List<?> BuscaNome(Class<?> classe, String nomeBuscar, String coluna) {  
-		 try {
-		sessao = HibernateUtil.getSession().openSession();
-				
-			  if (nomeBuscar == null || nomeBuscar.trim().equals(""))  
-			       return  sessao.createCriteria(classe).addOrder(
-							Order.asc(coluna)).list();
-			   return sessao.createCriteria(classe).add(Restrictions.ilike(coluna, nomeBuscar, MatchMode.ANYWHERE)).list();
-					   //(List<?>) this.sessao.createCriteria(classe).add(Restrictions.like(coluna, "%"+nomeBuscar+"%")).list();  
-			    } catch (Exception e) {
-			    	 System.out.println(e);
-			    	 return null;
-			}finally{
-				sessao.close();
-			}
-	}
-	
-	public List<?> BuscaInteiro(Class<?> classe, String nomeBuscar, String coluna) {  
-		 try {
-		sessao = HibernateUtil.getSession().openSession();
-				
-			  if (nomeBuscar == null || nomeBuscar.equals(0))  
-			       return  sessao.createCriteria(classe).addOrder(
-							Order.asc(coluna)).list();
-			   return sessao.createCriteria(classe).add(Restrictions.ilike(coluna, nomeBuscar, MatchMode.ANYWHERE)).list();
-					   //(List<?>) this.sessao.createCriteria(classe).add(Restrictions.like(coluna, "%"+nomeBuscar+"%")).list();  
-			    } catch (Exception e) {
-			    	 System.out.println(e);
-			    	 return null;
-			}finally{
-				sessao.close();
-			}
+	public List<?> BuscaNome(Class<?> classe, String nomeBuscar, String coluna) {
+		try {
+			sessao = HibernateUtil.getSession().openSession();
+
+			if (nomeBuscar == null || nomeBuscar.trim().equals(""))
+				return sessao.createCriteria(classe).addOrder(Order.desc("id")).list();
+			return sessao.createCriteria(classe).add(Restrictions.ilike(coluna, nomeBuscar, MatchMode.ANYWHERE)).list();
+			// (List<?>)
+			// this.sessao.createCriteria(classe).add(Restrictions.like(coluna,
+			// "%"+nomeBuscar+"%")).list();
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		} finally {
+			sessao.close();
+		}
 	}
 
-	public List<?> BuscaNomeHabilitado(Class<?>  classe,
-			String nomeBuscar, String coluna, boolean b) {
-		 try {
-				sessao = HibernateUtil.getSession().openSession();
-						
-					  if (nomeBuscar == null || nomeBuscar.trim().equals(""))  
-					       return  sessao.createCriteria(classe).addOrder(
-									Order.asc(coluna)).list();
-					   return sessao.createCriteria(classe).add(Restrictions.ilike(coluna, nomeBuscar, MatchMode.ANYWHERE)).list();
-							   //(List<?>) this.sessao.createCriteria(classe).add(Restrictions.like(coluna, "%"+nomeBuscar+"%")).list();  
-					    } catch (Exception e) {
-					    	 System.out.println(e);
-					    	 return null;
-					}finally{
-						sessao.close();
-					}
+	public List<?> BuscaInteiro(Class<?> classe, String nomeBuscar, String coluna) {
+		try {
+			sessao = HibernateUtil.getSession().openSession();
+
+			if (nomeBuscar == null || nomeBuscar.equals(0))
+				return sessao.createCriteria(classe).addOrder(Order.asc(coluna)).list();
+			return sessao.createCriteria(classe).add(Restrictions.ilike(coluna, nomeBuscar, MatchMode.ANYWHERE)).list();
+			// (List<?>)
+			// this.sessao.createCriteria(classe).add(Restrictions.like(coluna,
+			// "%"+nomeBuscar+"%")).list();
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		} finally {
+			sessao.close();
+		}
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public List<?> buscarInstanciaCompra(Class<?> clazz, String codigo,
-			String coluna) {
+	public List<?> BuscaNomeHabilitado(Class<?> classe, String nomeBuscar, String coluna, boolean b) {
+		try {
+			sessao = HibernateUtil.getSession().openSession();
+
+			if (nomeBuscar == null || nomeBuscar.trim().equals(""))
+				return sessao.createCriteria(classe).addOrder(Order.asc(coluna)).list();
+			return sessao.createCriteria(classe).add(Restrictions.ilike(coluna, nomeBuscar, MatchMode.ANYWHERE)).list();
+			// (List<?>)
+			// this.sessao.createCriteria(classe).add(Restrictions.like(coluna,
+			// "%"+nomeBuscar+"%")).list();
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		} finally {
+			sessao.close();
+		}
+	}
+
+	public List<?> buscarInstanciaCompra(Class<?> clazz, String codigo, String coluna) {
 		Integer cod = Integer.parseInt(codigo);
 		try {
 			sessao = HibernateUtil.getSession().openSession();
-			return sessao.createCriteria(clazz)
-					.add(Restrictions.eq(coluna, cod)).list();
+			return sessao.createCriteria(clazz).add(Restrictions.eq(coluna, cod)).list();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -215,27 +227,5 @@ public class Dao {
 			sessao.close();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

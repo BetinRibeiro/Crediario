@@ -1,6 +1,7 @@
 package Bin.Mercadoria;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,10 +26,10 @@ public class ItemCarrada {
 	private float custo;
 	private float quantidade;
 	private float preco;
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true,cascade={CascadeType.ALL,CascadeType.REMOVE}  )
     @JoinColumn(name="carrada_id")
     private Carrada carrada;
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = true,cascade={CascadeType.ALL,CascadeType.REMOVE}  )
 	private Produto produto;
 
 

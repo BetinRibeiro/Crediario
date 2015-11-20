@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -67,7 +70,7 @@ public class JFrmPesEquipe extends JDialog implements ActionListener {
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(table);
-		
+
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -104,16 +107,24 @@ public class JFrmPesEquipe extends JDialog implements ActionListener {
 		try {
 			model.removeTudo();
 			List<?> lista = banco.BuscaNome(Equipe.class, txtBusca.getText(), "titulo");
-			int tamanho=lista.size();
 			
-			if (lista.size()>=30) {
-				tamanho=30;
+			Set<Equipe> equip= new HashSet<Equipe>((Collection<? extends Equipe>) lista);
+			int tamanho = lista.size();
+			System.out.println(tamanho);
+			
+			for (Equipe equipe : equip) {
+				model.addRow(equipe);
 			}
-			for (int i = 0; i < tamanho; i++) {
-				Equipe classif = (Equipe) lista.get(i);
-				model.addRow(classif);
-				btnAlterar.setEnabled(true);
-			}
+
+//			if (lista.size() >= 30) {
+//				tamanho = 30;
+//			}
+//			for (int i = 0; i < tamanho; i++) {
+//				Equipe classif = (Equipe) lista.get(i);
+//				System.out.println(classif.getTitulo());
+//				model.addRow(classif);
+//				btnAlterar.setEnabled(true);
+//			}
 		} catch (Exception e) {
 			btnAlterar.setEnabled(false);
 			JOptionPane.showMessageDialog(contentPanel, "ERRO ao buscar um Equipe.");
@@ -135,8 +146,7 @@ public class JFrmPesEquipe extends JDialog implements ActionListener {
 			alterar();
 			break;
 		case "Escolher":
-			equipe = (Equipe) banco.buscarPorId(Equipe.class,
-					(Integer) table.getValueAt(table.getSelectedRow(), 0));
+			equipe = (Equipe) banco.buscarPorId(Equipe.class, (Integer) table.getValueAt(table.getSelectedRow(), 0));
 			setVisible(false);
 			break;
 
@@ -145,6 +155,7 @@ public class JFrmPesEquipe extends JDialog implements ActionListener {
 		}
 
 	}
+
 	public Equipe getObj() {
 
 		return equipe;
@@ -156,10 +167,7 @@ public class JFrmPesEquipe extends JDialog implements ActionListener {
 	}
 
 	private void alterar() {
-		Equipe Equipe = (Equipe) banco.buscarPorId(
-				Equipe.class,
-				(Integer) table.getValueAt(
-						table.getSelectedRow(), 0));
+		Equipe Equipe = (Equipe) banco.buscarPorId(Equipe.class, (Integer) table.getValueAt(table.getSelectedRow(), 0));
 		JFrmCadEquipe c = new JFrmCadEquipe();
 		c.inserirEquipe(Equipe);
 		c.setVisible(true);

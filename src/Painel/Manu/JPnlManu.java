@@ -20,6 +20,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import java.awt.Font;
 
 public class JPnlManu extends JPanel {
 
@@ -158,9 +159,10 @@ public class JPnlManu extends JPanel {
 		mnMovimentao.add(mntmComprarProduto);
 		
 		lblTituloDaEquipe = new JLabel("Titulo da Equipe");
+		lblTituloDaEquipe.setFont(new Font("Verdana", Font.BOLD, 22));
 		lblTituloDaEquipe.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTituloDaEquipe.setVisible(false);
-		lblTituloDaEquipe.setBounds(941, 65, 399, 14);
+		lblTituloDaEquipe.setBounds(565, 33, 775, 46);
 		add(lblTituloDaEquipe);
 		
 		

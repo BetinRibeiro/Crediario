@@ -296,7 +296,7 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 				}
 			}
 			if (liberado) {
-				ItemCompra in = new ItemCompra(produto, produto.getCusto(), produto.getCusto());
+				ItemCompra in = new ItemCompra(produto, produto.getCusto(), produto.getQuantidade());
 				model.addRow(in);
 				btnFinalizar.setEnabled(true);
 			}

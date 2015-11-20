@@ -39,7 +39,7 @@ public class Equipe {
 	@Column(name = "vale_chefe")
 	private float valeChefe;
 
-	@OneToMany(mappedBy = "equipe", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "equipe", fetch = FetchType.EAGER)
 	private Set<Carrada> carrada;
 
 	// @ManyToOne(optional = true)
