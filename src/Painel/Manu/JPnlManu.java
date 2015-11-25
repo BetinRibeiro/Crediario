@@ -21,6 +21,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import javax.swing.JToolBar;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
 
 public class JPnlManu extends JPanel {
 
@@ -158,12 +161,69 @@ public class JPnlManu extends JPanel {
 		});
 		mnMovimentao.add(mntmComprarProduto);
 		
+		JToolBar toolBar = new JToolBar();
+		toolBar.setEnabled(false);
+		toolBar.setBounds(1, 20, 1348, 68);
+		add(toolBar);
+		
+		JButton button_2 = new JButton("");
+		button_2.setIcon(new ImageIcon("C:\\Users\\rogoberto\\Downloads\\PNG\\Others\\output\\New Database.png"));
+		toolBar.add(button_2);
+		
+		JButton btnNewButton_2 = new JButton("");
+		btnNewButton_2.setIcon(new ImageIcon("C:\\Users\\rogoberto\\Downloads\\PNG\\output\\User.png"));
+		toolBar.add(btnNewButton_2);
+		
+		JButton btnNewButton = new JButton("");
+		btnNewButton.setIcon(new ImageIcon("C:\\Users\\rogoberto\\Downloads\\PNG\\output\\Camion.png"));
+		toolBar.add(btnNewButton);
+		
+		JButton button_3 = new JButton("");
+		button_3.setIcon(new ImageIcon("C:\\Users\\rogoberto\\Downloads\\PNG\\Others\\output\\Download Database.png"));
+		toolBar.add(button_3);
+		
+		JButton button_4 = new JButton("");
+		button_4.setIcon(new ImageIcon("C:\\Users\\rogoberto\\Downloads\\PNG\\Others\\output\\Users.png"));
+		toolBar.add(button_4);
+		
+		JButton button_5 = new JButton("");
+		button_5.setIcon(new ImageIcon("C:\\Users\\rogoberto\\Downloads\\PNG\\output\\hapag4.png"));
+		toolBar.add(button_5);
+		
+		JButton btnNewButton_1 = new JButton("");
+		btnNewButton_1.setIcon(new ImageIcon("C:\\Users\\rogoberto\\Downloads\\PNG\\output\\hapag2.png"));
+		toolBar.add(btnNewButton_1);
+		
+		JButton btnNewButton_3 = new JButton("");
+		btnNewButton_3.setIcon(new ImageIcon("C:\\Users\\rogoberto\\Downloads\\PNG\\output\\Alpha Dista (Grey) Icon 35.png"));
+		toolBar.add(btnNewButton_3);
+		
+		JButton button_7 = new JButton("");
+		button_7.setIcon(new ImageIcon("C:\\Users\\rogoberto\\Downloads\\PNG\\output\\Alpha Dista (Grey) Icon 42.png"));
+		toolBar.add(button_7);
+		
+		JButton button_6 = new JButton("");
+		button_6.setIcon(new ImageIcon("C:\\Users\\rogoberto\\Downloads\\PNG\\output\\Alpha Dista (Grey) Icon 36.png"));
+		toolBar.add(button_6);
+		
+		JButton button = new JButton("");
+		button.setIcon(new ImageIcon("C:\\Users\\rogoberto\\Downloads\\PNG\\output\\HP-Folder.png"));
+		toolBar.add(button);
+		
+		JButton button_1 = new JButton("");
+		button_1.setIcon(new ImageIcon("C:\\Users\\rogoberto\\Downloads\\PNG\\output\\HP-Network.png"));
+		toolBar.add(button_1);
+		
+		JButton btnNewButton_4 = new JButton("");
+		btnNewButton_4.setIcon(new ImageIcon("C:\\Users\\rogoberto\\Downloads\\PNG\\output\\HP-Documents-Folder.png"));
+		toolBar.add(btnNewButton_4);
+		
 		lblTituloDaEquipe = new JLabel("Titulo da Equipe");
+		lblTituloDaEquipe.setHorizontalTextPosition(SwingConstants.LEFT);
+		lblTituloDaEquipe.setVerticalAlignment(SwingConstants.BOTTOM);
+		toolBar.add(lblTituloDaEquipe);
 		lblTituloDaEquipe.setFont(new Font("Verdana", Font.BOLD, 22));
-		lblTituloDaEquipe.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTituloDaEquipe.setVisible(false);
-		lblTituloDaEquipe.setBounds(565, 33, 775, 46);
-		add(lblTituloDaEquipe);
 		
 		
 		

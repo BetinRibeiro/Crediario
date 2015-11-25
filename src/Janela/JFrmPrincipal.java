@@ -15,26 +15,26 @@ import org.jboss.jandex.Main;
 
 import Bin.Equipe.Equipe;
 import Janela.Pesquisa.JFrmPesEquipe;
-import Painel.Dinamico.JPnlEquipeMercadoria;
+import Painel.Dinamico.JPnlEquipeCobrancaComissao;
+import Painel.Dinamico.JPnlEquipeDepositos;
+import Painel.Dinamico.JPnlEquipeMercadoriaRetorno;
+import Painel.Dinamico.JPnlEquipePrestacaoVenda;
 import Painel.Dinamico.JPnlEquipePrincipal;
 import Painel.Dinamico.JPnlEquipeVendaComissao;
 import Painel.Manu.JPnlManu;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.ComponentOrientation;
-import java.awt.Container;
+import javax.swing.JScrollPane;
 
 @SuppressWarnings("serial")
 public class JFrmPrincipal extends JFrame implements ActionListener {
@@ -50,7 +50,9 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 	private JButton btnCobrancaAndamento;
 	private JButton btnInformaInicial;
 	private JLabel foto;
-	private Container painelModular;
+	private JButton btnSaldoQuitacao;
+	private JButton btnDepositos;
+	private JButton button_1;
 
 	/**
 	 * Launch the application.
@@ -90,7 +92,7 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 						// props.put("logoString", "");
 						// SmartLookAndFeel.setCurrentTheme(props);
 
-					UIManager.setLookAndFeel("com.jtattoo.plaf.texture.TextureLookAndFeel");
+					UIManager.setLookAndFeel("com.jtattoo.plaf.mint.MintLookAndFeel");
 					JFrmPrincipal frame = new JFrmPrincipal();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -126,22 +128,22 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 
 		btnMercadoriaEquipe = new JButton("Marcadoria da Equipe");
 		btnMercadoriaEquipe.setEnabled(false);
-		btnMercadoriaEquipe.setBounds(10, 95, 250, 23);
+		btnMercadoriaEquipe.setBounds(10, 70, 250, 23);
 		panelComandas.add(btnMercadoriaEquipe);
 
 		btnVendas = new JButton("Venda e Comiss\u00E3o");
 		btnVendas.setEnabled(false);
-		btnVendas.setBounds(10, 130, 250, 23);
+		btnVendas.setBounds(10, 100, 250, 23);
 		panelComandas.add(btnVendas);
 
 		btnCobrancaAndamento = new JButton("Presta\u00E7\u00E3o de Contas Venda");
 		btnCobrancaAndamento.setEnabled(false);
-		btnCobrancaAndamento.setBounds(10, 165, 250, 23);
+		btnCobrancaAndamento.setBounds(10, 130, 250, 23);
 		panelComandas.add(btnCobrancaAndamento);
 
 		btnInformaInicial = new JButton("Informa\u00E7\u00F5es Iniciais");
 		btnInformaInicial.setEnabled(false);
-		btnInformaInicial.setBounds(10, 60, 250, 23);
+		btnInformaInicial.setBounds(10, 40, 250, 23);
 		panelComandas.add(btnInformaInicial);
 		btnInformaInicial.addActionListener(this);
 
@@ -180,30 +182,43 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 		btnVendas.setActionCommand("VENDAS");
 		btnInformaInicial.addActionListener(this);
 		btnCobrancaAndamento.addActionListener(this);
-		btnCobrancaAndamento.setActionCommand("LOCATARIOS");
+		btnCobrancaAndamento.setActionCommand("PREST_VEND");
 
 		JButton btnCarregarEquipe = new JButton("Carregar Equipe");
 		btnCarregarEquipe.setBackground(new Color(220, 220, 220));
 		btnCarregarEquipe.setActionCommand("CARREGAEQUIPE");
 		btnCarregarEquipe.addActionListener(this);
-		btnCarregarEquipe.setBounds(10, 11, 250, 23);
+		btnCarregarEquipe.setBounds(10, 10, 250, 23);
 		panelComandas.add(btnCarregarEquipe);
 
-		JButton button = new JButton("Cobran\u00E7as e Saldo de Quita\u00E7\u00E3o");
-		button.setEnabled(false);
-		button.setActionCommand("IMOVEIS");
-		button.setBounds(10, 200, 250, 23);
-		panelComandas.add(button);
-		
+		btnSaldoQuitacao = new JButton("Cobran\u00E7as e Saldo de Quita\u00E7\u00E3o");
+		btnSaldoQuitacao.setEnabled(false);
+		btnSaldoQuitacao.addActionListener(this);
+		btnSaldoQuitacao.setActionCommand("QUITACAO");
+		btnSaldoQuitacao.setBounds(10, 190, 250, 23);
+		panelComandas.add(btnSaldoQuitacao);
+
 		// imagem no lugar do painel dos modulos
-				foto = new JLabel();
-				foto.setBounds(60, 300, 150, 165);
-				ImageIcon imagem = new ImageIcon(
-						Main.class.getResource("/Imagens/selo.png"));
-				Image img = imagem.getImage().getScaledInstance(foto.getWidth(),
-						foto.getHeight(), Image.SCALE_DEFAULT);
-				foto.setIcon(new ImageIcon(img));
-				panelComandas.add(foto);
+		foto = new JLabel();
+		foto.setBounds(60, 394, 150, 165);
+		ImageIcon imagem = new ImageIcon(Main.class.getResource("/Imagens/selo.png"));
+		Image img = imagem.getImage().getScaledInstance(foto.getWidth(), foto.getHeight(), Image.SCALE_DEFAULT);
+		foto.setIcon(new ImageIcon(img));
+		panelComandas.add(foto);
+		
+		btnDepositos = new JButton("Depositos da Cobran\u00E7a");
+		btnDepositos.setEnabled(false);
+		btnDepositos.addActionListener(this);
+		btnDepositos.setActionCommand("DEPOSI");
+		btnDepositos.setBounds(10, 160, 250, 23);
+		panelComandas.add(btnDepositos);
+		
+		button_1 = new JButton("Cobran\u00E7as e Saldo de Quita\u00E7\u00E3o");
+		button_1.setEnabled(false);
+		button_1.setActionCommand("QUITACAO");
+		button_1.setBounds(10, 220, 250, 23);
+		panelComandas.add(button_1);
+
 	}
 
 	@Override
@@ -229,21 +244,22 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 			if (equipe != null) {
 				btnMercadoriaEquipe.setEnabled(true);
 				btnCobrancaAndamento.setEnabled(true);
-
+				btnSaldoQuitacao.setEnabled(true);
 				btnVendas.setEnabled(true);
 				btnInformaInicial.setEnabled(true);
+				btnDepositos.setEnabled(true);
 			}
 
 			break;
 		case "MERCADORIA":
 			panelSetorial.removeAll();
 			panelSetorial.repaint();
-			JPnlEquipeMercadoria painelEquipe = new JPnlEquipeMercadoria();
+			JPnlEquipeMercadoriaRetorno painelEquipe = new JPnlEquipeMercadoriaRetorno();
 			painelEquipe.setEquipe(equipe);
 			painelEquipe.atualiza();
 			panelSetorial.add(painelEquipe);
 			panelSetorial.validate();
-			System.out.println("Atualizou tranquilo - "+painelEquipe.atualiza());
+			System.out.println("Atualizou tranquilo - " + painelEquipe.atualiza());
 
 			break;
 		case "VENDAS":
@@ -253,10 +269,10 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 			panelSetorial.validate();
 
 			break;
-		case "LOCATARIOS":
+		case "PREST_VEND":
 			panelSetorial.removeAll();
 			panelSetorial.repaint();
-			// panelSetorial.add(new JPnlLocatarios());
+			panelSetorial.add(new JPnlEquipePrestacaoVenda());
 			panelSetorial.validate();
 
 			break;
@@ -264,6 +280,20 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 			panelSetorial.removeAll();
 			panelSetorial.repaint();
 			panelSetorial.add(new JPnlEquipePrincipal());
+			panelSetorial.validate();
+
+			break;
+		case "QUITACAO":
+			panelSetorial.removeAll();
+			panelSetorial.repaint();
+			panelSetorial.add(new JPnlEquipeCobrancaComissao());
+			panelSetorial.validate();
+
+			break;
+		case "DEPOSI":
+			panelSetorial.removeAll();
+			panelSetorial.repaint();
+			panelSetorial.add(new JPnlEquipeDepositos());
 			panelSetorial.validate();
 
 			break;
