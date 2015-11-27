@@ -11,22 +11,48 @@
 		<property name="hibernate.hbm2ddl.auto">update</property>
 
 		<!-- Declaração do mapeamento da classe pessoa e classes auxiliares -->
-		<mapping class="Bin.Produto.Produto" />
-		<mapping class="Bin.Funcionario.Funcionario" />
 		<mapping class="Bin.Endereco" />
-		<mapping class="Bin.Transporte.Transporte" />
-		
-		
+		<mapping class="Bin.Despesa" />
+
 		<mapping class="Bin.Compra.Compra" />
 		<mapping class="Bin.Compra.ItemCompra" />
 		
-		
-		<mapping class="Bin.Equipe.Equipe" />	
+		<mapping class="Bin.Equipe.Cobranca" />
+		<mapping class="Bin.Equipe.Deposito" />
+		<mapping class="Bin.Equipe.Equipe" />
+		<mapping class="Bin.Equipe.Venda" />
 		<mapping class="Bin.Equipe.VendedorEquipe" />
+
+		<mapping class="Bin.Funcionario.Funcionario" />
+		<mapping class="Bin.Funcionario.ChefeEquipe" />
+		<mapping class="Bin.Funcionario.Cobrador" />
+		
+				<mapping class="Bin.Mercadoria.Carrada" />
+		<mapping class="Bin.Mercadoria.ItemCarrada" />
+		
+		<mapping class="Bin.Produto.Produto" />
+		
+		<mapping class="Bin.Retorno.ItemRetorno" />
+		<mapping class="Bin.Retorno.Retorno" />
+		
+		<mapping class="Bin.Transporte.Transporte" />
+		<mapping class="Bin.Transporte.TransporteViagem" />
+
+
+
+
+
+
+		
+		
+		
+		
 		
 		<mapping class="Bin.Mercadoria.Carrada" />
 		<mapping class="Bin.Mercadoria.ItemCarrada" />
-		
+		<mapping class="Bin.Retorno.ItemRetorno" />
+		<mapping class="Bin.Retorno.Retorno" />
+
 
 	</session-factory>
 </hibernate-configuration>

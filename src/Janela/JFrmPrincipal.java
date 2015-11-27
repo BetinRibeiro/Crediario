@@ -18,6 +18,7 @@ import Janela.Pesquisa.JFrmPesEquipe;
 import Painel.Dinamico.JPnlEquipeCobrancaComissao;
 import Painel.Dinamico.JPnlEquipeDepositos;
 import Painel.Dinamico.JPnlEquipeMercadoriaRetorno;
+import Painel.Dinamico.JPnlEquipePrestacaoCobranca;
 import Painel.Dinamico.JPnlEquipePrestacaoVenda;
 import Painel.Dinamico.JPnlEquipePrincipal;
 import Painel.Dinamico.JPnlEquipeVendaComissao;
@@ -34,7 +35,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.ComponentOrientation;
-import javax.swing.JScrollPane;
 
 @SuppressWarnings("serial")
 public class JFrmPrincipal extends JFrame implements ActionListener {
@@ -53,6 +53,7 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 	private JButton btnSaldoQuitacao;
 	private JButton btnDepositos;
 	private JButton button_1;
+	private JButton btnPrestaoDeContas;
 
 	/**
 	 * Launch the application.
@@ -218,6 +219,13 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 		button_1.setActionCommand("QUITACAO");
 		button_1.setBounds(10, 220, 250, 23);
 		panelComandas.add(button_1);
+		
+		btnPrestaoDeContas = new JButton("Presta\u00E7\u00E3o de contas Cobran\u00E7a");
+		btnPrestaoDeContas.setEnabled(false);
+		btnPrestaoDeContas.addActionListener(this);
+		btnPrestaoDeContas.setActionCommand("PRES_COB");
+		btnPrestaoDeContas.setBounds(10, 254, 250, 23);
+		panelComandas.add(btnPrestaoDeContas);
 
 	}
 
@@ -248,18 +256,16 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 				btnVendas.setEnabled(true);
 				btnInformaInicial.setEnabled(true);
 				btnDepositos.setEnabled(true);
+				btnPrestaoDeContas.setEnabled(true);
 			}
 
 			break;
 		case "MERCADORIA":
 			panelSetorial.removeAll();
 			panelSetorial.repaint();
-			JPnlEquipeMercadoriaRetorno painelEquipe = new JPnlEquipeMercadoriaRetorno();
-			painelEquipe.setEquipe(equipe);
-			painelEquipe.atualiza();
+			JPnlEquipeMercadoriaRetorno painelEquipe = new JPnlEquipeMercadoriaRetorno(equipe);
 			panelSetorial.add(painelEquipe);
 			panelSetorial.validate();
-			System.out.println("Atualizou tranquilo - " + painelEquipe.atualiza());
 
 			break;
 		case "VENDAS":
@@ -294,6 +300,13 @@ public class JFrmPrincipal extends JFrame implements ActionListener {
 			panelSetorial.removeAll();
 			panelSetorial.repaint();
 			panelSetorial.add(new JPnlEquipeDepositos());
+			panelSetorial.validate();
+
+			break; 
+		case "PRES_COB":
+			panelSetorial.removeAll();
+			panelSetorial.repaint();
+			panelSetorial.add(new JPnlEquipePrestacaoCobranca());
 			panelSetorial.validate();
 
 			break;

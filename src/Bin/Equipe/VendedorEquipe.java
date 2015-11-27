@@ -48,6 +48,8 @@ public class VendedorEquipe {
 	private float percComissaoCobrancao;
 	@Column(name = "dinheiro_entrada")
 	private float dinheiroEntrada;
+	@Column(name = "quant_ficha")
+	private Integer quantFicha;
 	
 	
 	public Integer getId() {

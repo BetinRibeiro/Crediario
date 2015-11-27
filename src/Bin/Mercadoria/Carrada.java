@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,9 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-
-import Bin.Compra.ItemCompra;
 import Bin.Equipe.Equipe;
 
 @Entity
@@ -34,18 +30,18 @@ public class Carrada {
 	private String motorista;
 	@Column(name = "valor_total")
 	private float valorTotal;
+	private float custo;
 	@Column(name = "valor_frete")
 	private float valorFrete;
 	private String cidade;
 
 	@ManyToOne
 	@JoinColumn(name = "equipe_id")
-
 	private Equipe equipe;
 	@OneToMany(mappedBy = "carrada", fetch = FetchType.EAGER)
 	//, cascade = { CascadeType.ALL, CascadeType.REMOVE }
 	//@Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
-	private Set<ItemCarrada> itemCarrada;
+	private Set<ItemCarrada> carrada;
 
 	public Equipe getEquipe() {
 		return equipe;
@@ -56,38 +52,19 @@ public class Carrada {
 	}
 
 	public Set<ItemCarrada> getItemCarrada() {
-		return itemCarrada;
+		return carrada;
 	}
 
-	public void setItemCarrada(Set<ItemCarrada> itemCarrada) {
-		this.itemCarrada = itemCarrada;
+	public void setItemCarrada(Set<ItemCarrada> carrada) {
+		this.carrada = carrada;
 	}
 
-	public Carrada(Date data, String motorista, float valorTotal, float valorFrete, String cidade, Equipe equipe) {
-		super();
-		this.data = data;
-		this.motorista = motorista;
-		this.valorTotal = valorTotal;
-		this.valorFrete = valorFrete;
-		this.cidade = cidade;
-		this.equipe = equipe;
-	}
+	
 
 	public Carrada() {
 		super();
 	}
 
-	public Carrada(Date data, String motorista, float valorTotal, float valorFrete, String cidade, Equipe equipe,
-			Set<ItemCarrada> itemCarrada) {
-		super();
-		this.data = data;
-		this.motorista = motorista;
-		this.valorTotal = valorTotal;
-		this.valorFrete = valorFrete;
-		this.cidade = cidade;
-		this.equipe = equipe;
-		this.itemCarrada = itemCarrada;
-	}
 
 	public Integer getId() {
 		return id;
@@ -138,13 +115,35 @@ public class Carrada {
 	}
 
 	public Set<ItemCarrada> getCarrada() {
-		System.out.println(itemCarrada);
-		return itemCarrada;
+		System.out.println(carrada);
+		return carrada;
 	}
 
 	public void setCarrada(Set<ItemCarrada> itemcarrada) {
-		this.itemCarrada = null;
-		this.itemCarrada = itemcarrada;
+		this.carrada = null;
+		this.carrada = itemcarrada;
 	}
+
+	public float getCusto() {
+		return custo;
+	}
+
+	public void setCusto(float custo) {
+		this.custo = custo;
+	}
+
+	public Carrada(Date data, String motorista, float valorTotal, float custo, float valorFrete, String cidade,
+			Equipe equipe) {
+		super();
+		this.data = data;
+		this.motorista = motorista;
+		this.valorTotal = valorTotal;
+		this.custo = custo;
+		this.valorFrete = valorFrete;
+		this.cidade = cidade;
+		this.equipe = equipe;
+	}
+	
+	
 
 }

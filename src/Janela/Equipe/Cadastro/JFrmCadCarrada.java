@@ -10,7 +10,6 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
-import Bin.Compra.ItemCompra;
 import Bin.Equipe.Equipe;
 import Bin.Mercadoria.Carrada;
 import Bin.Mercadoria.ItemCarrada;
@@ -35,7 +34,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.swing.JMenuItem;
@@ -43,6 +41,10 @@ import javax.swing.SwingConstants;
 
 public class JFrmCadCarrada extends JDialog implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtId;
 	private JTextField txtItemCarradaID;
@@ -61,7 +63,6 @@ public class JFrmCadCarrada extends JDialog implements ActionListener {
 	private JButton btnBuscar;
 	private JButton btnInserir;
 	private JMenuItem mntmAlterar;
-	private JTextField textField;
 	private JTextField txtMotorista;
 	private JDateChooser dtCarrada;
 	private JTextField txtCidade;
@@ -281,11 +282,11 @@ public class JFrmCadCarrada extends JDialog implements ActionListener {
 			lblCidade.setBounds(242, 378, 127, 14);
 			contentPanel.add(lblCidade);
 		}
-		
+
 		JLabel lblVendaTotal = new JLabel("Custo Total");
 		lblVendaTotal.setBounds(572, 115, 94, 14);
 		contentPanel.add(lblVendaTotal);
-		
+
 		txtTotalGeral = new JTextField();
 		txtTotalGeral.setFont(new Font("Tahoma", Font.BOLD, 13));
 		txtTotalGeral.setEnabled(false);
@@ -338,11 +339,9 @@ public class JFrmCadCarrada extends JDialog implements ActionListener {
 
 		case "Remover":
 			remover();
-			valorTotal();
 			break;
 		case "Alterar":
 			alterar();
-			valorTotal();
 			break;
 		default:
 			break;
@@ -392,7 +391,8 @@ public class JFrmCadCarrada extends JDialog implements ActionListener {
 			ItemCarrada itemComp = (ItemCarrada) banco.buscarPorId(ItemCarrada.class,
 					model.removeRow(table.getSelectedRow()));
 			System.out.println(itemComp.getId() + " " + itemComp.getId());
-			banco.deletarObjeto(itemComp);
+			boolean a = banco.deletarObjeto(itemComp);
+			System.out.println(a+"Removel item");
 			if (model.getRowCount() <= 0) {
 				btnFinalizar.setEnabled(false);
 			}
@@ -482,63 +482,53 @@ public class JFrmCadCarrada extends JDialog implements ActionListener {
 	}
 
 	private void salvar() {
-		try {
+		// try {
 
-			Equipe equipe = (Equipe) banco.buscarPorId(Equipe.class, Integer.parseInt(txtIdEquipe.getText()));
-			String cidade = txtCidade.getText();
-			float valorFrete = Float.parseFloat(txtTxtfret.getText());
-			float valorTotal = Float.parseFloat(txtTotalGeral.getText());
-			String motorista = txtMotorista.getText();
-			Date data = dtCarrada.getDate();
-			Carrada carrada = new Carrada(data, motorista, valorTotal, valorFrete, cidade, equipe);
+		Equipe equipe = (Equipe) banco.buscarPorId(Equipe.class, Integer.parseInt(txtIdEquipe.getText()));
+		String cidade = txtCidade.getText();
+		float valorFrete = Float.parseFloat(txtTxtfret.getText());
+		float valorTotal = Float.parseFloat(txtTotalGeral.getText());
+		String motorista = txtMotorista.getText();
+		Date data = dtCarrada.getDate();
+		float custo = Float.parseFloat(txtCustoTotal.getText());
+		Carrada carrada = new Carrada(data, motorista, valorTotal, custo, valorFrete, cidade, equipe);
 
-			Set<ItemCarrada> itemcarrada = new HashSet<ItemCarrada>();
+		Set<ItemCarrada> itemcarrada = new HashSet<ItemCarrada>();
 
-			ArrayList<ItemCarrada> array = (ArrayList<ItemCarrada>) model.getDados();
-			for (ItemCarrada itemCarrada2 : array) {
-				itemcarrada.add(itemCarrada2);
-				System.out.println(itemCarrada2.getId());
+		ArrayList<ItemCarrada> array = (ArrayList<ItemCarrada>) model.getDados();
+		for (ItemCarrada itemCarrada2 : array) {
+			itemcarrada.add(itemCarrada2);
+			System.out.println(itemCarrada2.getId());
 
-			}
+		}
 
-			carrada.setCarrada(itemcarrada);
+		carrada.setCarrada(itemcarrada);
 
-			boolean salvo = false;
+		boolean salvo = false;
 
-			if (txtId.getText().length() <= 0) {
+		if (txtId.getText().length() <= 0) {
 
-				salvo = banco.salvarObjeto(carrada);
+			salvo = banco.salvarObjeto(carrada);
 
-			}
-			if (txtId.getText().length() > 0) {
-				carrada.setId(Integer.parseInt(txtId.getText()));
-				salvo = banco.salvarOuAtualizarObjeto(carrada);
+		}
+		if (txtId.getText().length() > 0) {
+			carrada.setId(Integer.parseInt(txtId.getText()));
+			salvo = banco.salvarOuAtualizarObjeto(carrada);
 
-			}
-			for (ItemCarrada insta : array) {
-				insta.setCarrada(carrada);
-				banco.salvarOuAtualizarObjeto(insta);
-			}
+		}
+		for (ItemCarrada insta : array) {
+			insta.setCarrada(carrada);
+			banco.salvarOuAtualizarObjeto(insta);
+		}
 
-			if (salvo) {
-				JOptionPane.showMessageDialog(contentPanel, "Carrada salva no banco com sucesso!");
-				dispose();
-			}
-			if (!salvo) {
-				JOptionPane.showMessageDialog(contentPanel, "Erro Carrada não foi salva no banco.");
-				dispose();
+		if (salvo) {
+			JOptionPane.showMessageDialog(contentPanel, "Carrada salva no banco com sucesso!");
+			dispose();
+		}
+		if (!salvo) {
+			JOptionPane.showMessageDialog(contentPanel, "Erro Carrada não foi salva no banco.");
+			dispose();
 
-			}
-
-		} catch (
-
-		Exception e)
-
-		{
-			// JOptionPane.showMessageDialog(contentPanel, "ERRO! Tente
-			// novamente");
-			System.out.println(e);
-			System.out.println(e.getMessage());
 		}
 
 	}
@@ -548,20 +538,17 @@ public class JFrmCadCarrada extends JDialog implements ActionListener {
 
 			txtId.setText(String.valueOf(carrada.getId()));
 			txtCidade.setText(carrada.getCidade());
-
+			txtTotalGeral.setText(String.valueOf(carrada.getValorTotal()));
+			txtCustoTotal.setText(String.valueOf(carrada.getCusto()));
 			txtIdEquipe.setText(String.valueOf(carrada.getEquipe().getId()));
 			txtMotorista.setText(carrada.getMotorista());
 			txtTxtfret.setText(String.valueOf(carrada.getValorFrete()));
-
-			float total = 0;
-			Set<ItemCarrada> lista = carrada.getCarrada();
-			for (ItemCarrada inst : lista) {
-				model.addRow(inst);
-				total = total + inst.getTotalCusto();
+			model.removeTudo();
+			for (ItemCarrada item : carrada.getCarrada()) {
+				model.addRow(item);
 			}
-
-			txtCustoTotal.setText(String.valueOf(total));
 			btnFinalizar.setEnabled(true);
+
 		} catch (
 
 		Exception e)
@@ -612,5 +599,10 @@ public class JFrmCadCarrada extends JDialog implements ActionListener {
 
 	public void setCarrada(Carrada carrada) {
 		this.carrada = carrada;
+	}
+
+	public void setVisualizar() {
+		contentPanel.setEnabled(false);
+		
 	}
 }

@@ -1,6 +1,5 @@
 package Bin.Equipe;
 
-import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -14,9 +13,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import Bin.Despesa;
-import Bin.Funcionario.Funcionario;
+import Bin.Funcionario.ChefeEquipe;
 import Bin.Mercadoria.Carrada;
+import Bin.Retorno.Retorno;
+import Bin.Transporte.TransporteViagem;
 
 @Entity
 @Table(name = "equipe")
@@ -29,102 +29,157 @@ public class Equipe {
 
 	@Column(name = "titulo", length = 80)
 	private String titulo;
+	
+	
+	@OneToMany(mappedBy="equipe", fetch = FetchType.EAGER)
+	private Set<TransporteViagem> traspViagem;
+	
+	@OneToMany(mappedBy="equipe", fetch = FetchType.EAGER)
+	private Set<Deposito> deposito;
+
+	@OneToMany(mappedBy="equipe", fetch = FetchType.EAGER)
+	private Set<Carrada> carrada;
+	
+	@OneToMany(mappedBy="equipe", fetch = FetchType.EAGER)
+	private Set<VendedorEquipe> vendedor;
+	
+	@OneToMany(mappedBy="equipe", fetch = FetchType.EAGER)
+	private Set<Retorno> retorno;
+	
+	//estruturas nna qual a equipe se divide
+	
+	@ManyToOne(optional = true)
+	private Venda venda;
+	
+	@ManyToOne(optional = true)
+	private Cobranca cobranca;
 
 	@ManyToOne(optional = true)
-	private Funcionario chefe;
+	private ChefeEquipe chefe;
 
-	@Column(name = "percentual_chefe")
-	private float percentualChefe;
-	
-	@Column(name = "vale_chefe")
-	private float valeChefe;
 
-	@OneToMany(mappedBy = "equipe", fetch = FetchType.EAGER)
-	private Set<Carrada> carrada;
 
-	// @ManyToOne(optional = true)
-	// private Carrada retorno;
-	// @Column(name = "data_saida")
-	// private Date dataSaida;
-	// @Column(name = "data_chegada")
-	// private Date dataChegada;
-	// @Column(name = "data_cobranca")
-	// private Date dataCobranca;
-	// @Column(name = "data_ultima")
-	// private Date ultimoDiaCobranca;
-	// @Column(name = "dias_uteis")
-	// private Integer diasUteisVenda;
-	// @Column(name = "adiantamento")
-	// private float adiantamento;
-	// @Column(name = "dinheiro_emprestado")
-	// private float dinheiroEmprestado;
-	//// private float entradaPromissoria;
-	// @Column(name = "dinheiro_devolvido")
-	// private float dinheiroDevolvido;
-	//
 
-	// @OneToMany(mappedBy = "equipe", fetch=FetchType.LAZY)
-	// private Set<VendedorEquipe> vendedorEquipe;
-	//
-	// private Set<Despesa> despesa;
-
-	public Equipe(String titulo, Funcionario chefe, float percentualChefe) {
+	public Equipe(String titulo, Set<TransporteViagem> traspViagem, Set<Deposito> deposito, Set<Carrada> carrada,
+			Set<VendedorEquipe> vendedor, Set<Retorno> retorno, Venda venda, Cobranca cobranca, ChefeEquipe chefe) {
 		super();
 		this.titulo = titulo;
+		this.traspViagem = traspViagem;
+		this.deposito = deposito;
+		this.carrada = carrada;
+		this.vendedor = vendedor;
+		this.retorno = retorno;
+		this.venda = venda;
+		this.cobranca = cobranca;
 		this.chefe = chefe;
-		this.percentualChefe = percentualChefe;
 	}
 
-	public Equipe() {
-		super();
-	}
 
 	public Integer getId() {
 		return id;
 	}
 
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 
 	public String getTitulo() {
 		return titulo;
 	}
 
+
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
 
-	public Funcionario getChefe() {
-		return chefe;
+
+	public Set<TransporteViagem> getTraspViagem() {
+		return traspViagem;
 	}
 
-	public void setChefe(Funcionario chefe) {
-		this.chefe = chefe;
+
+	public void setTraspViagem(Set<TransporteViagem> traspViagem) {
+		this.traspViagem = traspViagem;
 	}
 
-	public float getPercentualChefe() {
-		return percentualChefe;
+
+	public Set<Deposito> getDeposito() {
+		return deposito;
 	}
 
-	public void setPercentualChefe(float percentualChefe) {
-		this.percentualChefe = percentualChefe;
+
+	public void setDeposito(Set<Deposito> deposito) {
+		this.deposito = deposito;
 	}
 
-	public Set<Carrada> getCarradas() {
+
+	public Set<Carrada> getCarrada() {
 		return carrada;
 	}
 
-	public void setCarradas(Set<Carrada> carrada) {
+
+	public void setCarrada(Set<Carrada> carrada) {
 		this.carrada = carrada;
 	}
 
-	public float getValeChefe() {
-		return valeChefe;
+
+	public Set<VendedorEquipe> getVendedor() {
+		return vendedor;
 	}
 
-	public void setValeChefe(float valeChefe) {
-		this.valeChefe = valeChefe;
+
+	public void setVendedor(Set<VendedorEquipe> vendedor) {
+		this.vendedor = vendedor;
 	}
+
+
+	public Set<Retorno> getRetorno() {
+		return retorno;
+	}
+
+
+	public void setRetorno(Set<Retorno> retorno) {
+		this.retorno = retorno;
+	}
+
+
+	public Venda getVenda() {
+		return venda;
+	}
+
+
+	public void setVenda(Venda venda) {
+		this.venda = venda;
+	}
+
+
+	public Cobranca getCobranca() {
+		return cobranca;
+	}
+
+
+	public void setCobranca(Cobranca cobranca) {
+		this.cobranca = cobranca;
+	}
+
+
+	public ChefeEquipe getChefe() {
+		return chefe;
+	}
+
+
+	public void setChefe(ChefeEquipe chefe) {
+		this.chefe = chefe;
+	}
+
+
+	public Equipe() {
+		super();
+	}
+	
+	
+	
 
 }

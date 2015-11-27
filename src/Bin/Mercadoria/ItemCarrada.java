@@ -11,7 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import Bin.Compra.Compra;
 import Bin.Produto.Produto;
 
 @Entity

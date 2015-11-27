@@ -10,18 +10,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "compra")
 public class Compra {
-	// TODO tenho que retornar e verificar essa classe para melhorar essa
-	// questão de lista de insumos de compra 
-	// mantia anteriormente uma lista de item de compra
-	// mas quando começou a dar erro eu resolvi retirar e deixar mapeada
-	// simplesmente dentro da item de compra o numero da venda equivalente
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +34,7 @@ public class Compra {
 		return itemCompra;
 	}
 
-	public void setProjetos(Set<ItemCompra> InstaCompra) {
+	public void setProjetos( Set<ItemCompra> itemCompra) {
 		this.itemCompra = itemCompra;
 	}
 
@@ -52,14 +46,6 @@ public class Compra {
 		this.data = data;
 		this.valor = valor;
 	}
-
-	// public Compra(Date data, float valor, List<ItemCompra> listaCompra)
-	// {
-	// super();
-	// this.data = data;
-	// this.valor = valor;
-	// this.listaCompra = listaCompra;
-	// }
 
 	public Integer getId() {
 		return id;
@@ -85,21 +71,5 @@ public class Compra {
 		this.valor = valor;
 		// atualizaItenscomId();
 	}
-	//
-	// public List<ItemCompra> getListaCompra() {
-	//
-	// return listaCompra;
-	// }
-	//
-	// private void atualizaItenscomId() {
-	// for (int i = 0; i < listaCompra.size(); i++) {
-	// // listaCompra.get(i).setCompra(id);
-	// }
-	//
-	// }
-	//
-	// public void setListaCompra(List<ItemCompra> listaCompra) {
-	// this.listaCompra = listaCompra;
-	// }
 
 }

@@ -87,7 +87,7 @@ public class ModelTabelaEquipe extends AbstractTableModel {
 		case 0:
 			return dados.get(linha).getId();
 		case 1:
-			return dados.get(linha).getChefe().getNome()+" "+dados.get(linha).getChefe().getSobrenome();
+			return dados.get(linha).getChefe().getChefe().getNome()+" "+dados.get(linha).getChefe().getChefe().getSobrenome();
 		case 2:
 			return dados.get(linha).getTitulo();
 
