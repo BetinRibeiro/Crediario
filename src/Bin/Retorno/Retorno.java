@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,7 +20,7 @@ import Bin.Equipe.Equipe;
 
 @Entity
 @Table(name = "retorno")
-public class Retorno {
+public class Retorno implements Comparable<Retorno> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,22 +31,19 @@ public class Retorno {
 	private Date data;
 	private float custo;
 	private float valor;
-	
-	
+
 	@ManyToOne
 	@JoinColumn(name = "equipe_id")
 	private Equipe equipe;
-	
-	
-	@OneToMany(mappedBy = "retorno", fetch=FetchType.EAGER)
+
+	@OneToMany(mappedBy = "retorno", fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE })
 	private Set<ItemRetorno> itemRetorno;
-	
 
 	public Set<ItemRetorno> getInstaRetorno() {
 		return itemRetorno;
 	}
 
-	public void setProjetos( Set<ItemRetorno> itemRetorno) {
+	public void setProjetos(Set<ItemRetorno> itemRetorno) {
 		this.itemRetorno = itemRetorno;
 	}
 
@@ -57,14 +55,6 @@ public class Retorno {
 		this.data = data;
 		this.valor = valor;
 	}
-
-	// public Retorno(Date data, float valor, List<ItemRetorno> listaRetorno)
-	// {
-	// super();
-	// this.data = data;
-	// this.valor = valor;
-	// this.listaRetorno = listaRetorno;
-	// }
 
 	public Integer getId() {
 		return id;
@@ -88,24 +78,7 @@ public class Retorno {
 
 	public void setValor(float valor) {
 		this.valor = valor;
-		// atualizaItenscomId();
 	}
-	//
-	// public List<ItemRetorno> getListaRetorno() {
-	//
-	// return listaRetorno;
-	// }
-	//
-	// private void atualizaItenscomId() {
-	// for (int i = 0; i < listaRetorno.size(); i++) {
-	// // listaRetorno.get(i).setRetorno(id);
-	// }
-	//
-	// }
-	//
-	// public void setListaRetorno(List<ItemRetorno> listaRetorno) {
-	// this.listaRetorno = listaRetorno;
-	// }
 
 	public float getCusto() {
 		return custo;
@@ -113,6 +86,36 @@ public class Retorno {
 
 	public void setCusto(float custo) {
 		this.custo = custo;
+	}
+
+	public Retorno(Date data, float custo, float valor, Equipe equipe) {
+		super();
+		this.data = data;
+		this.custo = custo;
+		this.valor = valor;
+		this.equipe = equipe;
+	}
+
+	public Equipe getEquipe() {
+		return equipe;
+	}
+
+	public void setEquipe(Equipe equipe) {
+		this.equipe = equipe;
+	}
+
+	public Set<ItemRetorno> getItemRetorno() {
+		return itemRetorno;
+	}
+
+	public void setItemRetorno(Set<ItemRetorno> itemRetorno) {
+		this.itemRetorno = itemRetorno;
+	}
+
+	@Override
+	public int compareTo(Retorno o) {
+		// TODO Auto-generated method stub
+		return Integer.compare(o.getId(), getId());
 	}
 
 }

@@ -10,6 +10,10 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 
 public class JPnlDRE extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;

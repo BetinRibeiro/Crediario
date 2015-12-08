@@ -4,46 +4,27 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import Bin.Equipe.Equipe;
-import Bin.Mercadoria.Carrada;
-import Janela.Equipe.Cadastro.JFrmCadCarrada;
-import Model.Tabela.ModelTabelaCarrada;
 import Painel.Dinamico.Mercadoria.JPnlMercadoriaCarrada;
 import Painel.Dinamico.Mercadoria.JPnlMercadoriaRetorno;
-import Persistence.Dao;
 
 import java.awt.Color;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.JButton;
 import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.util.Set;
-import java.awt.event.ActionEvent;
-import javax.swing.JProgressBar;
-import javax.swing.JPopupMenu;
-import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class JPnlEquipeMercadoriaRetorno extends JPanel {
-	private ModelTabelaCarrada modelCarrada = new ModelTabelaCarrada();
-	private ModelTabelaCarrada modelRetorno = new ModelTabelaCarrada();
-	private Equipe equipe;
-
-	private Dao banco = new Dao();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 
 	/**
 	 * Create the panel.
 	 */
 	public JPnlEquipeMercadoriaRetorno(Equipe equipe) {
-		this.equipe = equipe;
+		//INSTANCIA DOIS PAINEIS DENTRO DESSA PARA DEIXAR BEM SEPARADO
+		//UM PAINEL REPONSAVEL PELAS CARRADAS OUTRO PELOS RETORNOS
 		setBorder(new LineBorder(new Color(0, 0, 0)));
 		setBounds(0, 0, 1075, 570);
 		setLayout(null);
@@ -59,9 +40,9 @@ public class JPnlEquipeMercadoriaRetorno extends JPanel {
 		panel.setBounds(10, 40, 1055, 250);
 		add(panel);
 		
-		JPanel panel_1 = new JPnlMercadoriaRetorno();
+		JPanel panel_1 = new JPnlMercadoriaRetorno(equipe);
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_1.setBounds(10, 301, 1055, 258);
+		panel_1.setBounds(10, 300, 1055, 258);
 		add(panel_1);
 
 	}

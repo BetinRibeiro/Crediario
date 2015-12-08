@@ -25,12 +25,17 @@ import java.awt.Component;
 
 public class JFrmPesTransporte extends JDialog implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	private ModelTabelaTransporte model = new ModelTabelaTransporte();
 	private JTextField txtBusca;
 	private Dao banco = new Dao();
 	private JButton btnAlterar;
+	private Transporte transporteEscolhido;
 
 	/**
 	 * Launch the application.
@@ -66,7 +71,7 @@ public class JFrmPesTransporte extends JDialog implements ActionListener {
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(table);
-		
+
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -103,9 +108,9 @@ public class JFrmPesTransporte extends JDialog implements ActionListener {
 		try {
 			model.removeTudo();
 			List<?> lista = banco.BuscaNome(Transporte.class, txtBusca.getText(), "placa");
-			int tamanho=lista.size();
-			if (lista.size()>=30) {
-				tamanho=30;
+			int tamanho = lista.size();
+			if (lista.size() >= 30) {
+				tamanho = 30;
 			}
 			for (int i = 0; i < tamanho; i++) {
 				Transporte classif = (Transporte) lista.get(i);
@@ -132,6 +137,11 @@ public class JFrmPesTransporte extends JDialog implements ActionListener {
 		case "Alterar":
 			alterar();
 			break;
+		case "Escolher":
+			transporteEscolhido = (Transporte) banco.buscarPorId(Transporte.class,
+					(Integer) table.getValueAt(table.getSelectedRow(), 0));
+			setVisible(false);
+			break;
 
 		default:
 			break;
@@ -140,12 +150,21 @@ public class JFrmPesTransporte extends JDialog implements ActionListener {
 	}
 
 	private void alterar() {
-		Transporte transporte = (Transporte) banco.buscarPorId(
-				Transporte.class,
-				(Integer) table.getValueAt(
-						table.getSelectedRow(), 0));
+		Transporte transporte = (Transporte) banco.buscarPorId(Transporte.class,
+				(Integer) table.getValueAt(table.getSelectedRow(), 0));
 		JFrmCadTransporte c = new JFrmCadTransporte();
 		c.inserir(transporte);
+		c.setModal(true);
 		c.setVisible(true);
+		buscar();
+	}
+	public Transporte getObj() {
+
+		return transporteEscolhido;
+	}
+
+	public void moduloEscolher() {
+		this.btnAlterar.setText("Escolher");
+		this.btnAlterar.setActionCommand("Escolher");
 	}
 }

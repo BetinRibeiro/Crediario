@@ -4,565 +4,1000 @@ import java.awt.Color;
 
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
-import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
 import javax.swing.SwingConstants;
 import com.toedter.calendar.JDateChooser;
+
+import Bin.Equipe.Equipe;
+import Persistence.Dao;
+
 import java.util.Date;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 
-public class JPnlEquipePrestacaoVenda extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_8;
-	private JTextField textField_12;
-	private JTextField textField_14;
-	private JTextField textField_16;
-	private JTextField textField_11;
-	private JTextField textField_13;
-	private JTextField textField_15;
-	private JTextField textField_17;
-	private JTextField textField_18;
-	private JTextField textField_19;
-	private JTextField textField_20;
-	private JTextField textField_21;
-	private JTextField textField_22;
-	private JTextField textField_23;
-	private JTextField textField_24;
-	private JTextField textField_25;
-	private JTextField textField_26;
-	private JTextField textField_27;
-	private JTextField textField_28;
-	private JTextField textField_29;
+public class JPnlEquipePrestacaoVenda extends JPanel implements ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JTextField txtDiasViagem;
+	private JTextField txtTotalCarrada;
+	private JTextField txtVendaPraso;
+	private JTextField txtTotalRetorno;
+	private JTextField txtDiferenca;
+	private JTextField txtPercCarrada;
+	private JTextField txtPercPraso;
+	private JTextField txtPercRetorno;
+	private JTextField txtVendaVista;
+	private JTextField txtPercVista;
+	private JTextField txtAdiantamento;
+	private JTextField txtVendaAVista;
+	private JTextField txtEntradas;
+	private JTextField txtValorReal;
+	private JTextField txtDieasel;
+	private JTextField txtDesNota;
+	private JTextField txtGasolina;
+	private JTextField txtManutena;
+	private JTextField txtDiarias;
+	private JTextField txtDespSNota;
+	private JTextField txtTotalDesp;
+	private JTextField txtDespTotal;
+	private JTextField txtDinheiroDevovlido;
+	private JTextField txtValorPresent;
+	private JTextField txtParcDesp;
+	private JTextField txtPontEquili;
+	private JTextField txtResult;
+	private JTextField txtMargBrut;
+	private JButton btnAlterar;
+	private JButton btnSalvar;
+	DecimalFormat df = new DecimalFormat("0.00");
+	DecimalFormat dfp = new DecimalFormat("0.0");
+
+	private Equipe equipe;
+	private JDateChooser dateSaida;
+	private JDateChooser datechegada;
+	private JDateChooser dateUltima;
+	private JDateChooser dateCobranca;
+	private JComboBox<String> boxEstado;
+	private JTextField txtValesCaderno;
+	private Dao banco = new Dao();
+	private JTextField txtCidade;
+	private JPanel painelGrafico;
+	private JLabel lblDataSaida;
+	private JLabel lblDataChegada;
 
 	/**
 	 * Create the panel.
 	 */
-	public JPnlEquipePrestacaoVenda() {
+	public JPnlEquipePrestacaoVenda(Equipe equipe) {
 		setBorder(new LineBorder(new Color(0, 0, 0)));
 		setBounds(0, 0, 1075, 570);
 		setLayout(null);
-		
+		this.equipe = equipe;
+
 		JLabel lblPrestaoDeContas = new JLabel("PRESTA\u00C7\u00C3O DE CONTAS COM O CHEFE DA EQUIPE");
 		lblPrestaoDeContas.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPrestaoDeContas.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblPrestaoDeContas.setBounds(10, 11, 1055, 25);
+		lblPrestaoDeContas.setBounds(10, 10, 1055, 25);
 		add(lblPrestaoDeContas);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel.setBounds(10, 50, 340, 510);
+		panel.setBounds(10, 40, 340, 510);
 		add(panel);
 		panel.setLayout(null);
-		
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.setBounds(10, 40, 320, 95);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
-		
-		JLabel lblDataSaida = new JLabel("DATA SAIDA");
+
+		lblDataSaida = new JLabel("DATA SAIDA");
 		lblDataSaida.setBounds(10, 10, 110, 20);
 		panel_1.add(lblDataSaida);
-		
-		JDateChooser dateChooser = new JDateChooser((Date) null);
-		dateChooser.setBounds(120, 10, 122, 20);
-		panel_1.add(dateChooser);
-		
-		JDateChooser dateChooser_1 = new JDateChooser((Date) null);
-		dateChooser_1.setBounds(120, 35, 122, 20);
-		panel_1.add(dateChooser_1);
-		
-		JLabel lblDataChegada = new JLabel("DATA CHEGADA");
+
+		dateSaida = new JDateChooser((Date) null);
+		dateSaida.setBounds(120, 10, 122, 20);
+		panel_1.add(dateSaida);
+
+		datechegada = new JDateChooser((Date) null);
+		datechegada.setBounds(120, 35, 122, 20);
+		panel_1.add(datechegada);
+
+		lblDataChegada = new JLabel("DATA CHEGADA");
 		lblDataChegada.setBounds(10, 35, 110, 20);
 		panel_1.add(lblDataChegada);
-		
+
 		JLabel lblDiasViajados = new JLabel("QUANT. DIAS");
 		lblDiasViajados.setBounds(10, 65, 110, 20);
 		panel_1.add(lblDiasViajados);
-		
-		textField = new JTextField("0");
-		textField.setBackground(new Color(255, 250, 205));
-		textField.setHorizontalAlignment(SwingConstants.CENTER);
-		textField.setDisabledTextColor(new Color(0, 0, 0));
-		textField.setForeground(new Color(255, 250, 205));
-		textField.setEnabled(false);
-		textField.setBounds(120, 65, 122, 20);
-		panel_1.add(textField);
-		textField.setColumns(10);
-		
+
+		txtDiasViagem = new JTextField("0");
+		txtDiasViagem.setBackground(new Color(255, 250, 205));
+		txtDiasViagem.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDiasViagem.setDisabledTextColor(new Color(0, 0, 0));
+		txtDiasViagem.setForeground(new Color(255, 250, 205));
+		txtDiasViagem.setEnabled(false);
+		txtDiasViagem.setBounds(120, 65, 122, 20);
+		panel_1.add(txtDiasViagem);
+		txtDiasViagem.setColumns(10);
+
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_2.setBounds(10, 145, 320, 140);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
-		
-		textField_1 = new JTextField("0,00");
-		textField_1.setBackground(new Color(255, 250, 205));
-		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_1.setDisabledTextColor(new Color(0, 0, 0));
-		textField_1.setForeground(new Color(255, 250, 205));
-		textField_1.setEnabled(false);
-		textField_1.setBounds(120, 10, 122, 20);
-		panel_2.add(textField_1);
-		textField_1.setColumns(10);
-		
+
+		txtTotalCarrada = new JTextField("0,00");
+		txtTotalCarrada.setBackground(new Color(255, 250, 205));
+		txtTotalCarrada.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTotalCarrada.setDisabledTextColor(new Color(0, 0, 0));
+		txtTotalCarrada.setForeground(new Color(255, 250, 205));
+		txtTotalCarrada.setEnabled(false);
+		txtTotalCarrada.setBounds(120, 10, 122, 20);
+		panel_2.add(txtTotalCarrada);
+		txtTotalCarrada.setColumns(10);
+
 		JLabel lblValorCarrada = new JLabel("TOTAL CARRADAS");
 		lblValorCarrada.setBounds(10, 10, 110, 20);
 		panel_2.add(lblValorCarrada);
-		
-		textField_2 = new JTextField("0,00");
-		textField_2.setBackground(new Color(255, 250, 205));
-		textField_2.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_2.setDisabledTextColor(new Color(0, 0, 0));
-		textField_2.setForeground(new Color(255, 250, 205));
-		textField_2.setEnabled(false);
-		textField_2.setColumns(10);
-		textField_2.setBounds(120, 35, 122, 20);
-		panel_2.add(textField_2);
-		
+
+		txtVendaPraso = new JTextField("0,00");
+		txtVendaPraso.setBackground(new Color(255, 250, 205));
+		txtVendaPraso.setHorizontalAlignment(SwingConstants.CENTER);
+		txtVendaPraso.setDisabledTextColor(new Color(0, 0, 0));
+		txtVendaPraso.setForeground(new Color(255, 250, 205));
+		txtVendaPraso.setEnabled(false);
+		txtVendaPraso.setColumns(10);
+		txtVendaPraso.setBounds(120, 35, 122, 20);
+		panel_2.add(txtVendaPraso);
+
 		JLabel lblVendaPraso = new JLabel("VENDA \u00C0 PRASO");
 		lblVendaPraso.setBounds(10, 35, 110, 20);
 		panel_2.add(lblVendaPraso);
-		
-		textField_3 = new JTextField("0,00");
-		textField_3.setBackground(new Color(255, 250, 205));
-		textField_3.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_3.setDisabledTextColor(new Color(0, 0, 0));
-		textField_3.setForeground(new Color(255, 250, 205));
-		textField_3.setEnabled(false);
-		textField_3.setColumns(10);
-		textField_3.setBounds(120, 60, 122, 20);
-		panel_2.add(textField_3);
-		
+
+		txtTotalRetorno = new JTextField("0,00");
+		txtTotalRetorno.setBackground(new Color(255, 250, 205));
+		txtTotalRetorno.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTotalRetorno.setDisabledTextColor(new Color(0, 0, 0));
+		txtTotalRetorno.setForeground(new Color(255, 250, 205));
+		txtTotalRetorno.setEnabled(false);
+		txtTotalRetorno.setColumns(10);
+		txtTotalRetorno.setBounds(120, 60, 122, 20);
+		panel_2.add(txtTotalRetorno);
+
 		JLabel lblRetorno = new JLabel("RETORNO");
 		lblRetorno.setBounds(10, 60, 110, 20);
 		panel_2.add(lblRetorno);
-		
-		textField_4 = new JTextField("0,00");
-		textField_4.setBackground(new Color(255, 250, 205));
-		textField_4.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_4.setDisabledTextColor(new Color(0, 0, 0));
-		textField_4.setForeground(new Color(255, 250, 205));
-		textField_4.setEnabled(false);
-		textField_4.setColumns(10);
-		textField_4.setBounds(175, 85, 135, 20);
-		panel_2.add(textField_4);
-		
+
+		txtDiferenca = new JTextField("0,00");
+		txtDiferenca.setBackground(new Color(255, 250, 205));
+		txtDiferenca.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDiferenca.setDisabledTextColor(new Color(0, 0, 0));
+		txtDiferenca.setForeground(new Color(255, 250, 205));
+		txtDiferenca.setEnabled(false);
+		txtDiferenca.setColumns(10);
+		txtDiferenca.setBounds(175, 85, 135, 20);
+		panel_2.add(txtDiferenca);
+
 		JLabel lblDiferna = new JLabel("DIFER\u00CAN\u00C7A");
 		lblDiferna.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblDiferna.setBounds(60, 85, 110, 20);
 		panel_2.add(lblDiferna);
-		
-		textField_5 = new JTextField("0,00");
-		textField_5.setBackground(new Color(255, 250, 205));
-		textField_5.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_5.setDisabledTextColor(new Color(0, 0, 0));
-		textField_5.setForeground(new Color(255, 250, 205));
-		textField_5.setEnabled(false);
-		textField_5.setColumns(10);
-		textField_5.setBounds(252, 10, 59, 20);
-		panel_2.add(textField_5);
-		
-		textField_6 = new JTextField("0,00");
-		textField_6.setBackground(new Color(255, 250, 205));
-		textField_6.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_6.setDisabledTextColor(new Color(0, 0, 0));
-		textField_6.setForeground(new Color(255, 250, 205));
-		textField_6.setEnabled(false);
-		textField_6.setColumns(10);
-		textField_6.setBounds(252, 35, 59, 20);
-		panel_2.add(textField_6);
-		
-		textField_7 = new JTextField("0,00");
-		textField_7.setBackground(new Color(255, 250, 205));
-		textField_7.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_7.setDisabledTextColor(new Color(0, 0, 0));
-		textField_7.setForeground(new Color(255, 250, 205));
-		textField_7.setEnabled(false);
-		textField_7.setColumns(10);
-		textField_7.setBounds(252, 60, 59, 20);
-		panel_2.add(textField_7);
-		
+
+		txtPercCarrada = new JTextField("0,00");
+		txtPercCarrada.setBackground(new Color(255, 250, 205));
+		txtPercCarrada.setHorizontalAlignment(SwingConstants.CENTER);
+		txtPercCarrada.setDisabledTextColor(new Color(0, 0, 0));
+		txtPercCarrada.setForeground(new Color(255, 250, 205));
+		txtPercCarrada.setEnabled(false);
+		txtPercCarrada.setColumns(10);
+		txtPercCarrada.setBounds(252, 10, 59, 20);
+		panel_2.add(txtPercCarrada);
+
+		txtPercPraso = new JTextField("0,00");
+		txtPercPraso.setBackground(new Color(255, 250, 205));
+		txtPercPraso.setHorizontalAlignment(SwingConstants.CENTER);
+		txtPercPraso.setDisabledTextColor(new Color(0, 0, 0));
+		txtPercPraso.setForeground(new Color(255, 250, 205));
+		txtPercPraso.setEnabled(false);
+		txtPercPraso.setColumns(10);
+		txtPercPraso.setBounds(252, 35, 59, 20);
+		panel_2.add(txtPercPraso);
+
+		txtPercRetorno = new JTextField("0,00");
+		txtPercRetorno.setBackground(new Color(255, 250, 205));
+		txtPercRetorno.setHorizontalAlignment(SwingConstants.CENTER);
+		txtPercRetorno.setDisabledTextColor(new Color(0, 0, 0));
+		txtPercRetorno.setForeground(new Color(255, 250, 205));
+		txtPercRetorno.setEnabled(false);
+		txtPercRetorno.setColumns(10);
+		txtPercRetorno.setBounds(252, 60, 59, 20);
+		panel_2.add(txtPercRetorno);
+
 		JLabel lblVendaVista = new JLabel("VENDA \u00C0 VISTA");
 		lblVendaVista.setBounds(10, 110, 110, 20);
 		panel_2.add(lblVendaVista);
-		
-		textField_9 = new JTextField("0,00");
-		textField_9.setBackground(new Color(255, 250, 205));
-		textField_9.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_9.setDisabledTextColor(new Color(0, 0, 0));
-		textField_9.setForeground(new Color(255, 250, 205));
-		textField_9.setEnabled(false);
-		textField_9.setColumns(10);
-		textField_9.setBounds(120, 110, 122, 20);
-		panel_2.add(textField_9);
-		
-		textField_10 = new JTextField("0,00");
-		textField_10.setBackground(new Color(255, 250, 205));
-		textField_10.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_10.setDisabledTextColor(new Color(0, 0, 0));
-		textField_10.setForeground(new Color(255, 250, 205));
-		textField_10.setEnabled(false);
-		textField_10.setColumns(10);
-		textField_10.setBounds(252, 110, 59, 20);
-		panel_2.add(textField_10);
-		
+
+		txtVendaVista = new JTextField("0,00");
+		txtVendaVista.setBackground(new Color(255, 250, 205));
+		txtVendaVista.setHorizontalAlignment(SwingConstants.CENTER);
+		txtVendaVista.setDisabledTextColor(new Color(0, 0, 0));
+		txtVendaVista.setForeground(new Color(255, 250, 205));
+		txtVendaVista.setEnabled(false);
+		txtVendaVista.setColumns(10);
+		txtVendaVista.setBounds(120, 110, 122, 20);
+		panel_2.add(txtVendaVista);
+
+		txtPercVista = new JTextField("0,00");
+		txtPercVista.setBackground(new Color(255, 250, 205));
+		txtPercVista.setHorizontalAlignment(SwingConstants.CENTER);
+		txtPercVista.setDisabledTextColor(new Color(0, 0, 0));
+		txtPercVista.setForeground(new Color(255, 250, 205));
+		txtPercVista.setEnabled(false);
+		txtPercVista.setColumns(10);
+		txtPercVista.setBounds(252, 110, 59, 20);
+		panel_2.add(txtPercVista);
+
 		JLabel lblDescrioDaPrestao = new JLabel("DESCRI\u00C7\u00C3O DA PRESTA\u00C7\u00C3O");
 		lblDescrioDaPrestao.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDescrioDaPrestao.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblDescrioDaPrestao.setBounds(10, 10, 321, 25);
 		panel.add(lblDescrioDaPrestao);
-		
+
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_3.setBounds(10, 295, 320, 115);
 		panel.add(panel_3);
 		panel_3.setLayout(null);
-		
+
 		JLabel lblAdiantamento = new JLabel("ADIANTAMENTO");
 		lblAdiantamento.setBounds(10, 10, 110, 20);
 		panel_3.add(lblAdiantamento);
-		
-		textField_8 = new JTextField("0,00");
-		textField_8.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_8.setColumns(10);
-		textField_8.setBounds(120, 10, 122, 20);
-		panel_3.add(textField_8);
-		
+
+		txtAdiantamento = new JTextField("0,00");
+		txtAdiantamento.setHorizontalAlignment(SwingConstants.CENTER);
+		txtAdiantamento.setColumns(10);
+		txtAdiantamento.setBounds(120, 10, 122, 20);
+		panel_3.add(txtAdiantamento);
+
 		JLabel lblVendaVista_1 = new JLabel("VENDA \u00C0 VISTA");
 		lblVendaVista_1.setBounds(10, 35, 110, 20);
 		panel_3.add(lblVendaVista_1);
-		
-		textField_12 = new JTextField("0,00");
-		textField_12.setBackground(new Color(255, 250, 205));
-		textField_12.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_12.setDisabledTextColor(new Color(0, 0, 0));
-		textField_12.setForeground(new Color(0, 0, 0));
-		textField_12.setEnabled(false);
-		textField_12.setColumns(10);
-		textField_12.setBounds(120, 35, 122, 20);
-		panel_3.add(textField_12);
-		
+
+		txtVendaAVista = new JTextField("0,00");
+		txtVendaAVista.setBackground(new Color(255, 250, 205));
+		txtVendaAVista.setHorizontalAlignment(SwingConstants.CENTER);
+		txtVendaAVista.setDisabledTextColor(new Color(0, 0, 0));
+		txtVendaAVista.setForeground(new Color(0, 0, 0));
+		txtVendaAVista.setEnabled(false);
+		txtVendaAVista.setColumns(10);
+		txtVendaAVista.setBounds(120, 35, 122, 20);
+		panel_3.add(txtVendaAVista);
+
 		JLabel lblEntradas = new JLabel("ENTRADAS");
 		lblEntradas.setBounds(10, 60, 110, 20);
 		panel_3.add(lblEntradas);
-		
-		textField_14 = new JTextField("0,00");
-		textField_14.setBackground(new Color(255, 250, 205));
-		textField_14.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_14.setDisabledTextColor(new Color(0, 0, 0));
-		textField_14.setForeground(new Color(0, 0, 0));
-		textField_14.setEnabled(false);
-		textField_14.setColumns(10);
-		textField_14.setBounds(120, 60, 122, 20);
-		panel_3.add(textField_14);
-		
+
+		txtEntradas = new JTextField("0,00");
+		txtEntradas.setBackground(new Color(255, 250, 205));
+		txtEntradas.setHorizontalAlignment(SwingConstants.CENTER);
+		txtEntradas.setDisabledTextColor(new Color(0, 0, 0));
+		txtEntradas.setForeground(new Color(0, 0, 0));
+		txtEntradas.setEnabled(false);
+		txtEntradas.setColumns(10);
+		txtEntradas.setBounds(120, 60, 122, 20);
+		panel_3.add(txtEntradas);
+
 		JLabel lblValorReal = new JLabel("VALOR REAL");
 		lblValorReal.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblValorReal.setBounds(10, 85, 102, 20);
 		panel_3.add(lblValorReal);
-		
-		textField_16 = new JTextField("0,00");
-		textField_16.setBackground(new Color(255, 250, 205));
-		textField_16.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_16.setDisabledTextColor(new Color(0, 0, 0));
-		textField_16.setForeground(new Color(0, 0, 0));
-		textField_16.setEnabled(false);
-		textField_16.setColumns(10);
-		textField_16.setBounds(120, 85, 122, 20);
-		panel_3.add(textField_16);
-		
+
+		txtValorReal = new JTextField("0,00");
+		txtValorReal.setBackground(new Color(255, 250, 205));
+		txtValorReal.setHorizontalAlignment(SwingConstants.CENTER);
+		txtValorReal.setDisabledTextColor(new Color(0, 0, 0));
+		txtValorReal.setForeground(new Color(0, 0, 0));
+		txtValorReal.setEnabled(false);
+		txtValorReal.setColumns(10);
+		txtValorReal.setBounds(120, 85, 122, 20);
+		panel_3.add(txtValorReal);
+
 		JPanel panel_9 = new JPanel();
 		panel_9.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_9.setBounds(10, 420, 320, 45);
 		panel.add(panel_9);
 		panel_9.setLayout(null);
-		
-		JLabel lblDividaVendedor = new JLabel("DIVIDA VENDEDOR");
-		lblDividaVendedor.setBounds(10, 11, 110, 20);
-		panel_9.add(lblDividaVendedor);
-		
-		textField_26 = new JTextField("0,00");
-		textField_26.setBackground(new Color(255, 250, 205));
-		textField_26.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_26.setForeground(new Color(0, 0, 0));
-		textField_26.setEnabled(false);
-		textField_26.setDisabledTextColor(Color.BLACK);
-		textField_26.setColumns(10);
-		textField_26.setBounds(120, 11, 122, 20);
-		panel_9.add(textField_26);
-		
+
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_4.setBounds(725, 50, 340, 510);
+		panel_4.setBounds(725, 40, 340, 510);
 		add(panel_4);
 		panel_4.setLayout(null);
-		
+
 		JPanel panel_5 = new JPanel();
 		panel_5.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_5.setBounds(10, 145, 321, 195);
+		panel_5.setBounds(10, 175, 321, 195);
 		panel_4.add(panel_5);
 		panel_5.setLayout(null);
-		
+
 		JLabel lblGasolina = new JLabel("GASOLINA");
 		lblGasolina.setBounds(10, 11, 110, 20);
 		panel_5.add(lblGasolina);
-		
+
 		JLabel lblDiesel = new JLabel("DIESEL");
 		lblDiesel.setBounds(10, 36, 110, 20);
 		panel_5.add(lblDiesel);
-		
-		textField_11 = new JTextField("0,00");
-		textField_11.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_11.setColumns(10);
-		textField_11.setBounds(120, 36, 122, 20);
-		panel_5.add(textField_11);
-		
+
+		txtDieasel = new JTextField("0,00");
+		txtDieasel.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDieasel.setColumns(10);
+		txtDieasel.setBounds(120, 36, 122, 20);
+		panel_5.add(txtDieasel);
+
 		JLabel lblDespCNota = new JLabel("DESP. C/ NOTA");
 		lblDespCNota.setBounds(10, 61, 110, 20);
 		panel_5.add(lblDespCNota);
-		
-		textField_13 = new JTextField("0,00");
-		textField_13.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_13.setColumns(10);
-		textField_13.setBounds(120, 61, 122, 20);
-		panel_5.add(textField_13);
-		
-		textField_15 = new JTextField("0,00");
-		textField_15.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_15.setColumns(10);
-		textField_15.setBounds(120, 11, 122, 20);
-		panel_5.add(textField_15);
-		
+
+		txtDesNota = new JTextField("0,00");
+		txtDesNota.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDesNota.setColumns(10);
+		txtDesNota.setBounds(120, 61, 122, 20);
+		panel_5.add(txtDesNota);
+
+		txtGasolina = new JTextField("0,00");
+		txtGasolina.setHorizontalAlignment(SwingConstants.CENTER);
+		txtGasolina.setColumns(10);
+		txtGasolina.setBounds(120, 11, 122, 20);
+		panel_5.add(txtGasolina);
+
 		JLabel lblDespSNota = new JLabel("DESP. S/ NOTA");
 		lblDespSNota.setBounds(10, 85, 110, 20);
 		panel_5.add(lblDespSNota);
-		
+
 		JLabel lblMenuteno = new JLabel("MENUTEN\u00C7\u00C3O");
 		lblMenuteno.setBounds(10, 110, 110, 20);
 		panel_5.add(lblMenuteno);
-		
-		textField_17 = new JTextField("0,00");
-		textField_17.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_17.setColumns(10);
-		textField_17.setBounds(120, 110, 122, 20);
-		panel_5.add(textField_17);
-		
+
+		txtManutena = new JTextField("0,00");
+		txtManutena.setHorizontalAlignment(SwingConstants.CENTER);
+		txtManutena.setColumns(10);
+		txtManutena.setBounds(120, 110, 122, 20);
+		panel_5.add(txtManutena);
+
 		JLabel lblDiarias = new JLabel("DIARIAS");
 		lblDiarias.setBounds(10, 135, 110, 20);
 		panel_5.add(lblDiarias);
-		
-		textField_18 = new JTextField("0,00");
-		textField_18.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_18.setColumns(10);
-		textField_18.setBounds(120, 135, 122, 20);
-		panel_5.add(textField_18);
-		
-		textField_19 = new JTextField("0,00");
-		textField_19.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_19.setColumns(10);
-		textField_19.setBounds(120, 85, 122, 20);
-		panel_5.add(textField_19);
-		
+
+		txtDiarias = new JTextField("0,00");
+		txtDiarias.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDiarias.setColumns(10);
+		txtDiarias.setBounds(120, 135, 122, 20);
+		panel_5.add(txtDiarias);
+
+		txtDespSNota = new JTextField("0,00");
+		txtDespSNota.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDespSNota.setColumns(10);
+		txtDespSNota.setBounds(120, 85, 122, 20);
+		panel_5.add(txtDespSNota);
+
 		JLabel lblTotal = new JLabel("TOTAL");
 		lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTotal.setBounds(10, 160, 60, 20);
 		panel_5.add(lblTotal);
-		
-		textField_20 = new JTextField("0,00");
-		textField_20.setBackground(new Color(255, 250, 205));
-		textField_20.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_20.setEnabled(false);
-		textField_20.setDisabledTextColor(new Color(0, 0, 0));
-		textField_20.setColumns(10);
-		textField_20.setBounds(80, 160, 90, 20);
-		panel_5.add(textField_20);
-		
-		textField_25 = new JTextField("0 %");
-		textField_25.setBackground(new Color(255, 250, 205));
-		textField_25.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_25.setEnabled(false);
-		textField_25.setDisabledTextColor(new Color(0, 0, 0));
-		textField_25.setColumns(10);
-		textField_25.setBounds(180, 160, 62, 20);
-		panel_5.add(textField_25);
-		
+
+		txtTotalDesp = new JTextField("0,00");
+		txtTotalDesp.setBackground(new Color(255, 250, 205));
+		txtTotalDesp.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTotalDesp.setEnabled(false);
+		txtTotalDesp.setDisabledTextColor(new Color(0, 0, 0));
+		txtTotalDesp.setColumns(10);
+		txtTotalDesp.setBounds(80, 160, 90, 20);
+		panel_5.add(txtTotalDesp);
+
+		txtParcDesp = new JTextField("0 %");
+		txtParcDesp.setBackground(new Color(255, 250, 205));
+		txtParcDesp.setHorizontalAlignment(SwingConstants.CENTER);
+		txtParcDesp.setEnabled(false);
+		txtParcDesp.setDisabledTextColor(new Color(0, 0, 0));
+		txtParcDesp.setColumns(10);
+		txtParcDesp.setBounds(180, 160, 62, 20);
+		panel_5.add(txtParcDesp);
+
 		JPanel panel_6 = new JPanel();
 		panel_6.setLayout(null);
 		panel_6.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_6.setBounds(10, 350, 321, 115);
+		panel_6.setBounds(10, 375, 321, 115);
 		panel_4.add(panel_6);
-		
+
 		JLabel lblDespesas = new JLabel("DESPESAS");
 		lblDespesas.setBounds(10, 10, 110, 20);
 		panel_6.add(lblDespesas);
-		
-		textField_21 = new JTextField("0,00");
-		textField_21.setDisabledTextColor(new Color(0, 0, 0));
-		textField_21.setForeground(new Color(0, 0, 0));
-		textField_21.setEnabled(false);
-		textField_21.setBackground(new Color(255, 250, 205));
-		textField_21.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_21.setColumns(10);
-		textField_21.setBounds(120, 10, 122, 20);
-		panel_6.add(textField_21);
-		
+
+		txtDespTotal = new JTextField("0,00");
+		txtDespTotal.setDisabledTextColor(new Color(0, 0, 0));
+		txtDespTotal.setForeground(new Color(0, 0, 0));
+		txtDespTotal.setEnabled(false);
+		txtDespTotal.setBackground(new Color(255, 250, 205));
+		txtDespTotal.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDespTotal.setColumns(10);
+		txtDespTotal.setBounds(120, 10, 122, 20);
+		panel_6.add(txtDespTotal);
+
 		JLabel lblCadernoVendedor = new JLabel("VALES CADERNOS");
 		lblCadernoVendedor.setBounds(10, 35, 110, 20);
 		panel_6.add(lblCadernoVendedor);
-		
-		textField_22 = new JTextField("0,00");
-		textField_22.setForeground(new Color(0, 0, 0));
-		textField_22.setEnabled(false);
-		textField_22.setBackground(new Color(255, 250, 205));
-		textField_22.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_22.setDisabledTextColor(new Color(0, 0, 0));
-		textField_22.setColumns(10);
-		textField_22.setBounds(120, 35, 122, 20);
-		panel_6.add(textField_22);
-		
+
+		txtValesCaderno = new JTextField("0,00");
+		txtValesCaderno.setForeground(new Color(0, 0, 0));
+		txtValesCaderno.setEnabled(false);
+		txtValesCaderno.setBackground(new Color(255, 250, 205));
+		txtValesCaderno.setHorizontalAlignment(SwingConstants.CENTER);
+		txtValesCaderno.setDisabledTextColor(new Color(0, 0, 0));
+		txtValesCaderno.setColumns(10);
+		txtValesCaderno.setBounds(120, 35, 122, 20);
+		panel_6.add(txtValesCaderno);
+
 		JLabel lblDinhDevolvido = new JLabel("DINH. DEVOLVIDO");
 		lblDinhDevolvido.setBounds(10, 60, 110, 20);
 		panel_6.add(lblDinhDevolvido);
-		
-		textField_23 = new JTextField("0,00");
-		textField_23.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_23.setColumns(10);
-		textField_23.setBounds(120, 60, 122, 20);
-		panel_6.add(textField_23);
-		
+
+		txtDinheiroDevovlido = new JTextField("0,00");
+		txtDinheiroDevovlido.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDinheiroDevovlido.setColumns(10);
+		txtDinheiroDevovlido.setBounds(120, 60, 122, 20);
+		panel_6.add(txtDinheiroDevovlido);
+
 		JLabel lblValorApresentado = new JLabel("VALOR APRESENTADO");
 		lblValorApresentado.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblValorApresentado.setBounds(10, 90, 136, 20);
 		panel_6.add(lblValorApresentado);
-		
-		textField_24 = new JTextField("0,00");
-		textField_24.setBackground(new Color(255, 250, 205));
-		textField_24.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_24.setEnabled(false);
-		textField_24.setDisabledTextColor(new Color(0, 0, 0));
-		textField_24.setColumns(10);
-		textField_24.setBounds(156, 85, 86, 20);
-		panel_6.add(textField_24);
-		
+
+		txtValorPresent = new JTextField("0,00");
+		txtValorPresent.setBackground(new Color(255, 250, 205));
+		txtValorPresent.setHorizontalAlignment(SwingConstants.CENTER);
+		txtValorPresent.setEnabled(false);
+		txtValorPresent.setDisabledTextColor(new Color(0, 0, 0));
+		txtValorPresent.setColumns(10);
+		txtValorPresent.setBounds(156, 85, 86, 20);
+		panel_6.add(txtValorPresent);
+
 		JLabel label = new JLabel("DESCRI\u00C7\u00C3O DA PRESTA\u00C7\u00C3O");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		label.setBounds(10, 11, 321, 25);
 		panel_4.add(label);
-		
+
 		JPanel panel_8 = new JPanel();
 		panel_8.setLayout(null);
 		panel_8.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_8.setBounds(10, 40, 321, 95);
+		panel_8.setBounds(10, 40, 321, 130);
 		panel_4.add(panel_8);
-		
+
 		JLabel lblDataCobrana = new JLabel("DATA COBRAN\u00C7A");
 		lblDataCobrana.setBounds(10, 10, 110, 20);
 		panel_8.add(lblDataCobrana);
-		
-		JDateChooser dateChooser_2 = new JDateChooser((Date) null);
-		dateChooser_2.setBounds(120, 10, 122, 20);
-		panel_8.add(dateChooser_2);
-		
-		TextField dateChooser_3 = new TextField();
-		dateChooser_3.setBounds(120, 35, 191, 20);
-		panel_8.add(dateChooser_3);
-		
+
+		dateCobranca = new JDateChooser((Date) null);
+		dateCobranca.setBounds(120, 10, 122, 20);
+		panel_8.add(dateCobranca);
+
 		JLabel lblCidade = new JLabel("PRIMEIRA CIDADE");
 		lblCidade.setBounds(10, 35, 110, 20);
 		panel_8.add(lblCidade);
-		
+
 		JLabel lblEstado = new JLabel("ESTADO");
 		lblEstado.setBounds(10, 65, 110, 20);
 		panel_8.add(lblEstado);
-		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(120, 65, 64, 20);
-		panel_8.add(comboBox);
-		
-		JPanel panel_7 = new JPanel();
-		panel_7.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_7.setBounds(360, 90, 355, 380);
-		add(panel_7);
-		panel_7.setLayout(null);
-		
-		JLabel lblGrafico = new JLabel("GRAFICO");
-		lblGrafico.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		lblGrafico.setBounds(109, 68, 160, 65);
-		panel_7.add(lblGrafico);
-		
-		JButton btnNewButton = new JButton("ALTERAR");
-		btnNewButton.setBounds(355, 50, 175, 25);
-		add(btnNewButton);
-		
-		JButton btnSalvar = new JButton("SALVAR");
-		btnSalvar.setBounds(540, 50, 175, 25);
+		String[] uf = { "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE",
+				"PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO" };
+		boxEstado = new JComboBox<String>(uf);
+		boxEstado.setSelectedIndex(4);
+		boxEstado.setEnabled(false);
+		boxEstado.setBounds(120, 65, 64, 20);
+		panel_8.add(boxEstado);
+
+		JLabel lblUltimoDia = new JLabel("Ultimo Dia");
+		lblUltimoDia.setBounds(10, 96, 110, 20);
+		panel_8.add(lblUltimoDia);
+
+		dateUltima = new JDateChooser((Date) null);
+		dateUltima.setBounds(120, 96, 122, 20);
+		panel_8.add(dateUltima);
+
+		txtCidade = new JTextField("0.0");
+		txtCidade.setHorizontalAlignment(SwingConstants.CENTER);
+		txtCidade.setEnabled(false);
+		txtCidade.setColumns(10);
+		txtCidade.setBounds(120, 35, 191, 20);
+		panel_8.add(txtCidade);
+
+		painelGrafico = new JPanel();
+		painelGrafico.setBorder(new LineBorder(new Color(0, 0, 0)));
+		painelGrafico.setBounds(360, 80, 355, 380);
+		add(painelGrafico);
+		painelGrafico.setLayout(null);
+
+		btnAlterar = new JButton("ALTERAR");
+		btnAlterar.addActionListener(this);
+		btnAlterar.setBounds(355, 40, 175, 25);
+		add(btnAlterar);
+
+		btnSalvar = new JButton("SALVAR");
+		btnSalvar.addActionListener(this);
+		btnSalvar.setEnabled(false);
+		btnSalvar.setBounds(540, 40, 175, 25);
 		add(btnSalvar);
-		
+
 		JPanel panel_10 = new JPanel();
 		panel_10.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_10.setBounds(360, 481, 355, 79);
+		panel_10.setBounds(360, 470, 355, 79);
 		add(panel_10);
 		panel_10.setLayout(null);
-		
+
 		JLabel lblVendaPraso_1 = new JLabel("P.E");
 		lblVendaPraso_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblVendaPraso_1.setBounds(10, 10, 50, 20);
 		panel_10.add(lblVendaPraso_1);
-		
-		textField_27 = new JTextField("0,00");
-		textField_27.setBackground(new Color(255, 250, 205));
-		textField_27.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_27.setForeground(new Color(255, 250, 205));
-		textField_27.setEnabled(false);
-		textField_27.setDisabledTextColor(Color.BLACK);
-		textField_27.setColumns(10);
-		textField_27.setBounds(70, 10, 90, 20);
-		panel_10.add(textField_27);
-		
+
+		txtPontEquili = new JTextField("0,00");
+		txtPontEquili.setBackground(new Color(255, 250, 205));
+		txtPontEquili.setHorizontalAlignment(SwingConstants.CENTER);
+		txtPontEquili.setForeground(new Color(255, 250, 205));
+		txtPontEquili.setEnabled(false);
+		txtPontEquili.setDisabledTextColor(Color.BLACK);
+		txtPontEquili.setColumns(10);
+		txtPontEquili.setBounds(70, 10, 90, 20);
+		panel_10.add(txtPontEquili);
+
 		JLabel lblResultado = new JLabel("RESULTADO");
 		lblResultado.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblResultado.setBounds(20, 40, 135, 20);
 		panel_10.add(lblResultado);
-		
-		textField_28 = new JTextField("0,00");
-		textField_28.setBackground(new Color(255, 250, 205));
-		textField_28.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_28.setForeground(new Color(255, 250, 205));
-		textField_28.setEnabled(false);
-		textField_28.setDisabledTextColor(Color.BLACK);
-		textField_28.setColumns(10);
-		textField_28.setBounds(165, 40, 122, 20);
-		panel_10.add(textField_28);
-		
-		textField_29 = new JTextField("0,00");
-		textField_29.setBackground(new Color(255, 250, 205));
-		textField_29.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_29.setForeground(new Color(255, 250, 205));
-		textField_29.setEnabled(false);
-		textField_29.setDisabledTextColor(Color.BLACK);
-		textField_29.setColumns(10);
-		textField_29.setBounds(230, 10, 90, 20);
-		panel_10.add(textField_29);
-		
+
+		txtResult = new JTextField("0,00");
+		txtResult.setBackground(new Color(255, 250, 205));
+		txtResult.setHorizontalAlignment(SwingConstants.CENTER);
+		txtResult.setForeground(new Color(255, 250, 205));
+		txtResult.setEnabled(false);
+		txtResult.setDisabledTextColor(Color.BLACK);
+		txtResult.setColumns(10);
+		txtResult.setBounds(165, 40, 122, 20);
+		panel_10.add(txtResult);
+
+		txtMargBrut = new JTextField("0,00");
+		txtMargBrut.setBackground(new Color(255, 250, 205));
+		txtMargBrut.setHorizontalAlignment(SwingConstants.CENTER);
+		txtMargBrut.setForeground(new Color(255, 250, 205));
+		txtMargBrut.setEnabled(false);
+		txtMargBrut.setDisabledTextColor(Color.BLACK);
+		txtMargBrut.setColumns(10);
+		txtMargBrut.setBounds(230, 10, 90, 20);
+		panel_10.add(txtMargBrut);
+
 		JLabel lblMb = new JLabel("M.B");
 		lblMb.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblMb.setBounds(170, 10, 50, 20);
 		panel_10.add(lblMb);
+
+		atualizar();
+	}
+
+	private void atualizar() {
+
+		equipe = (Equipe) banco.buscarPorId(Equipe.class, equipe.getId());
+
+		datechegada.setDate(equipe.getVenda().getDataChegada());
+		dateCobranca.setDate(equipe.getVenda().getDiaCobranca());
+		dateSaida.setDate(equipe.getVenda().getDataSaida());
+		dateUltima.setDate(equipe.getVenda().getUltimoDiaCobranca());
+
+		float totalCarrada = equipe.getVenda().getTotalCarradas();
+		txtTotalCarrada.setText(String.valueOf(df.format(totalCarrada)));
+
+		float vendaPraso = equipe.getVenda().getVendaPraso();
+		txtVendaPraso.setText(String.valueOf(df.format(vendaPraso)));
+
+		float retorno = equipe.getVenda().getRetorno();
+		txtTotalRetorno.setText(String.valueOf(df.format(retorno)));
+
+		float diferenca;
+		if (vendaPraso > 0) {
+			diferenca = totalCarrada - vendaPraso - retorno;
+
+		} else {
+			diferenca = 0;
+		}
+		txtDiferenca.setText(String.valueOf(df.format(diferenca)));
+
+		float percCarrada = 100;
+		txtPercCarrada.setText(String.valueOf(dfp.format(percCarrada)) + "%");
+
+		float percPraso = vendaPraso / totalCarrada * 100;
+		txtPercPraso.setText(String.valueOf(dfp.format(percPraso)) + "%");
+
+		float percRetorno = retorno / totalCarrada * 100;
+		txtPercRetorno.setText(String.valueOf(dfp.format(percRetorno)) + "%");
+
+		float vendaVista = diferenca / 2;
+		txtVendaVista.setText(String.valueOf(df.format(vendaVista)));
+
+		float percVista = diferenca / totalCarrada * 100;
+		txtPercVista.setText(String.valueOf(dfp.format(percVista)) + "%");
+
+		float adiantamento = equipe.getVenda().getAdiantamento();
+		txtAdiantamento.setText(String.valueOf(df.format(adiantamento)));
+		txtVendaAVista.setText(String.valueOf(df.format(vendaVista)));
+
+		float entradas = equipe.getVenda().getEntradas();
+		txtEntradas.setText(String.valueOf(df.format(entradas)));
+
+		float valorReal = adiantamento + vendaVista + entradas;
+		txtValorReal.setText(String.valueOf(df.format(valorReal)));
+
+		float diesel = equipe.getVenda().getDespesa().getDiesel();
+		txtDieasel.setText(String.valueOf(df.format(diesel)));
+
+		float despNota = equipe.getVenda().getDespesa().getDespComNota();
+		txtDesNota.setText(String.valueOf(df.format(despNota)));
+
+		float gasolina = equipe.getVenda().getDespesa().getGasolina();
+		txtGasolina.setText(String.valueOf(df.format(gasolina)));
+
+		float manutencao = equipe.getVenda().getDespesa().getManutencao();
+		txtManutena.setText(String.valueOf(df.format(manutencao)));
+
+		float diarias = equipe.getVenda().getDespesa().getDiarias();
+		txtDiarias.setText(String.valueOf(df.format(diarias)));
+
+		float despSnota = equipe.getVenda().getDespesa().getDespSemNota();
+		txtDespSNota.setText(String.valueOf(df.format(despSnota)));
+
+		float totalDesp = equipe.getVenda().getDespesa().getTotalDespesa();
+		txtTotalDesp.setText(String.valueOf(df.format(totalDesp)));
+
+		float desptotal = totalDesp;
+		txtDespTotal.setText(String.valueOf(df.format(desptotal)));
+
+		float dinheDevolvido = equipe.getVenda().getDinheiroDevolvido();
+		txtDinheiroDevovlido.setText(String.valueOf(df.format(dinheDevolvido)));
+
+		float valorPresent = totalDesp + equipe.getVenda().getValeCaderno() + equipe.getVenda().getDinheiroDevolvido();
+		txtValorPresent.setText(String.valueOf(df.format(valorPresent)));
+
+		float percDesp = totalDesp / vendaPraso * 100;
+		txtParcDesp.setText(String.valueOf(df.format(percDesp)) + "%");
+
+		float pontoEqui = equipe.getLucroLiquido();
+		txtPontEquili.setText(String.valueOf(df.format(pontoEqui)));
+		
+		System.out.println(pontoEqui+" ponto de equilibrio ************");
+
+		float resulta = valorReal - valorPresent;
+		if (resulta<0) {
+			JOptionPane.showMessageDialog(this, "Condição incomun, isso não pode acontecer, sobrou dinheiro!!");
+			txtResult.setBackground(Color.RED);
+		}
+		txtResult.setText(String.valueOf(df.format(resulta)));
+		
+
+		float margBruta = (pontoEqui / vendaPraso * 100);
+		System.out.println(margBruta+" margem bruta *****************");
+
+		int diasviajados = 0;
+
+		txtMargBrut.setText(String.valueOf(dfp.format(margBruta)) + "%");
+		System.out.println(datechegada.getDate() + " - " + datechegada.getDate());
+		if (datechegada.getDate() != null && dateSaida.getDate() != null) {
+			diasviajados = (int) ((datechegada.getDate().getTime() - dateSaida.getDate().getTime()) / 86400000L);
+		}
+
+		txtDiasViagem.setText(String.valueOf(diasviajados));
+
+		// Essa função não se preucupa com a integridade da veracidade dos dados
+		// de outra classa como por exmplo vale do caderno
+		float valecaderno = equipe.getVenda().getValeCaderno();
+		txtValesCaderno.setText(String.valueOf(df.format(valecaderno)));
+
+		txtCidade.setText(equipe.getVenda().getPrimeiraCidade());
+
+		boxEstado.setSelectedItem(equipe.getVenda().getEstado());
+
+		datechegada.setEnabled(false);
+		dateCobranca.setEnabled(false);
+		dateSaida.setEnabled(false);
+		dateUltima.setEnabled(false);
+
+		txtDiasViagem.setEnabled(false);
+		txtTotalCarrada.setEnabled(false);
+		txtVendaPraso.setEnabled(false);
+		txtTotalRetorno.setEnabled(false);
+		txtDiferenca.setEnabled(false);
+		txtPercCarrada.setEnabled(false);
+		txtPercPraso.setEnabled(false);
+		txtPercRetorno.setEnabled(false);
+		txtVendaVista.setEnabled(false);
+		txtPercVista.setEnabled(false);
+		txtAdiantamento.setEnabled(false);
+		txtVendaAVista.setEnabled(false);
+		txtEntradas.setEnabled(false);
+		txtValorReal.setEnabled(false);
+		txtDieasel.setEnabled(false);
+		txtDesNota.setEnabled(false);
+		txtGasolina.setEnabled(false);
+		txtManutena.setEnabled(false);
+		txtDiarias.setEnabled(false);
+		txtDespSNota.setEnabled(false);
+		txtTotalDesp.setEnabled(false);
+		txtDespTotal.setEnabled(false);
+		txtDinheiroDevovlido.setEnabled(false);
+		txtValorPresent.setEnabled(false);
+		txtParcDesp.setEnabled(false);
+		txtPontEquili.setEnabled(false);
+		txtResult.setEnabled(false);
+		txtMargBrut.setEnabled(false);
+		txtCidade.setEnabled(false);
+		boxEstado.setEnabled(false);
+
+		String[] lista = { String.valueOf(vendaVista), String.valueOf(desptotal), String.valueOf(retorno) };
+
+		painelGrafico.removeAll();
+		painelGrafico.repaint();
+		grafico a = new grafico(lista, 0, 0, 355, 380);
+
+		painelGrafico.add(a);
+		painelGrafico.validate();
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String acao = e.getActionCommand();
+
+		switch (acao) {
+		case "SALVAR":
+			salvar();
+
+			break;
+		case "ALTERAR":
+			alterar();
+			break;
+		default:
+			break;
+		}
+
+	}
+
+	private void salvar() {
+
+		// o adiantamento jamais poderá ser menor que zero caso seja o valor
+		// será alterado para zero
+		float adiantamento = Float.parseFloat(txtAdiantamento.getText().replace(",", "."));
+		if (adiantamento < 0) {
+			adiantamento = 0;
+		}
+		equipe.getVenda().setAdiantamento(adiantamento);
+
+		// a data da saida tem que ser uma das primeiras coisas a ser preenchida
+		// caso seja nula marcamos com vermelho indicando que deverá ser
+		// alterada, caso esta data seja maior que o dia atual uma mensagem
+		// aparacerá avisando que não é permitido
+		Date dataSaida = dateSaida.getDate();
+		System.out.println(dataSaida + " datasaida");
+		if (dataSaida == null) {
+			lblDataSaida.setForeground(Color.RED);
+			JOptionPane.showMessageDialog(this, "Preencha a data de saida");
+		} else {
+			int verificando = (int) (((new Date()).getTime() - dataSaida.getTime()) / 86400000L);
+			if (verificando < 0) {
+				JOptionPane.showMessageDialog(this, "A data da saida é maior que a data atual, isso não pode ocorrer.");
+				dataSaida = null;
+				lblDataSaida.setForeground(Color.RED);
+			}
+		}
+		equipe.getVenda().setDataSaida(dataSaida);
+		int diasDeVenda = 0;
+
+		// a data da chagada não pode ser menor que a data da saida e caso a
+		// data da saida seja nula a data de chegada tambem será e os dias
+		// viajado será zero
+		Date dataChegada = datechegada.getDate();
+		if (dataChegada != null && dataSaida != null) {
+
+			diasDeVenda = (int) ((dataChegada.getTime() - dataSaida.getTime()) / 86400000L);
+			System.out.println("Dias de venda " + diasDeVenda);
+			if (diasDeVenda <= 0) {
+				JOptionPane.showMessageDialog(this, "O dia da chegada tem que ser maior que o dia da saia");
+				dataChegada = null;
+				lblDataChegada.setForeground(Color.RED);
+				diasDeVenda = 0;
+			}
+		} else {
+			dataChegada = null;
+			diasDeVenda = 0;
+		}
+
+		equipe.getVenda().setDataChegada(dataChegada);
+
+		txtDiasViagem.setText(String.valueOf(diasDeVenda));
+
+		// caso alguma despesa seja inserida com o valor negativo colocaremos o
+		// valor como zero
+		float despCNota = Float.parseFloat(txtDesNota.getText().replace(",", "."));
+		if (despCNota < 0) {
+			JOptionPane.showMessageDialog(this, "Despesas não podem ter o valor negativo");
+			despCNota = despCNota * (-1);
+		}
+		equipe.getVenda().getDespesa().setDespComNota(despCNota);
+		;
+
+		float despSNota = Float.parseFloat(txtDespSNota.getText().replace(",", "."));
+
+		if (despSNota < 0) {
+			JOptionPane.showMessageDialog(this, "Despesas não podem ter o valor negativo");
+			despSNota = despSNota * (-1);
+		}
+		equipe.getVenda().getDespesa().setDespSemNota(despSNota);
+
+		float diarias = Float.parseFloat(txtDiarias.getText().replace(",", "."));
+		if (diarias < 0) {
+
+			JOptionPane.showMessageDialog(this, "Despesas não podem ter o valor negativo");
+			diarias = diarias * (-1);
+		}
+		equipe.getVenda().getDespesa().setDiarias(diarias);
+
+		float diesel = Float.parseFloat(txtDieasel.getText().replace(",", "."));
+		if (diesel < 0) {
+
+			JOptionPane.showMessageDialog(this, "Despesas não podem ter o valor negativo");
+			diesel = diesel * (-1);
+		}
+
+		equipe.getVenda().getDespesa().setDiesel(diesel);
+
+		float gasolina = Float.parseFloat(txtGasolina.getText().replace(",", "."));
+		if (gasolina < 0) {
+
+			JOptionPane.showMessageDialog(this, "Despesas não podem ter o valor negativo");
+			gasolina = gasolina * (-1);
+		}
+		equipe.getVenda().getDespesa().setGasolina(gasolina);
+
+		float manutencao = Float.parseFloat(txtManutena.getText().replace(",", "."));
+		if (manutencao < 0) {
+
+			JOptionPane.showMessageDialog(this, "Despesas não podem ter o valor negativo");
+			manutencao = manutencao * (-1);
+		}
+		equipe.getVenda().getDespesa().setManutencao(manutencao);
+
+		Date dataCobranca = dateCobranca.getDate();
+		if (dataCobranca != null) {
+			if (dataSaida != null) {
+				int verificacaoCobranca = (int) ((dataCobranca.getTime() - dataSaida.getTime()) / 86400000L);
+				if (verificacaoCobranca < 0) {
+					JOptionPane.showMessageDialog(this,
+							"A data da cobrança não pode ser menor que a data da saida de venda");
+					dataCobranca = null;
+				}
+			} else {
+				JOptionPane.showMessageDialog(this, "Data da saida não foi preenchida");
+				dataCobranca = null;
+			}
+
+		}
+		equipe.getVenda().setDiaCobranca(dataCobranca);
+
+		float dinheDevolvido = Float.parseFloat(txtDinheiroDevovlido.getText().replace(",", "."));
+		if (dinheDevolvido < 0) {
+
+			JOptionPane.showMessageDialog(this, "Dinheiro devolvido não podem ter o valor negativo");
+			dinheDevolvido = dinheDevolvido * (-1);
+		}
+		equipe.getVenda().setDinheiroDevolvido(dinheDevolvido);
+
+		equipe.getVenda().setEntradas(Float.parseFloat(txtEntradas.getText().replace(",", ".")));
+
+		equipe.getVenda().setEstado(String.valueOf(boxEstado.getSelectedItem()));
+
+		equipe.getVenda().setPrimeiraCidade(txtCidade.getText().toUpperCase());
+		;
+
+		equipe.getVenda().setRetorno(Float.parseFloat(txtTotalRetorno.getText().replace(",", ".")));
+		;
+
+		equipe.getVenda().setTotalCarradas(Float.parseFloat(txtTotalCarrada.getText().replace(",", ".")));
+		;
+
+		Date dataUltima = dateUltima.getDate();
+		if (dataUltima != null) {
+			if (dataCobranca != null) {
+				int verificacaoultima = (int) ((dataUltima.getTime() - dataCobranca.getTime()) / 86400000L);
+				if (verificacaoultima < 0) {
+					JOptionPane.showMessageDialog(this,
+							"A ultima data da cobrança não pode ser menor que a data da cobranca de venda");
+					dataUltima = null;
+				}
+			} else {
+				JOptionPane.showMessageDialog(this, "Data da cobranca não foi preenchida");
+				dataUltima = null;
+			}
+
+		}
+
+		equipe.getVenda().setUltimoDiaCobranca(dataUltima);
+		;
+
+		equipe.getVenda().setValeCaderno(Float.parseFloat(txtValesCaderno.getText().replace(",", ".")));
+		;
+
+		float vendaPraso = Float.parseFloat(txtVendaPraso.getText().replace(",", "."));
+
+		equipe.getVenda().setVendaPraso(vendaPraso);
+		;
+
+		float vendaVista = Float.parseFloat(txtVendaAVista.getText().replace(",", "."));
+		if (vendaPraso <= 0) {
+			vendaVista = 0;
+		}
+		equipe.getVenda().setVendaVista(vendaVista);
+
+		equipe.getVenda().setPrimeiraCidade(txtCidade.getText().toUpperCase());
+
+		float lucroBruto = vendaVista + vendaPraso + equipe.getTotalreceitaExtra() - equipe.getCustoCarradas()
+				+ equipe.getCustoRetornos() - equipe.getComissaoVendedores()
+				- equipe.getChefe().getComissaoVenda(vendaPraso)
+				- equipe.getCobranca().getCobrador().getComissao(equipe.getCobranca().getRecebidoTotal());
+		equipe.setLucroBruto(lucroBruto);
+
+		float lucroLiquido = lucroBruto - equipe.getTotalDespExtra() - equipe.getTotalDespLocal()
+				- equipe.getVenda().getDespesa().getTotalDespesa()
+				- equipe.getCobranca().getDespesa().getTotalDespesa();
+		
+		equipe.setLucroLiquido(lucroLiquido);
+		
+		
+
+		banco.salvarOuAtualizarObjeto(equipe.getVenda());
+		banco.salvarOuAtualizarObjeto(equipe);
+
+		JOptionPane.showMessageDialog(this, "Salvo com sucesso!");
+		atualizar();
+		btnSalvar.setEnabled(false);
+		btnAlterar.setEnabled(true);
+
+	}
+
+	private void alterar() {
+		datechegada.setEnabled(true);
+		dateCobranca.setEnabled(true);
+		dateSaida.setEnabled(true);
+		dateUltima.setEnabled(true);
+		boxEstado.setEnabled(true);
+
+		txtAdiantamento.setEnabled(true);
+		txtDieasel.setEnabled(true);
+		txtDesNota.setEnabled(true);
+		txtGasolina.setEnabled(true);
+		txtManutena.setEnabled(true);
+		txtDiarias.setEnabled(true);
+		txtDespSNota.setEnabled(true);
+		txtDinheiroDevovlido.setEnabled(true);
+		btnSalvar.setEnabled(true);
+		btnAlterar.setEnabled(false);
+		txtCidade.setEnabled(true);
 
 	}
 }

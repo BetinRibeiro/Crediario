@@ -25,6 +25,10 @@ import java.awt.Component;
 
 public class JFrmPesCompra extends JDialog implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	private ModelTabelaCompra model = new ModelTabelaCompra();
@@ -66,7 +70,7 @@ public class JFrmPesCompra extends JDialog implements ActionListener {
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(table);
-		
+
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -103,10 +107,10 @@ public class JFrmPesCompra extends JDialog implements ActionListener {
 		try {
 			model.removeTudo();
 			List<?> lista = banco.BuscaNome(Compra.class, txtBusca.getText(), "id");
-			int tamanho=lista.size();
-			
-			if (lista.size()>=30) {
-				tamanho=30;
+			int tamanho = lista.size();
+
+			if (lista.size() >= 30) {
+				tamanho = 30;
 			}
 			for (int i = 0; i < tamanho; i++) {
 				Compra classif = (Compra) lista.get(i);
@@ -141,12 +145,11 @@ public class JFrmPesCompra extends JDialog implements ActionListener {
 	}
 
 	private void alterar() {
-		Compra Compra = (Compra) banco.buscarPorId(
-				Compra.class,
-				(Integer) table.getValueAt(
-						table.getSelectedRow(), 0));
+		Compra Compra = (Compra) banco.buscarPorId(Compra.class, (Integer) table.getValueAt(table.getSelectedRow(), 0));
 		JFrmComProduto c = new JFrmComProduto();
 		c.inserirCompra(Compra);
+		c.setModal(true);
 		c.setVisible(true);
+		buscar();
 	}
 }

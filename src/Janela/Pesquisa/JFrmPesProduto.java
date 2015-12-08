@@ -25,6 +25,10 @@ import java.awt.Component;
 
 public class JFrmPesProduto extends JDialog implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	private ModelTabelaProduto model = new ModelTabelaProduto();
@@ -67,6 +71,7 @@ public class JFrmPesProduto extends JDialog implements ActionListener {
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(table);
+		table.getColumn("DESCRIÇÃO").setPreferredWidth(250); 
 
 		{
 			JPanel buttonPane = new JPanel();
@@ -150,7 +155,9 @@ public class JFrmPesProduto extends JDialog implements ActionListener {
 				(Integer) table.getValueAt(table.getSelectedRow(), 0));
 		JFrmCadProduto c = new JFrmCadProduto();
 		c.inserir(produto);
+		c.setModal(true);
 		c.setVisible(true);
+		buscar();
 	}
 
 	public Produto getObj() {

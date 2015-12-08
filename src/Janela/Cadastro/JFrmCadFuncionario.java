@@ -22,6 +22,10 @@ import java.awt.Color;
 
 public class JFrmCadFuncionario extends JDialog implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtId;
 	private JTextField txtNome;
@@ -32,7 +36,7 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 	private JTextField txtNumero;
 	private JTextField txtCidade;
 	private JTextField txtFone2;
-	private JComboBox boxUF;
+	private JComboBox<String> boxUF;
 	String[] uf = { "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE",
 			"PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO" };
 	private JLabel msn;
@@ -94,6 +98,7 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 		}
 		{
 			txtSobrenome = new JTextField();
+			txtSobrenome.setText(" ");
 			txtSobrenome.setColumns(10);
 			txtSobrenome.setBounds(10, 133, 277, 20);
 			contentPanel.add(txtSobrenome);
@@ -105,6 +110,7 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 		}
 		{
 			txtFone1 = new JTextField();
+			txtFone1.setText("9999999999");
 			txtFone1.setColumns(10);
 			txtFone1.setBounds(10, 180, 133, 20);
 			contentPanel.add(txtFone1);
@@ -116,6 +122,7 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 		}
 		{
 			txtLougradouro = new JTextField();
+			txtLougradouro.setText("?");
 			txtLougradouro.setColumns(10);
 			txtLougradouro.setBounds(10, 231, 277, 20);
 			contentPanel.add(txtLougradouro);
@@ -127,6 +134,7 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 		}
 		{
 			txtBairro = new JTextField();
+			txtBairro.setText("?");
 			txtBairro.setColumns(10);
 			txtBairro.setBounds(10, 282, 168, 20);
 			contentPanel.add(txtBairro);
@@ -138,6 +146,7 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 		}
 		{
 			txtNumero = new JTextField();
+			txtNumero.setText("?");
 			txtNumero.setColumns(10);
 			txtNumero.setBounds(201, 282, 86, 20);
 			contentPanel.add(txtNumero);
@@ -149,6 +158,7 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 		}
 		{
 			txtCidade = new JTextField();
+			txtCidade.setText("?");
 			txtCidade.setColumns(10);
 			txtCidade.setBounds(10, 333, 168, 20);
 			contentPanel.add(txtCidade);
@@ -165,12 +175,13 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 		}
 		{
 			txtFone2 = new JTextField();
+			txtFone2.setText("9999999999");
 			txtFone2.setColumns(10);
 			txtFone2.setBounds(153, 180, 134, 20);
 			contentPanel.add(txtFone2);
 		}
 
-		boxUF = new JComboBox(uf);
+		boxUF = new JComboBox<String>(uf);
 		boxUF.setBounds(201, 333, 86, 20);
 		contentPanel.add(boxUF);
 		boxUF.setSelectedIndex(5);
@@ -223,14 +234,14 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 	private void salvar() {
 		try {
 
-			String nome = txtNome.getText();
-			String sobrenome = txtSobrenome.getText();
-			String numero = txtNumero.getText();
-			String lougradouro = txtLougradouro.getText();
-			String cidade = txtCidade.getText();
-			String bairro = txtBairro.getText();
+			String nome = txtNome.getText().toUpperCase();
+			String sobrenome = txtSobrenome.getText().toUpperCase();
+			String numero = txtNumero.getText().toUpperCase();
+			String lougradouro = txtLougradouro.getText().toUpperCase();
+			String cidade = txtCidade.getText().toUpperCase();
+			String bairro = txtBairro.getText().toUpperCase();
 			String ufEndereco = (String) boxUF.getSelectedItem();
-			String cep = txtCidade.getText();
+			String cep = txtCidade.getText().toUpperCase();
 			Endereco endereco = new Endereco();
 			endereco.setNumero(numero);
 			endereco.setCep(cep);
@@ -240,13 +251,13 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 			endereco.setUfEndereco(ufEndereco);
 			long telefone1 = Long.parseLong(txtFone1.getText());
 			long telefone2 = Long.parseLong(txtFone2.getText());
-		
+
 			String[] lista = { numero, lougradouro, cidade, bairro, ufEndereco, cep, nome, sobrenome };
 			// verifica a existencia de campos vazios
 			boolean liberado = verificaValoresVazios(lista);
-			if (String.valueOf(telefone1).length()<10||String.valueOf(telefone2).length()<10) {
+			if (String.valueOf(telefone1).length() < 10 || String.valueOf(telefone2).length() < 10) {
 				JOptionPane.showMessageDialog(contentPanel, "Digite Pelomenos 10 digitos no telefone incluindo o DDD.");
-				liberado=false;
+				liberado = false;
 			}
 
 			if (liberado) {
@@ -274,24 +285,33 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 
 		} catch (java.lang.NumberFormatException e) {
 			JOptionPane.showMessageDialog(contentPanel, "Preencha os campos de telefone e coloque somente numeros");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 		}
 
 	}
 
 	private boolean verificaValoresVazios(String[] lista) {
-		for (int i = 0; i < lista.length; i++) {
-			System.out.println(lista[i]);
-			if (lista[i].length() <= 0) {
-				msn.setVisible(true);
-				return false;
+		try {
 
+			for (int i = 0; i < lista.length; i++) {
+				System.out.println(lista[i]);
+				if (lista[i].length() <= 0) {
+					msn.setVisible(true);
+					return false;
+
+				}
 			}
-		}
 
-		return true;
+			return true;
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
+			return false;
+		}
 	}
-	
-	//função utilizada de fora da classe para inserir produtos que serão alterados 
+
+	// função utilizada de fora da classe para inserir produtos que serão
+	// alterados
 	public boolean inserir(Funcionario funcionario) {
 		try {
 			setTitle("Alteração de dados Funcionario");
@@ -308,11 +328,10 @@ public class JFrmCadFuncionario extends JDialog implements ActionListener {
 			boxUF.setSelectedItem(funcionario.getEndereco().getUfEndereco());
 			return true;
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(contentPanel, "Erro no sistema");
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 			dispose();
 			return false;
 		}
-		
-		
+
 	}
 }

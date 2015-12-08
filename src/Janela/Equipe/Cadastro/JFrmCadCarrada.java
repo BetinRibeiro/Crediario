@@ -235,8 +235,9 @@ public class JFrmCadCarrada extends JDialog implements ActionListener {
 			txtCustoTotal.setColumns(10);
 		}
 		{
-			JLabel lblCustoTotal = new JLabel("Custo Total");
-			lblCustoTotal.setBounds(572, 60, 94, 14);
+			JLabel lblCustoTotal = new JLabel("Custo Compra Total");
+			lblCustoTotal.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblCustoTotal.setBounds(547, 60, 119, 14);
 			contentPanel.add(lblCustoTotal);
 		}
 		{
@@ -283,8 +284,9 @@ public class JFrmCadCarrada extends JDialog implements ActionListener {
 			contentPanel.add(lblCidade);
 		}
 
-		JLabel lblVendaTotal = new JLabel("Custo Total");
-		lblVendaTotal.setBounds(572, 115, 94, 14);
+		JLabel lblVendaTotal = new JLabel("Valor VendaTotal");
+		lblVendaTotal.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblVendaTotal.setBounds(547, 115, 119, 14);
 		contentPanel.add(lblVendaTotal);
 
 		txtTotalGeral = new JTextField();
@@ -349,19 +351,30 @@ public class JFrmCadCarrada extends JDialog implements ActionListener {
 	}
 
 	private void alterar() {
-		itemAlterando = remover();
+		try {
 
-		txtItemCarradaDescricao.setText(itemAlterando.getProduto().getDescricao());
-		txtItemCarradaID.setText(String.valueOf(itemAlterando.getProduto().getId()));
-		txtQuantidade.setText(String.valueOf(itemAlterando.getQuantidade()));
-		txtPreco.setText(String.valueOf(itemAlterando.getPreco()));
-		txtCusto.setText(String.valueOf(itemAlterando.getCusto()));
+			int linha = table.getSelectedRow();
+			itemAlterando = (ItemCarrada) model.getObj(linha);
 
-		txtQuantidade.setEnabled(true);
-		txtPreco.setEnabled(true);
-		txtCusto.setEnabled(true);
+			if (itemAlterando != null) {
 
-		btnInserir.setEnabled(true);
+				model.removeRow(linha);
+
+				txtItemCarradaDescricao.setText(itemAlterando.getProduto().getDescricao());
+				txtItemCarradaID.setText(String.valueOf(itemAlterando.getProduto().getId()));
+				txtQuantidade.setText(String.valueOf(itemAlterando.getQuantidade()));
+				txtPreco.setText(String.valueOf(itemAlterando.getPreco()));
+				txtCusto.setText(String.valueOf(itemAlterando.getCusto()));
+
+				txtQuantidade.setEnabled(true);
+				txtPreco.setEnabled(true);
+				txtCusto.setEnabled(true);
+
+				btnInserir.setEnabled(true);
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
+		}
 
 	}
 
@@ -380,27 +393,33 @@ public class JFrmCadCarrada extends JDialog implements ActionListener {
 			txtCustoTotal.setText(String.valueOf(valor));
 			txtTotalGeral.setText(String.valueOf(valorPreco));
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente");
-			dispose();
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 		}
 	}
 
 	private ItemCarrada remover() {
 		try {
+			ItemCarrada itemSelecionado = (ItemCarrada) model.getObj(table.getSelectedRow());
+			System.out.println(itemSelecionado.getProduto().getDescricao());
 
-			ItemCarrada itemComp = (ItemCarrada) banco.buscarPorId(ItemCarrada.class,
-					model.removeRow(table.getSelectedRow()));
-			System.out.println(itemComp.getId() + " " + itemComp.getId());
-			boolean a = banco.deletarObjeto(itemComp);
-			System.out.println(a+"Removel item");
-			if (model.getRowCount() <= 0) {
-				btnFinalizar.setEnabled(false);
+			// carrada.getCarrada().remove(itemSelecionado.getId());
+			boolean a = banco.deletarObjeto(itemSelecionado);
+			System.out.println("item removido com sucesso" + a);
+			// carrada.getItemCarrada().remove(itemremovido);
+			// a = banco.salvarObjeto(carrada);
+			if (a) {
+				System.out.println("carrada salva com sucesso" + a);
+				model.removeRow(table.getSelectedRow());
+				if (model.getRowCount() <= 0) {
+					btnFinalizar.setEnabled(false);
+					return itemSelecionado;
+				}
+
 			}
+			return null;
 
-			return itemComp;
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a carrada novamente");
-			dispose();
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 			return null;
 		}
 	}
@@ -433,9 +452,7 @@ public class JFrmCadCarrada extends JDialog implements ActionListener {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			System.out.println(e);
-			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a Carrada");
-			// compra novamente ");
-			// dispose();
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 		}
 	}
 
@@ -451,7 +468,7 @@ public class JFrmCadCarrada extends JDialog implements ActionListener {
 			txtQuantidade.setEnabled(false);
 			txtPreco.setEnabled(false);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a carrada novamente ");
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 			dispose();
 		}
 	}
@@ -475,60 +492,64 @@ public class JFrmCadCarrada extends JDialog implements ActionListener {
 		} catch (java.lang.NullPointerException e) {
 			JOptionPane.showMessageDialog(contentPanel, "Escolha um ItemCarrada para inserir");
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente ");
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 			dispose();
 		}
 
 	}
 
 	private void salvar() {
-		// try {
+		try {
 
-		Equipe equipe = (Equipe) banco.buscarPorId(Equipe.class, Integer.parseInt(txtIdEquipe.getText()));
-		String cidade = txtCidade.getText();
-		float valorFrete = Float.parseFloat(txtTxtfret.getText());
-		float valorTotal = Float.parseFloat(txtTotalGeral.getText());
-		String motorista = txtMotorista.getText();
-		Date data = dtCarrada.getDate();
-		float custo = Float.parseFloat(txtCustoTotal.getText());
-		Carrada carrada = new Carrada(data, motorista, valorTotal, custo, valorFrete, cidade, equipe);
+			Equipe equipe = (Equipe) banco.buscarPorId(Equipe.class, Integer.parseInt(txtIdEquipe.getText()));
+			System.out.println("id da equipe " + equipe.getId());
+			String cidade = txtCidade.getText();
+			float valorFrete = Float.parseFloat(txtTxtfret.getText());
+			float valorTotal = Float.parseFloat(txtTotalGeral.getText());
+			String motorista = txtMotorista.getText();
+			Date data = dtCarrada.getDate();
+			float custo = Float.parseFloat(txtCustoTotal.getText());
+			Carrada carrada = new Carrada(data, motorista, valorTotal, custo, valorFrete, cidade, equipe);
 
-		Set<ItemCarrada> itemcarrada = new HashSet<ItemCarrada>();
+			Set<ItemCarrada> itemcarrada = new HashSet<ItemCarrada>();
 
-		ArrayList<ItemCarrada> array = (ArrayList<ItemCarrada>) model.getDados();
-		for (ItemCarrada itemCarrada2 : array) {
-			itemcarrada.add(itemCarrada2);
-			System.out.println(itemCarrada2.getId());
+			ArrayList<ItemCarrada> array = (ArrayList<ItemCarrada>) model.getDados();
+			for (ItemCarrada itemCarrada2 : array) {
+				itemcarrada.add(itemCarrada2);
+				System.out.println(itemCarrada2.getId());
 
-		}
+			}
 
-		carrada.setCarrada(itemcarrada);
+			carrada.setCarrada(itemcarrada);
 
-		boolean salvo = false;
+			boolean salvo = false;
 
-		if (txtId.getText().length() <= 0) {
+			if (txtId.getText().length() <= 0) {
 
-			salvo = banco.salvarObjeto(carrada);
+				salvo = banco.salvarObjeto(carrada);
 
-		}
-		if (txtId.getText().length() > 0) {
-			carrada.setId(Integer.parseInt(txtId.getText()));
-			salvo = banco.salvarOuAtualizarObjeto(carrada);
+			}
+			if (txtId.getText().length() > 0) {
+				carrada.setId(Integer.parseInt(txtId.getText()));
+				salvo = banco.salvarOuAtualizarObjeto(carrada);
 
-		}
-		for (ItemCarrada insta : array) {
-			insta.setCarrada(carrada);
-			banco.salvarOuAtualizarObjeto(insta);
-		}
+			}
+			for (ItemCarrada insta : array) {
+				insta.setCarrada(carrada);
+				banco.salvarOuAtualizarObjeto(insta);
+			}
 
-		if (salvo) {
-			JOptionPane.showMessageDialog(contentPanel, "Carrada salva no banco com sucesso!");
-			dispose();
-		}
-		if (!salvo) {
-			JOptionPane.showMessageDialog(contentPanel, "Erro Carrada não foi salva no banco.");
-			dispose();
+			if (salvo) {
+				JOptionPane.showMessageDialog(contentPanel, "Carrada salva no banco com sucesso!");
+				dispose();
+			}
+			if (!salvo) {
+				JOptionPane.showMessageDialog(contentPanel, "Erro Carrada não foi salva no banco.");
+				dispose();
 
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 		}
 
 	}
@@ -549,16 +570,8 @@ public class JFrmCadCarrada extends JDialog implements ActionListener {
 			}
 			btnFinalizar.setEnabled(true);
 
-		} catch (
-
-		Exception e)
-
-		{
-			JOptionPane.showMessageDialog(contentPanel,
-					"Erro ao resgatar os ItemCarrada na pesquisa, tente novamente ");
-			System.out.println(e);
-			System.out.println(e.getMessage());
-			dispose();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 		}
 
 	}
@@ -603,6 +616,6 @@ public class JFrmCadCarrada extends JDialog implements ActionListener {
 
 	public void setVisualizar() {
 		contentPanel.setEnabled(false);
-		
+
 	}
 }

@@ -11,7 +11,7 @@ import Bin.Funcionario.*;
 public class ModelTabelaFuncionario extends AbstractTableModel {
 
 	private List<Funcionario> dados;
-	private String[] colunas = { "Código", "Nome", "Telefone", "Telefone"};
+	private String[] colunas = { "CÓDIGO", "NOME", "TELEFONE", "TELEFONE2"};
 	
 
 	// você precisar que os dados também sejam imediatamente alterados no banco
@@ -86,13 +86,12 @@ public class ModelTabelaFuncionario extends AbstractTableModel {
 			return dados.get(linha).getNome()+" "+dados.get(linha).getSobrenome();
 		case 2:
 			String fone = String.valueOf(dados.get(linha).getTelefone1());
-			System.out.println("("+fone.substring(0, 4)+") "+fone.substring(4, 8));
-			return ("("+fone.substring(0, 2)+") "+fone.substring(2, 6)+" - "+fone.substring(6, 10));
+			return ("("+fone.substring(0, 2)+") "+fone.substring(2, 6)+" - "+fone.substring(6, fone.length()));
 //					(String.valueOf(dados.get(linha).getTelefone1())dados.get(linha).getTelefone1()String.valueOf(dados.get(linha).getTelefone1()).substring(2, 6)+" - "+String.valueOf(dados.get(linha).getTelefone1()).substring(6, 10) );
 
 		case 3:
 			String fone2 = String.valueOf(dados.get(linha).getTelefone2());
-			return ("("+fone2.substring(0, 2)+") "+fone2.substring(2, 6)+" - "+fone2.substring(6, 10));
+			return ("("+fone2.substring(0, 2)+") "+fone2.substring(2, 6)+" - "+fone2.substring(6, fone2.length()));
 
 		}
 		return null;

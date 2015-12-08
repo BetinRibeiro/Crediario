@@ -15,7 +15,7 @@ import Bin.Equipe.VendedorEquipe;
 public class ModelTabelaVendedorEquipe extends AbstractTableModel {
 
 	private List<VendedorEquipe> dados;
-	private String[] colunas = { "Código", "Nome", "Venda", "Comissão", "Promissoria", "Vale", "Saldo"};
+	private String[] colunas = { "CÓDIGO", "NOME", "VENDA", "COMISSÃO", "PROMISSORIA", "CADERNO", "SALDO"};
 	
 	DecimalFormat df = new DecimalFormat("0.00");
     SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy" );
@@ -93,7 +93,7 @@ public class ModelTabelaVendedorEquipe extends AbstractTableModel {
 		case 2:
 			return df.format(dados.get(linha).getvenda());
 		case 3:
-			return (dados.get(linha).getVlrComissaoVenda());
+			return df.format(dados.get(linha).getVlrComissaoVenda());
 		case 4:
 			return df.format(dados.get(linha).getValeLocal());
 		case 5:
@@ -103,6 +103,11 @@ public class ModelTabelaVendedorEquipe extends AbstractTableModel {
 
 		}
 		return null;
+	}
+
+	public VendedorEquipe getObj(int selectedRow) {
+		// TODO Auto-generated method stub
+		return dados.get(selectedRow);
 	}
 
 }

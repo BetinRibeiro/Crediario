@@ -3,41 +3,53 @@ package Painel.Dinamico;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.BorderFactory;
+
 import javax.swing.JLabel;
 import java.awt.Font;
-import com.toedter.calendar.JDateChooser;
-import java.util.Date;
+
+import Bin.Equipe.Equipe;
+import Painel.Dinamico.ReceitasDespesasExtra.JPnlDespesasExtra;
+import Painel.Dinamico.ReceitasDespesasExtra.JPnlReceitasExtra;
+import Persistence.Dao;
+
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.TitledBorder;
-import javax.swing.UIManager;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class JPnlEquipePrincipal extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
-	private JTextField textField_12;
-	private JTextField textField_13;
-	private JTextField textField_14;
-	private JTextField textField_15;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
+public class JPnlEquipePrincipal extends JPanel implements ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JTextField txtReceitaPreso;
+	private JTextField txtReceitavista;
+	private JTextField txtReceitaTotal;
+	private JTextField txtReceitaextra;
+	private JTextField txtComissaoChefe;
+	private JTextField txtCustoReal;
+	private JTextField txtCustoRetorno;
+	private JTextField txtCustoCarradas;
+	private JTextField txtComissaoVendedor;
+	private JTextField txtComissaoCobrador;
+	private JTextField txtDespLocal;
+	private JTextField txtComissaoTotal;
+	private JTextField txtDespTotal;
+	private JTextField txtDespExtra;
+	private JTextField txtDespCobranca;
+	private JTextField txtDespVenda;
+	private Equipe equipe;
+	private Dao banco = new Dao();
+	private JPanel painelEntradasSaidas;
+	private JTextField txtLucroBruto;
+	private JTextField txtLucroLiquido;
 
 	/**
 	 * Create the panel.
 	 */
-	public JPnlEquipePrincipal() {
+	public JPnlEquipePrincipal(Equipe equipe) {
+		this.equipe = equipe;
 		setBorder(new LineBorder(new Color(0, 0, 0)));
 		setBounds(0, 0, 1075, 570);
 		setLayout(null);
@@ -48,245 +60,367 @@ public class JPnlEquipePrincipal extends JPanel {
 		add(lblInformaesDaEquipe);
 
 		JPanel panel = new JPanel();
-		panel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-
-		// panel.add(BorderFactory.createTitledBorder("Título"));
-		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Mercadoria e Vendas", TitledBorder.CENTER,
-				TitledBorder.TOP, null, null));
-		panel.setBounds(20, 45, 295, 300);
+		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel.setBounds(10, 46, 318, 495);
 		add(panel);
 		panel.setLayout(null);
 
-		JLabel lblDataSaida = new JLabel("Data Saida");
-		lblDataSaida.setBounds(20, 40, 120, 20);
-		panel.add(lblDataSaida);
-		lblDataSaida.setHorizontalAlignment(SwingConstants.RIGHT);
+		JLabel lblPraso = new JLabel("RECEITA. PRASO");
+		lblPraso.setBounds(10, 11, 110, 20);
+		panel.add(lblPraso);
 
-		JDateChooser dateChooser = new JDateChooser((Date) null);
-		dateChooser.setBounds(20, 65, 120, 20);
-		panel.add(dateChooser);
+		txtReceitaPreso = new JTextField("0,00");
+		txtReceitaPreso.setHorizontalAlignment(SwingConstants.CENTER);
+		txtReceitaPreso.setForeground(new Color(255, 250, 205));
+		txtReceitaPreso.setEnabled(false);
+		txtReceitaPreso.setDisabledTextColor(Color.BLACK);
+		txtReceitaPreso.setColumns(10);
+		txtReceitaPreso.setBackground(new Color(255, 250, 205));
+		txtReceitaPreso.setBounds(120, 11, 122, 20);
+		panel.add(txtReceitaPreso);
 
-		textField = new JTextField();
-		textField.setBounds(20, 115, 122, 20);
-		panel.add(textField);
-		textField.setColumns(10);
+		JLabel lblVista = new JLabel("RECEITA. VISTA");
+		lblVista.setBounds(10, 37, 110, 20);
+		panel.add(lblVista);
 
-		JLabel lblValorCarradas = new JLabel("Valor Carradas");
-		lblValorCarradas.setBounds(20, 90, 122, 20);
-		panel.add(lblValorCarradas);
-		lblValorCarradas.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtReceitavista = new JTextField("0,00");
+		txtReceitavista.setHorizontalAlignment(SwingConstants.CENTER);
+		txtReceitavista.setForeground(new Color(255, 250, 205));
+		txtReceitavista.setEnabled(false);
+		txtReceitavista.setDisabledTextColor(Color.BLACK);
+		txtReceitavista.setColumns(10);
+		txtReceitavista.setBackground(new Color(255, 250, 205));
+		txtReceitavista.setBounds(120, 37, 122, 20);
+		panel.add(txtReceitavista);
 
-		JLabel lblValorPraso = new JLabel("Valor \u00E0 Praso");
-		lblValorPraso.setBounds(20, 140, 122, 20);
-		panel.add(lblValorPraso);
-		lblValorPraso.setHorizontalAlignment(SwingConstants.RIGHT);
+		JLabel lblTotalReceitas = new JLabel("TOTAL RECEITAS");
+		lblTotalReceitas.setBounds(20, 88, 110, 20);
+		panel.add(lblTotalReceitas);
 
-		textField_1 = new JTextField();
-		textField_1.setBounds(20, 165, 122, 20);
-		panel.add(textField_1);
-		textField_1.setColumns(10);
+		txtReceitaTotal = new JTextField("0,00");
+		txtReceitaTotal.setHorizontalAlignment(SwingConstants.CENTER);
+		txtReceitaTotal.setForeground(new Color(255, 250, 205));
+		txtReceitaTotal.setEnabled(false);
+		txtReceitaTotal.setDisabledTextColor(Color.BLACK);
+		txtReceitaTotal.setColumns(10);
+		txtReceitaTotal.setBackground(new Color(255, 250, 205));
+		txtReceitaTotal.setBounds(150, 88, 122, 20);
+		panel.add(txtReceitaTotal);
 
-		JLabel lblValorVista = new JLabel("Valor \u00E0 Vista");
-		lblValorVista.setBounds(20, 240, 122, 20);
-		panel.add(lblValorVista);
-		lblValorVista.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtReceitaextra = new JTextField("0,00");
+		txtReceitaextra.setHorizontalAlignment(SwingConstants.CENTER);
+		txtReceitaextra.setForeground(new Color(255, 250, 205));
+		txtReceitaextra.setEnabled(false);
+		txtReceitaextra.setDisabledTextColor(Color.BLACK);
+		txtReceitaextra.setColumns(10);
+		txtReceitaextra.setBackground(new Color(255, 250, 205));
+		txtReceitaextra.setBounds(120, 62, 122, 20);
+		panel.add(txtReceitaextra);
 
-		textField_2 = new JTextField();
-		textField_2.setBounds(20, 265, 122, 20);
-		panel.add(textField_2);
-		textField_2.setColumns(10);
+		JLabel lblRecebimentos = new JLabel("RECEITA EXTRA");
+		lblRecebimentos.setBounds(10, 62, 110, 20);
+		panel.add(lblRecebimentos);
 
-		textField_3 = new JTextField();
-		textField_3.setBounds(20, 215, 122, 20);
-		panel.add(textField_3);
-		textField_3.setColumns(10);
+		JLabel lblTotalCarradas = new JLabel("COMIS.CHEFE");
+		lblTotalCarradas.setBounds(10, 191, 110, 20);
+		panel.add(lblTotalCarradas);
 
-		JLabel lblValorRetorno = new JLabel("Valor Retorno");
-		lblValorRetorno.setBounds(20, 190, 122, 20);
-		panel.add(lblValorRetorno);
-		lblValorRetorno.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtComissaoChefe = new JTextField("0,00");
+		txtComissaoChefe.setHorizontalAlignment(SwingConstants.CENTER);
+		txtComissaoChefe.setForeground(new Color(255, 250, 205));
+		txtComissaoChefe.setEnabled(false);
+		txtComissaoChefe.setDisabledTextColor(Color.BLACK);
+		txtComissaoChefe.setColumns(10);
+		txtComissaoChefe.setBackground(new Color(255, 250, 205));
+		txtComissaoChefe.setBounds(120, 191, 122, 20);
+		panel.add(txtComissaoChefe);
 
-		JLabel lblValorCompra = new JLabel("Custo Carradas");
-		lblValorCompra.setBounds(150, 90, 122, 20);
-		panel.add(lblValorCompra);
-		lblValorCompra.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtCustoReal = new JTextField("0,00");
+		txtCustoReal.setHorizontalAlignment(SwingConstants.CENTER);
+		txtCustoReal.setForeground(new Color(255, 250, 205));
+		txtCustoReal.setEnabled(false);
+		txtCustoReal.setDisabledTextColor(Color.BLACK);
+		txtCustoReal.setColumns(10);
+		txtCustoReal.setBackground(new Color(255, 250, 205));
+		txtCustoReal.setBounds(150, 165, 122, 20);
+		panel.add(txtCustoReal);
 
-		JLabel lblCustoRetorno = new JLabel("Custo Retorno");
-		lblCustoRetorno.setBounds(150, 190, 122, 20);
+		JLabel lblTotalCusto = new JLabel("TOTAL CUSTO");
+		lblTotalCusto.setBounds(20, 165, 110, 20);
+		panel.add(lblTotalCusto);
+
+		txtCustoRetorno = new JTextField("0,00");
+		txtCustoRetorno.setHorizontalAlignment(SwingConstants.CENTER);
+		txtCustoRetorno.setForeground(new Color(255, 250, 205));
+		txtCustoRetorno.setEnabled(false);
+		txtCustoRetorno.setDisabledTextColor(Color.BLACK);
+		txtCustoRetorno.setColumns(10);
+		txtCustoRetorno.setBackground(new Color(255, 250, 205));
+		txtCustoRetorno.setBounds(120, 140, 122, 20);
+		panel.add(txtCustoRetorno);
+
+		JLabel lblCustoRetorno = new JLabel("CUSTO RETORNO");
+		lblCustoRetorno.setBounds(10, 140, 110, 20);
 		panel.add(lblCustoRetorno);
-		lblCustoRetorno.setHorizontalAlignment(SwingConstants.RIGHT);
 
-		JLabel lblCustoPraso = new JLabel("Custo Praso");
-		lblCustoPraso.setBounds(150, 140, 122, 20);
-		panel.add(lblCustoPraso);
-		lblCustoPraso.setHorizontalAlignment(SwingConstants.RIGHT);
+		JLabel lblCustoTotal = new JLabel("CUSTO TOTAL");
+		lblCustoTotal.setBounds(10, 114, 110, 20);
+		panel.add(lblCustoTotal);
 
-		JLabel lblCustoVista = new JLabel("Custo \u00E0 Vista");
-		lblCustoVista.setBounds(150, 240, 122, 20);
-		panel.add(lblCustoVista);
-		lblCustoVista.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtCustoCarradas = new JTextField("0,00");
+		txtCustoCarradas.setHorizontalAlignment(SwingConstants.CENTER);
+		txtCustoCarradas.setForeground(new Color(255, 250, 205));
+		txtCustoCarradas.setEnabled(false);
+		txtCustoCarradas.setDisabledTextColor(Color.BLACK);
+		txtCustoCarradas.setColumns(10);
+		txtCustoCarradas.setBackground(new Color(255, 250, 205));
+		txtCustoCarradas.setBounds(120, 114, 122, 20);
+		panel.add(txtCustoCarradas);
 
-		textField_12 = new JTextField();
-		textField_12.setBounds(150, 115, 122, 20);
-		panel.add(textField_12);
-		textField_12.setColumns(10);
+		JLabel lblComisVendedor = new JLabel("COMIS. VENDEDOR");
+		lblComisVendedor.setBounds(10, 215, 110, 20);
+		panel.add(lblComisVendedor);
 
-		textField_13 = new JTextField();
-		textField_13.setBounds(150, 165, 122, 20);
-		panel.add(textField_13);
-		textField_13.setColumns(10);
+		txtComissaoVendedor = new JTextField("0,00");
+		txtComissaoVendedor.setHorizontalAlignment(SwingConstants.CENTER);
+		txtComissaoVendedor.setForeground(new Color(255, 250, 205));
+		txtComissaoVendedor.setEnabled(false);
+		txtComissaoVendedor.setDisabledTextColor(Color.BLACK);
+		txtComissaoVendedor.setColumns(10);
+		txtComissaoVendedor.setBackground(new Color(255, 250, 205));
+		txtComissaoVendedor.setBounds(120, 215, 122, 20);
+		panel.add(txtComissaoVendedor);
 
-		textField_14 = new JTextField();
-		textField_14.setBounds(150, 215, 122, 20);
-		panel.add(textField_14);
-		textField_14.setColumns(10);
+		JLabel lblComisCobrador = new JLabel("COMIS. COBRADOR");
+		lblComisCobrador.setBounds(10, 241, 110, 20);
+		panel.add(lblComisCobrador);
 
-		textField_15 = new JTextField();
-		textField_15.setBounds(150, 265, 122, 20);
-		panel.add(textField_15);
-		textField_15.setColumns(10);
+		txtComissaoCobrador = new JTextField("0,00");
+		txtComissaoCobrador.setHorizontalAlignment(SwingConstants.CENTER);
+		txtComissaoCobrador.setForeground(new Color(255, 250, 205));
+		txtComissaoCobrador.setEnabled(false);
+		txtComissaoCobrador.setDisabledTextColor(Color.BLACK);
+		txtComissaoCobrador.setColumns(10);
+		txtComissaoCobrador.setBackground(new Color(255, 250, 205));
+		txtComissaoCobrador.setBounds(120, 241, 122, 20);
+		panel.add(txtComissaoCobrador);
 
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new CompoundBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)),
-				"Despesas e Comiss\u00E3o", TitledBorder.CENTER, TitledBorder.TOP, null, null), null));
-		panel_1.setBounds(325, 10, 295, 205);
-		add(panel_1);
-		panel_1.setLayout(null);
+		JLabel lblDespesaLocal = new JLabel("DESP. LOCAL");
+		lblDespesaLocal.setBounds(10, 315, 110, 20);
+		panel.add(lblDespesaLocal);
 
-		JLabel lblDespesaVenda = new JLabel("Despesa Venda");
-		lblDespesaVenda.setBounds(20, 90, 120, 20);
-		panel_1.add(lblDespesaVenda);
-		lblDespesaVenda.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtDespLocal = new JTextField("0,00");
+		txtDespLocal.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDespLocal.setForeground(new Color(255, 250, 205));
+		txtDespLocal.setEnabled(false);
+		txtDespLocal.setDisabledTextColor(Color.BLACK);
+		txtDespLocal.setColumns(10);
+		txtDespLocal.setBackground(new Color(255, 250, 205));
+		txtDespLocal.setBounds(120, 315, 122, 20);
+		panel.add(txtDespLocal);
 
-		textField_8 = new JTextField();
-		textField_8.setBounds(20, 115, 122, 20);
-		panel_1.add(textField_8);
-		textField_8.setColumns(10);
+		txtComissaoTotal = new JTextField("0,00");
+		txtComissaoTotal.setHorizontalAlignment(SwingConstants.CENTER);
+		txtComissaoTotal.setForeground(new Color(255, 250, 205));
+		txtComissaoTotal.setEnabled(false);
+		txtComissaoTotal.setDisabledTextColor(Color.BLACK);
+		txtComissaoTotal.setColumns(10);
+		txtComissaoTotal.setBackground(new Color(255, 250, 205));
+		txtComissaoTotal.setBounds(150, 266, 122, 20);
+		panel.add(txtComissaoTotal);
 
-		JLabel lblDespesaLocal = new JLabel("Despesa Local");
-		lblDespesaLocal.setBounds(150, 90, 120, 20);
-		panel_1.add(lblDespesaLocal);
-		lblDespesaLocal.setHorizontalAlignment(SwingConstants.RIGHT);
+		JLabel lblTotalComissao = new JLabel("TOTAL COMISSAO");
+		lblTotalComissao.setBounds(20, 266, 110, 20);
+		panel.add(lblTotalComissao);
 
-		textField_11 = new JTextField();
-		textField_11.setBounds(150, 115, 122, 20);
-		panel_1.add(textField_11);
-		textField_11.setColumns(10);
+		JLabel lblTotalDesp = new JLabel("TOTAL DESP");
+		lblTotalDesp.setBounds(20, 418, 110, 20);
+		panel.add(lblTotalDesp);
 
-		textField_9 = new JTextField();
-		textField_9.setBounds(152, 165, 122, 20);
-		panel_1.add(textField_9);
-		textField_9.setColumns(10);
+		txtDespTotal = new JTextField("0,00");
+		txtDespTotal.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDespTotal.setForeground(new Color(255, 250, 205));
+		txtDespTotal.setEnabled(false);
+		txtDespTotal.setDisabledTextColor(Color.BLACK);
+		txtDespTotal.setColumns(10);
+		txtDespTotal.setBackground(new Color(255, 250, 205));
+		txtDespTotal.setBounds(150, 418, 122, 20);
+		panel.add(txtDespTotal);
 
-		JLabel lblTotalVales = new JLabel("Total Comiss\u00E3o");
-		lblTotalVales.setBounds(152, 140, 120, 20);
-		panel_1.add(lblTotalVales);
-		lblTotalVales.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtDespExtra = new JTextField("0,00");
+		txtDespExtra.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDespExtra.setForeground(new Color(255, 250, 205));
+		txtDespExtra.setEnabled(false);
+		txtDespExtra.setDisabledTextColor(Color.BLACK);
+		txtDespExtra.setColumns(10);
+		txtDespExtra.setBackground(new Color(255, 250, 205));
+		txtDespExtra.setBounds(120, 392, 122, 20);
+		panel.add(txtDespExtra);
 
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(20, 165, 122, 20);
-		panel_1.add(textField_4);
+		JLabel lblDespLanada = new JLabel("DESP. LAN\u00C7ADA");
+		lblDespLanada.setBounds(10, 392, 110, 20);
+		panel.add(lblDespLanada);
 
-		JLabel lblDespesaComisso = new JLabel("Despesa Cobran\u00E7a");
-		lblDespesaComisso.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblDespesaComisso.setBounds(22, 140, 120, 20);
-		panel_1.add(lblDespesaComisso);
+		txtDespCobranca = new JTextField("0,00");
+		txtDespCobranca.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDespCobranca.setForeground(new Color(255, 250, 205));
+		txtDespCobranca.setEnabled(false);
+		txtDespCobranca.setDisabledTextColor(Color.BLACK);
+		txtDespCobranca.setColumns(10);
+		txtDespCobranca.setBackground(new Color(255, 250, 205));
+		txtDespCobranca.setBounds(120, 367, 122, 20);
+		panel.add(txtDespCobranca);
 
-		JLabel lblDataChegada = new JLabel("Data Chegada");
-		lblDataChegada.setBounds(20, 40, 120, 20);
-		panel_1.add(lblDataChegada);
-		lblDataChegada.setHorizontalAlignment(SwingConstants.RIGHT);
+		JLabel lblDespCobrana = new JLabel("DESP. COBRAN\u00C7A");
+		lblDespCobrana.setBounds(10, 367, 110, 20);
+		panel.add(lblDespCobrana);
 
-		JDateChooser dateChooser_1 = new JDateChooser((Date) null);
-		dateChooser_1.setBounds(20, 65, 122, 20);
-		panel_1.add(dateChooser_1);
+		JLabel lblDespesaVenda = new JLabel("DESP. VENDA");
+		lblDespesaVenda.setBounds(10, 341, 110, 20);
+		panel.add(lblDespesaVenda);
 
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new CompoundBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)),
-				"Recebimento Cobran\u00E7a", TitledBorder.CENTER, TitledBorder.TOP, null, null), null));
-		panel_2.setBounds(630, 10, 295, 205);
-		add(panel_2);
-		panel_2.setLayout(null);
+		txtDespVenda = new JTextField("0,00");
+		txtDespVenda.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDespVenda.setForeground(new Color(255, 250, 205));
+		txtDespVenda.setEnabled(false);
+		txtDespVenda.setDisabledTextColor(Color.BLACK);
+		txtDespVenda.setColumns(10);
+		txtDespVenda.setBackground(new Color(255, 250, 205));
+		txtDespVenda.setBounds(120, 341, 122, 20);
+		panel.add(txtDespVenda);
 
-		textField_10 = new JTextField();
-		textField_10.setBounds(10, 115, 122, 20);
-		panel_2.add(textField_10);
-		textField_10.setColumns(10);
+		JButton btnAtualizar = new JButton("Atualizar");
+		btnAtualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				atualizar();
+			}
 
-		JLabel lblPontoDeEquilibrio = new JLabel("Ponto de Equilibrio");
-		lblPontoDeEquilibrio.setBounds(10, 90, 122, 20);
-		panel_2.add(lblPontoDeEquilibrio);
-		lblPontoDeEquilibrio.setHorizontalAlignment(SwingConstants.RIGHT);
+		});
+		btnAtualizar.setBounds(10, 459, 79, 25);
+		panel.add(btnAtualizar);
+		
+		txtLucroBruto = new JTextField("0.0");
+		txtLucroBruto.setHorizontalAlignment(SwingConstants.CENTER);
+		txtLucroBruto.setForeground(new Color(255, 250, 205));
+		txtLucroBruto.setEnabled(false);
+		txtLucroBruto.setDisabledTextColor(Color.BLACK);
+		txtLucroBruto.setColumns(10);
+		txtLucroBruto.setBackground(new Color(255, 250, 205));
+		txtLucroBruto.setBounds(222, 290, 86, 20);
+		panel.add(txtLucroBruto);
+		
+		JLabel lblBruto = new JLabel("BRUTO");
+		lblBruto.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblBruto.setBounds(99, 290, 122, 20);
+		panel.add(lblBruto);
+		
+		JLabel lblLiquido = new JLabel("LIQUIDO");
+		lblLiquido.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblLiquido.setBounds(99, 445, 122, 20);
+		panel.add(lblLiquido);
+		
+		txtLucroLiquido = new JTextField("0.0");
+		txtLucroLiquido.setHorizontalAlignment(SwingConstants.CENTER);
+		txtLucroLiquido.setForeground(new Color(255, 250, 205));
+		txtLucroLiquido.setEnabled(false);
+		txtLucroLiquido.setDisabledTextColor(Color.BLACK);
+		txtLucroLiquido.setColumns(10);
+		txtLucroLiquido.setBackground(new Color(255, 250, 205));
+		txtLucroLiquido.setBounds(222, 445, 86, 20);
+		panel.add(txtLucroLiquido);
 
-		JDateChooser dateChooser_2 = new JDateChooser((Date) null);
-		dateChooser_2.setBounds(10, 65, 122, 20);
-		panel_2.add(dateChooser_2);
+		painelEntradasSaidas = new Painel.Dinamico.ReceitasDespesasExtra.JPnlDespesasExtra(equipe);
+		painelEntradasSaidas.setBounds(338, 80, 727, 461);
+		add(painelEntradasSaidas);
 
-		JLabel lblDataCobrana = new JLabel("Dia da Cobran\u00E7a");
-		lblDataCobrana.setBounds(10, 40, 122, 20);
-		panel_2.add(lblDataCobrana);
-		lblDataCobrana.setHorizontalAlignment(SwingConstants.RIGHT);
+		JButton btnReceitas = new JButton("Receitas");
+		btnReceitas.addActionListener(this);
+		btnReceitas.setBounds(338, 46, 89, 23);
+		add(btnReceitas);
 
-		JLabel lblFinalCobrana = new JLabel("Final Cobran\u00E7a");
-		lblFinalCobrana.setBounds(150, 40, 101, 20);
-		panel_2.add(lblFinalCobrana);
-		lblFinalCobrana.setHorizontalAlignment(SwingConstants.RIGHT);
+		JButton btnDespesas = new JButton("Despesas");
+		btnDespesas.addActionListener(this);
+		btnDespesas.setBounds(437, 46, 89, 23);
+		add(btnDespesas);
+		atualizar();
 
-		JDateChooser dateChooser_3 = new JDateChooser((Date) null);
-		dateChooser_3.setBounds(150, 65, 122, 20);
-		panel_2.add(dateChooser_3);
+	}
 
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(150, 115, 122, 20);
-		panel_2.add(textField_5);
+	private void atualizar() {
+		equipe = (Equipe) banco.buscarPorId(Equipe.class, equipe.getId());
 
-		JLabel lblValorDepositado = new JLabel("Valor Depositado");
-		lblValorDepositado.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblValorDepositado.setBounds(150, 90, 122, 20);
-		panel_2.add(lblValorDepositado);
+		float recebido = equipe.getCobranca().getRecebidoTotal();
+		txtReceitaPreso.setText(String.valueOf(recebido));
+		float vendaVista = equipe.getVenda().getVendaVista();
+		txtReceitavista.setText(String.valueOf(vendaVista));
+		float receitaExtra = equipe.getTotalreceitaExtra();
+		txtReceitaextra.setText(String.valueOf(receitaExtra));
+		float receitaTotal = recebido + vendaVista + receitaExtra;
+		txtReceitaTotal.setText(String.valueOf(receitaTotal));
 
-		JLabel lblValorCobrado = new JLabel("Valor Cobrado");
-		lblValorCobrado.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblValorCobrado.setBounds(10, 140, 122, 20);
-		panel_2.add(lblValorCobrado);
+		float custoCarrada = equipe.getCustoCarradas();
+		txtCustoCarradas.setText(String.valueOf(custoCarrada));
+		float custoRetorno = equipe.getCustoRetornos();
+		txtCustoRetorno.setText(String.valueOf(custoRetorno));
+		float custoReal = custoCarrada - custoRetorno;
+		txtCustoReal.setText(String.valueOf(custoReal));
 
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(10, 165, 122, 20);
-		panel_2.add(textField_6);
+		float comissaochefe = equipe.getChefe().getComissaoVenda(equipe.getVenda().getVendaPraso());
+		txtComissaoChefe.setText(String.valueOf(comissaochefe));
+		float comissaocobrador = equipe.getCobranca().getCobrador().getComissao(recebido);
+		txtComissaoCobrador.setText(String.valueOf(comissaocobrador));
+		float comissaovendedor = equipe.getComissaoVendedores();
+		txtComissaoVendedor.setText(String.valueOf(comissaovendedor));
+		float comissaoTotal = comissaochefe + comissaocobrador + comissaovendedor;
+		txtComissaoTotal.setText(String.valueOf(comissaoTotal));
 
-		JLabel lblResultado = new JLabel("Resultado");
-		lblResultado.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblResultado.setBounds(150, 140, 122, 20);
-		panel_2.add(lblResultado);
+		float despMenutencao = equipe.getValorManutencao();
+		float despFret = equipe.getValorFretes();
+		float perca = equipe.getDividaVendedores();
+		float despLocal = despMenutencao + despFret + perca;
+		txtDespLocal.setText(String.valueOf(despLocal));
+		float despVenda = equipe.getVenda().getDespesa().getTotalDespesa();
+		txtDespVenda.setText(String.valueOf(despVenda));
+		float despCobranca =  equipe.getCobranca().getDespesa().getTotalDespesa();;
+		txtDespCobranca.setText(String.valueOf(despCobranca));
+		float despExtra = equipe.getTotalDespExtra();
+		txtDespExtra.setText(String.valueOf(despExtra));
+		float despTotal = despCobranca + despExtra + despVenda + despLocal;
+		txtDespTotal.setText(String.valueOf(despTotal));
+		
+		float lucroBruto = receitaTotal-custoReal-comissaoTotal;
+		
+		txtLucroBruto.setText(String.valueOf(lucroBruto));
+		float lucroLiquido= lucroBruto-despTotal;
+		txtLucroLiquido.setText(String.valueOf(lucroLiquido));
 
-		textField_7 = new JTextField();
-		textField_7.setColumns(10);
-		textField_7.setBounds(150, 165, 122, 20);
-		panel_2.add(textField_7);
+	}
 
-		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_3.setBounds(325, 226, 730, 339);
-		add(panel_3);
-		panel_3.setLayout(null);
-		JPanel pn = new JPanelGrafico();
-		pn.setBounds(0, 0, 730, 339);
-		panel_3.add(pn);
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String acao = e.getActionCommand();
 
-		JPanel panel_4 = new JPanel();
-		JPanel pl = new grafico();
-		panel_4.setBounds(20, 360, 295, 199);
-		add(panel_4);
-		panel_4.setLayout(null);
-		panel_4.add(pl);
+		switch (acao) {
+		case "Receitas":
+			painelEntradasSaidas.removeAll();
+			painelEntradasSaidas.repaint();
+			JPnlReceitasExtra painel=new JPnlReceitasExtra(equipe);
+			painelEntradasSaidas.add(painel);;
+			painelEntradasSaidas.validate();
+			
 
-		JLabel lblGraficoDePizza = new JLabel("Grafico de Pizza");
-		lblGraficoDePizza.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblGraficoDePizza.setBounds(86, 88, 136, 54);
-		panel_4.add(lblGraficoDePizza);
+			break;
+		case "Despesas":
+			painelEntradasSaidas.removeAll();
+			painelEntradasSaidas.repaint();
+			JPnlDespesasExtra painel2=new JPnlDespesasExtra(equipe);
+			painelEntradasSaidas.add(painel2);;
+			painelEntradasSaidas.validate();
+			break;
+
+		default:
+			break;
+		}
 
 	}
 }

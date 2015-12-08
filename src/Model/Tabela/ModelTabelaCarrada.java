@@ -14,7 +14,7 @@ import Bin.Mercadoria.Carrada;
 public class ModelTabelaCarrada extends AbstractTableModel {
 
 	private List<Carrada> dados;
-	private String[] colunas = { "Código", "Cidade", "Data", "Motorista", "Valor"};
+	private String[] colunas = { "CÓDIGO", "CIDADE", "DATA", "MOTORISTA", "VALOR"};
 	
 	DecimalFormat df = new DecimalFormat("0.00");
     SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy" );

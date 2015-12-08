@@ -166,8 +166,8 @@ public class Dao {
 			sessao = HibernateUtil.getSession().openSession();
 
 			if (nomeBuscar == null || nomeBuscar.trim().equals(""))
-				return sessao.createCriteria(classe).addOrder(Order.desc("id")).list();
-			return sessao.createCriteria(classe).add(Restrictions.ilike(coluna, nomeBuscar, MatchMode.ANYWHERE)).list();
+				return sessao.createCriteria(classe).addOrder(Order.desc("id")).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+			return sessao.createCriteria(classe).add(Restrictions.ilike(coluna, nomeBuscar, MatchMode.ANYWHERE)).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 			// (List<?>)
 			// this.sessao.createCriteria(classe).add(Restrictions.like(coluna,
 			// "%"+nomeBuscar+"%")).list();

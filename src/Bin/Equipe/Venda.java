@@ -21,251 +21,222 @@ public class Venda {
 	@Basic(optional = false)
 	@Column(name = "id", columnDefinition = "serial", nullable = false)
 	private Integer id;
-	
+
 	@Column(name = "data_saida")
 	private Date dataSaida;
-	
+
 	@Column(name = "data_chegada")
 	private Date dataChegada;
-	
+
 	@Column(name = "total_carradas")
 	private float totalCarradas;
-	
+
 	@Column(name = "venda_praso")
 	private float vendaPraso;
-	
-	
+
 	@Column(name = "retorno")
 	private float retorno;
-	
+
 	@Column(name = "adiantamento")
 	private float adiantamento;
-	
+
 	@Column(name = "venda_vista")
 	private float vendaVista;
-	
+
 	@Column(name = "entradas")
 	private float entradas;
-	
-	
+
 	@Column(name = "data_cobranca")
 	private Date diaCobranca;
-	
+
 	@Column(name = "ultimo_dia")
 	private Date ultimoDiaCobranca;
-	
+
 	@Column(name = "primeira_cidade")
 	private String primeiraCidade;
-	
+
 	@Column(name = "estado")
 	private String estado;
-	
+
 	@Embedded
 	private Despesa despesa;
-	
+
 	@Column(name = "dinhe_devolvido")
 	private float dinheiroDevolvido;
 
 	@Column(name = "vale_caderno")
 	private float valeCaderno;
-
 	
+	@Column(name = "custo_carrada")
+	private float custoCarrada;
+	
+	@Column(name = "custo_retorno")
+	private float custoRetorno;
+
+	public float getCustoCarrada() {
+		return custoCarrada;
+	}
+
+	public void setCustoCarrada(float custoCarrada) {
+		this.custoCarrada = custoCarrada;
+	}
+
+	public float getCustoRetorno() {
+		return custoRetorno;
+	}
+
+	public void setCustoRetorno(float custoRetorno) {
+		this.custoRetorno = custoRetorno;
+	}
 
 	public Integer getId() {
 		return id;
 	}
 
-
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-
 
 	public Date getDataSaida() {
 		return dataSaida;
 	}
 
-
-
 	public void setDataSaida(Date dataSaida) {
 		this.dataSaida = dataSaida;
 	}
-
-
 
 	public Date getDataChegada() {
 		return dataChegada;
 	}
 
-
-
 	public void setDataChegada(Date dataChegada) {
 		this.dataChegada = dataChegada;
 	}
-
-
 
 	public float getTotalCarradas() {
 		return totalCarradas;
 	}
 
-
-
 	public void setTotalCarradas(float totalCarradas) {
 		this.totalCarradas = totalCarradas;
 	}
-
-
 
 	public float getVendaPraso() {
 		return vendaPraso;
 	}
 
-
-
 	public void setVendaPraso(float vendaPraso) {
 		this.vendaPraso = vendaPraso;
 	}
-
-
 
 	public float getRetorno() {
 		return retorno;
 	}
 
-
-
 	public void setRetorno(float retorno) {
 		this.retorno = retorno;
 	}
-
-
 
 	public float getAdiantamento() {
 		return adiantamento;
 	}
 
-
-
 	public void setAdiantamento(float adiantamento) {
 		this.adiantamento = adiantamento;
 	}
-
-
 
 	public float getVendaVista() {
 		return vendaVista;
 	}
 
-
-
 	public void setVendaVista(float vendaVista) {
 		this.vendaVista = vendaVista;
 	}
-
-
 
 	public float getEntradas() {
 		return entradas;
 	}
 
-
-
 	public void setEntradas(float entradas) {
 		this.entradas = entradas;
 	}
-
-
 
 	public Date getDiaCobranca() {
 		return diaCobranca;
 	}
 
-
-
 	public void setDiaCobranca(Date diaCobranca) {
 		this.diaCobranca = diaCobranca;
 	}
-
-
 
 	public Date getUltimoDiaCobranca() {
 		return ultimoDiaCobranca;
 	}
 
-
-
 	public void setUltimoDiaCobranca(Date ultimoDiaCobranca) {
 		this.ultimoDiaCobranca = ultimoDiaCobranca;
 	}
-
-
 
 	public String getPrimeiraCidade() {
 		return primeiraCidade;
 	}
 
-
-
 	public void setPrimeiraCidade(String primeiraCidade) {
 		this.primeiraCidade = primeiraCidade;
 	}
-
-
 
 	public String getEstado() {
 		return estado;
 	}
 
-
-
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-
-
 
 	public Despesa getDespesa() {
 		return despesa;
 	}
 
-
-
 	public void setDespesa(Despesa despesa) {
 		this.despesa = despesa;
 	}
-
-
 
 	public float getDinheiroDevolvido() {
 		return dinheiroDevolvido;
 	}
 
-
-
 	public void setDinheiroDevolvido(float dinheiroDevolvido) {
 		this.dinheiroDevolvido = dinheiroDevolvido;
 	}
-
-
 
 	public float getValeCaderno() {
 		return valeCaderno;
 	}
 
-
-
 	public void setValeCaderno(float valeCaderno) {
 		this.valeCaderno = valeCaderno;
 	}
 
+	public Venda() {
+		super();
+	}
 
+	public float getValorReal() {
+		return getVendaVista() + getAdiantamento() + getEntradas();
+	}
+
+	public float getValorPresente() {
+		return getDespesa().getTotalDespesa() + getValeCaderno() + getDinheiroDevolvido();
+	}
+
+	public float getDiferenca() {
+		return getValorReal()-getValorPresente();
+	}
 
 	public Venda(Date dataSaida, Date dataChegada, float totalCarradas, float vendaPraso, float retorno,
 			float adiantamento, float vendaVista, float entradas, Date diaCobranca, Date ultimoDiaCobranca,
-			String primeiraCidade, String estado, Despesa despesa, float dinheiroDevolvido, float valeCaderno) {
+			String primeiraCidade, String estado, Despesa despesa, float dinheiroDevolvido, float valeCaderno,
+			float custoCarrada, float custoRetorno) {
 		super();
 		this.dataSaida = dataSaida;
 		this.dataChegada = dataChegada;
@@ -282,13 +253,8 @@ public class Venda {
 		this.despesa = despesa;
 		this.dinheiroDevolvido = dinheiroDevolvido;
 		this.valeCaderno = valeCaderno;
+		this.custoCarrada = custoCarrada;
+		this.custoRetorno = custoRetorno;
 	}
-
-
-
-	public Venda() {
-		super();
-	}
-	
 
 }

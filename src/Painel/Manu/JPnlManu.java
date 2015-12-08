@@ -171,43 +171,43 @@ public class JPnlManu extends JPanel {
 		add(toolBar);
 		
 		JButton button_2 = new JButton("");
-		button_2.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/Maersk.png")));
+		button_2.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/028.png")));
 		toolBar.add(button_2);
 		
 		JButton btnNewButton_2 = new JButton("");
-		btnNewButton_2.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/photo-retouche.png")));
+		btnNewButton_2.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/029.png")));
 		toolBar.add(btnNewButton_2);
 		
 		JButton btnNewButton = new JButton("");
-		btnNewButton.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/Hapag3.png")));
+		btnNewButton.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/030.png")));
 		toolBar.add(btnNewButton);
 		
 		JButton button_3 = new JButton("");
-		button_3.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/Hard-Drive.png")));
+		button_3.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/031.png")));
 		toolBar.add(button_3);
 		
 		JButton button_4 = new JButton("");
-		button_4.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/poubelle-pleine.png")));
+		button_4.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/032.png")));
 		toolBar.add(button_4);
 		
 		JButton button_5 = new JButton("");
-		button_5.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/Alpha Dista (Grey) Icon 40.png")));
+		button_5.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/033.png")));
 		toolBar.add(button_5);
 		
 		JButton btnNewButton_1 = new JButton("");
-		btnNewButton_1.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/Desktop.png")));
+		btnNewButton_1.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/034.png")));
 		toolBar.add(btnNewButton_1);
 		
 		JButton btnNewButton_3 = new JButton("");
-		btnNewButton_3.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/box1.png")));
+		btnNewButton_3.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/035.png")));
 		toolBar.add(btnNewButton_3);
 		
 		JButton button_7 = new JButton("");
-		button_7.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/box2.png")));
+		button_7.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/009.png")));
 		toolBar.add(button_7);
 		
 		JButton button_6 = new JButton("");
-		button_6.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/firewall.png")));
+		button_6.setIcon(new ImageIcon(JPnlManu.class.getResource("/Imagens/010.png")));
 		toolBar.add(button_6);
 		
 		lblTituloDaEquipe = new JLabel("Titulo da Equipe");

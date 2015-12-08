@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import Bin.Funcionario.Funcionario;
 @Entity
 @Table(name = "vendedor_equipe")
-public class VendedorEquipe {
+public class VendedorEquipe implements Comparable<VendedorEquipe>{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -52,6 +52,70 @@ public class VendedorEquipe {
 	private Integer quantFicha;
 	
 	
+	
+	public float getRecebidoTotal() {
+		return quitado+quitadoParcial;
+	}
+	
+	public float getPerdidoTotal() {
+		return perca+percaParcial;
+	}
+	public float getVenda() {
+		return venda;
+	}
+
+	public void setVenda(float venda) {
+		this.venda = venda;
+	}
+
+	public float getQuitado() {
+		return quitado;
+	}
+
+	public void setQuitado(float quitado) {
+		this.quitado = quitado;
+	}
+
+	public float getDevolvido() {
+		return devolvido;
+	}
+
+	public void setDevolvido(float devolvido) {
+		this.devolvido = devolvido;
+	}
+
+	public float getPerca() {
+		return perca;
+	}
+
+	public void setPerca(float perca) {
+		this.perca = perca;
+	}
+
+	public float getQuitadoParcial() {
+		return quitadoParcial;
+	}
+
+	public void setQuitadoParcial(float quitadoParcial) {
+		this.quitadoParcial = quitadoParcial;
+	}
+
+	public float getDinheiroEntrada() {
+		return dinheiroEntrada;
+	}
+
+	public void setDinheiroEntrada(float dinheiroEntrada) {
+		this.dinheiroEntrada = dinheiroEntrada;
+	}
+
+	public Integer getQuantFicha() {
+		return quantFicha;
+	}
+
+	public void setQuantFicha(Integer quantFicha) {
+		this.quantFicha = quantFicha;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -165,7 +229,7 @@ public class VendedorEquipe {
 
 	public float getVlrComissaoVenda() {
 		//fator do percentual de comissão vezes o total da venda
-		return venda*percComissaoVenda;
+		return venda*percComissaoVenda/100;
 
 	}
 
@@ -193,16 +257,57 @@ public class VendedorEquipe {
 
 	public float getVlrComissaoCobranca() {
 		//o total recebido da venda vezes o valor do percentual de comissão da cobrança
-		return getVlrTotalRecebido()*percComissaoCobrancao;
+		return getVlrTotalRecebido()*percComissaoCobrancao/100;
 
 	}
 
 	public float getVlrSaldoQuitacao() {
 		//o saldo de quitação menos o que foi recebido como comissão da venda
-		return getVlrSaldoQuitacao()-getVlrComissaoVenda();
+		System.out.println( getVlrSaldoCobranca()+" comissão cobranca e comissão venda"+getVlrComissaoVenda());
+		return getVlrSaldoCobranca()-getVlrComissaoVenda();
 		
 
 	}
+
+	private float getVlrSaldoCobranca() {
+		return getVlrTotalRecebido()*getPercComissaoCobrancao()/100;
+	}
+
+	public float getPercCobrado() {
+		
+		return getVlrTotalRecebido()/getvenda()*100;
+	}
+
+	public VendedorEquipe(Equipe equipe, Funcionario vendedor, float venda, float percComissaoVenda, float valeLocal,
+			float valeViagem, float quitado, float devolvido, float perca, float quitadoParcial, float percaParcial,
+			float percComissaoCobrancao, float dinheiroEntrada, Integer quantFicha) {
+		super();
+		this.equipe = equipe;
+		this.vendedor = vendedor;
+		this.venda = venda;
+		this.percComissaoVenda = percComissaoVenda;
+		this.valeLocal = valeLocal;
+		this.valeViagem = valeViagem;
+		this.quitado = quitado;
+		this.devolvido = devolvido;
+		this.perca = perca;
+		this.quitadoParcial = quitadoParcial;
+		this.percaParcial = percaParcial;
+		this.percComissaoCobrancao = percComissaoCobrancao;
+		this.dinheiroEntrada = dinheiroEntrada;
+		this.quantFicha = quantFicha;
+	}
+
+	public VendedorEquipe() {
+		super();
+	}
+
+	@Override
+	public int compareTo(VendedorEquipe o) {
+		// TODO Auto-generated method stub
+		return Integer.compare(o.getId(), getId());
+	}
+
 	
 	
 	

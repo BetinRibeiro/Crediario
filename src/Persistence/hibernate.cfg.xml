@@ -5,7 +5,7 @@
 	<session-factory name="">
 		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
 		<property name="hibernate.connection.password">qwe</property>
-		<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/crediario</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/Banco2</property>
 		<property name="hibernate.connection.username">teste</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
@@ -13,11 +13,14 @@
 		<!-- Declaração do mapeamento da classe pessoa e classes auxiliares -->
 		<mapping class="Bin.Endereco" />
 		<mapping class="Bin.Despesa" />
+		<mapping class="Bin.ReceitaExtra" />
 
 		<mapping class="Bin.Compra.Compra" />
 		<mapping class="Bin.Compra.ItemCompra" />
-		
+		<mapping class="Bin.DespExtra" />
 		<mapping class="Bin.Equipe.Cobranca" />
+		<mapping class="Bin.Devolucao.Devolucao" />
+		<mapping class="Bin.Devolucao.ItemDevolucao" />
 		<mapping class="Bin.Equipe.Deposito" />
 		<mapping class="Bin.Equipe.Equipe" />
 		<mapping class="Bin.Equipe.Venda" />

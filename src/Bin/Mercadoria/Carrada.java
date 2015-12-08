@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,7 +20,7 @@ import Bin.Equipe.Equipe;
 
 @Entity
 @Table(name = "carrada")
-public class Carrada {
+public class Carrada implements Comparable<Carrada> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Basic(optional = false)
@@ -38,9 +39,9 @@ public class Carrada {
 	@ManyToOne
 	@JoinColumn(name = "equipe_id")
 	private Equipe equipe;
-	@OneToMany(mappedBy = "carrada", fetch = FetchType.EAGER)
-	//, cascade = { CascadeType.ALL, CascadeType.REMOVE }
-	//@Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+	@OneToMany(mappedBy = "carrada", fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE })
+	// , cascade = { CascadeType.ALL, CascadeType.REMOVE }
+	// @Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private Set<ItemCarrada> carrada;
 
 	public Equipe getEquipe() {
@@ -59,12 +60,9 @@ public class Carrada {
 		this.carrada = carrada;
 	}
 
-	
-
 	public Carrada() {
 		super();
 	}
-
 
 	public Integer getId() {
 		return id;
@@ -143,7 +141,11 @@ public class Carrada {
 		this.cidade = cidade;
 		this.equipe = equipe;
 	}
-	
-	
+
+	@Override
+	public int compareTo(Carrada o) {
+		// TODO Auto-generated method stub
+		return Integer.compare(o.getId(), getId());
+	}
 
 }

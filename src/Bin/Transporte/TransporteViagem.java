@@ -13,7 +13,7 @@ import Bin.Equipe.Equipe;
 
 @Entity
 @Table(name = "tansp_viagem")
-public class TransporteViagem {
+public class TransporteViagem implements Comparable<TransporteViagem>{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +25,8 @@ public class TransporteViagem {
 	private float manutencao;
 	@ManyToOne(optional = false)
 	private Equipe equipe;
+	@ManyToOne(optional = false)
+	private Transporte transporte;
 	public Integer getId() {
 		return id;
 	}
@@ -55,6 +57,32 @@ public class TransporteViagem {
 	public void setEquipe(Equipe equipe) {
 		this.equipe = equipe;
 	}
+
+	public TransporteViagem() {
+		super();
+	}
+	public TransporteViagem(Integer kminicial, Integer kmfinal, float manutencao, Equipe equipe,
+			Transporte transporte) {
+		super();
+		this.kminicial = kminicial;
+		this.kmfinal = kmfinal;
+		this.manutencao = manutencao;
+		this.equipe = equipe;
+		this.transporte = transporte;
+	}
+	public Transporte getTransporte() {
+		return transporte;
+	}
+	public void setTransporte(Transporte transporte) {
+		this.transporte = transporte;
+	}
+	@Override
+	public int compareTo(TransporteViagem o) {
+		// TODO Auto-generated method stub
+		return Integer.compare(o.getId(), getId());
+	}
+	
+	
 	
 	
 }

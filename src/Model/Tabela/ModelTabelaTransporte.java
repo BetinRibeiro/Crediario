@@ -3,9 +3,7 @@ package Model.Tabela;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFormattedTextField;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.text.MaskFormatter;
 
 import Bin.Transporte.*;
 
@@ -88,7 +86,7 @@ public class ModelTabelaTransporte extends AbstractTableModel {
 			return (dados.get(linha).getCor());
 
 		case 3:
-			return (dados.get(linha).getPlaca().substring(0, 3)+"-"+dados.get(linha).getPlaca().substring(3, 7) );
+			return (dados.get(linha).getPlaca().substring(0, 3)+"-"+dados.get(linha).getPlaca().substring(3, dados.get(linha).getPlaca().length()) );
 
 		}
 		return null;

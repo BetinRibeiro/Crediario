@@ -20,6 +20,10 @@ import java.awt.Color;
 
 public class JFrmCadProduto extends JDialog implements ActionListener{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtID;
 	private JTextField txtDescricao;
@@ -93,6 +97,7 @@ public class JFrmCadProduto extends JDialog implements ActionListener{
 		}
 		{
 			txtEstMin = new JTextField();
+			txtEstMin.setText("0,00");
 			txtEstMin.setColumns(10);
 			txtEstMin.setBounds(10, 181, 86, 20);
 			contentPanel.add(txtEstMin);
@@ -153,9 +158,9 @@ public class JFrmCadProduto extends JDialog implements ActionListener{
 		try {
 			
 		
-		String descricao=txtDescricao.getText();
-		float estoqueMin=Float.parseFloat(txtEstMin.getText());
-		float preco=Float.parseFloat(txtPreco.getText());
+		String descricao=txtDescricao.getText().toUpperCase();;
+		float estoqueMin=Float.parseFloat(txtEstMin.getText().replace(",", "."));
+		float preco=Float.parseFloat(txtPreco.getText().replace(",", "."));
 		
 		if (descricao.length()>0) {
 			boolean salvou=false;
@@ -181,6 +186,8 @@ public class JFrmCadProduto extends JDialog implements ActionListener{
 		}
 		} catch (java.lang.NumberFormatException e) {
 			JOptionPane.showMessageDialog(contentPanel, "Inserir valores validos nos campos numericos");
+		}catch (Exception e) {
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 		}
 	}
 	
@@ -195,7 +202,7 @@ public class JFrmCadProduto extends JDialog implements ActionListener{
 			txtPreco.setText(String.valueOf(produto.getPreco()));
 			return true;
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(contentPanel, "Erro no sistema");
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 			dispose();
 			return false;
 		}

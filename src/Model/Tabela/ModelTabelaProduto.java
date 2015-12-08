@@ -12,7 +12,7 @@ import Bin.Produto.*;
 public class ModelTabelaProduto extends AbstractTableModel {
 
 	private List<Produto> dados;
-	private String[] colunas = { "Código", "Descrição", "Custo", "Quantidade","Total"};
+	private String[] colunas = { "CÓDIGO", "DESCRIÇÃO", "CUSTO", "QUANT","TOTAL"};
 	DecimalFormat dfValor = new DecimalFormat("0.00");
 	DecimalFormat dfQuant = new DecimalFormat("0.000");
 

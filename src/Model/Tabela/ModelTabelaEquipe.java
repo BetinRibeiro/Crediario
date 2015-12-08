@@ -13,7 +13,7 @@ import Bin.Equipe.*;
 public class ModelTabelaEquipe extends AbstractTableModel {
 
 	private List<Equipe> dados;
-	private String[] colunas = { "Código", "Chefe", "Titulo"};
+	private String[] colunas = { "CÓDIGO", "CHEFE", "TÍTULO"};
 	
 	DecimalFormat df = new DecimalFormat("0.00");
     SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy" );

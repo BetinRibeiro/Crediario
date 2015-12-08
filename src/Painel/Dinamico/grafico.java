@@ -1,7 +1,6 @@
 package Painel.Dinamico;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
@@ -9,39 +8,50 @@ import javax.swing.border.LineBorder;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PiePlot3D;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.util.Rotation;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 
+@SuppressWarnings("serial")
 public class grafico extends JPanel {
 
-	public grafico() {
-		super();
+	float carrada = 350000;
+	float compra = (float) (carrada/3.5);
+	float retorno = 16500;
+	float praso = 285500;
+	float vista = (carrada-praso-(praso))/2;
+
+	public grafico(String[] lista,int q,int w, int e, int r ) {
+
+		setBounds(q, w, e, r);
+
+		DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
+
+		
+
+
+		dataSet.setValue(Float.valueOf(lista[0]), "V", "Vista");
+		dataSet.setValue(Float.valueOf(lista[1]), "D", "Desp");
+		dataSet.setValue(Float.valueOf(lista[2]), "R", "Retorno");
+
+		JFreeChart grafico = ChartFactory.createBarChart3D("Pontos Criticos",
+				"", "", dataSet, PlotOrientation.HORIZONTAL,
+				true, true, false);
 		setLayout(null);
-		setBounds(1, 1, 294, 198);
-		DefaultPieDataset data = new DefaultPieDataset();
+		
+		grafico.setBackgroundPaint(Color.lightGray);
 
-		data.setValue("Receita", 350000);
-		data.setValue("Custo", 95200);
-		data.setValue("Despesa" , 35450);
-		data.setValue("Comissão" , 38600);
-
-		JFreeChart chart = ChartFactory.createPieChart3D("Recebimento", data, true, true, true);
-
-//		PiePlot3D plot = (PiePlot3D) chart.getPlot();
-//		plot.setLabelLinksVisible(true);
-//
-//		plot.setStartAngle(90);
-//		plot.setDirection(Rotation.CLOCKWISE);
-//
-//		plot.setForegroundAlpha(5);
-//		plot.setInteriorGap(0.20);
-
-		ChartPanel chartPanel = new ChartPanel(chart);
+		ChartPanel chartPanel = new ChartPanel(grafico);
 		chartPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		chartPanel.setBounds(1, 1, 294, 198);
+		chartPanel.setBounds(getBounds());
+		chartPanel.setOpaque(true);
+		//não sei que diabos é isso
+		//chartPanel.setBackground(Color.black);
 		add(chartPanel);
 
 	}
+
+
+
+	
 
 }

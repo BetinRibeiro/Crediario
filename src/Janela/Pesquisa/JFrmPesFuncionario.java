@@ -13,8 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Bin.Funcionario.Funcionario;
-import Bin.Produto.Produto;
-import Bin.Funcionario.Funcionario;
 import Janela.Cadastro.JFrmCadFuncionario;
 import Model.Tabela.ModelTabelaFuncionario;
 import Persistence.Dao;
@@ -27,6 +25,10 @@ import java.awt.Component;
 
 public class JFrmPesFuncionario extends JDialog implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	private ModelTabelaFuncionario model = new ModelTabelaFuncionario();
@@ -52,7 +54,7 @@ public class JFrmPesFuncionario extends JDialog implements ActionListener {
 	 * Create the dialog.
 	 */
 	public JFrmPesFuncionario() {
-		funcionario= null;
+		funcionario = null;
 		setTitle("Pesquisa Funcionario");
 		setBounds(100, 100, 557, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -70,7 +72,10 @@ public class JFrmPesFuncionario extends JDialog implements ActionListener {
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(table);
-		
+		table.getColumn("NOME").setPreferredWidth(250); 
+		table.getColumn("TELEFONE").setPreferredWidth(100); 
+		table.getColumn("TELEFONE2").setPreferredWidth(100); 
+
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -107,9 +112,9 @@ public class JFrmPesFuncionario extends JDialog implements ActionListener {
 		try {
 			model.removeTudo();
 			List<?> lista = banco.BuscaNome(Funcionario.class, txtBusca.getText(), "nome");
-			int tamanho=lista.size();
-			if (lista.size()>=30) {
-				tamanho=30;
+			int tamanho = lista.size();
+			if (lista.size() >= 30) {
+				tamanho = 30;
 			}
 			for (int i = 0; i < tamanho; i++) {
 				Funcionario classif = (Funcionario) lista.get(i);
@@ -149,23 +154,24 @@ public class JFrmPesFuncionario extends JDialog implements ActionListener {
 	}
 
 	private void alterar() {
-		Funcionario funcionario = (Funcionario) banco.buscarPorId(
-				Funcionario.class,
-				(Integer) table.getValueAt(
-						table.getSelectedRow(), 0));
+		Funcionario funcionario = (Funcionario) banco.buscarPorId(Funcionario.class,
+				(Integer) table.getValueAt(table.getSelectedRow(), 0));
 		JFrmCadFuncionario c = new JFrmCadFuncionario();
 		c.inserir(funcionario);
+		c.setModal(true);
 		c.setVisible(true);
+		buscar();
 	}
 
 	public Funcionario getObj() {
 
 		return funcionario;
 	}
+
 	public void moduloEscolher() {
 		this.btnAlterar.setText("Escolher");
 		this.btnAlterar.setActionCommand("Escolher");
-		
+
 	}
-	
+
 }

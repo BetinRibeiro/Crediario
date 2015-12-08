@@ -23,18 +23,16 @@ public class Cobrador {
 	private Funcionario cobrador;
 	
 	@Column(name = "percentual_cobranca")
-	private float percentualCobranca;
+	private float percComissao;
 	
 	@Column(name = "vale_cobrador")
 	private float valeCobrador;
+	
+	@Column(name = "divida")
+	private float dividaCobrador;
 
 	
-	public Cobrador(Funcionario cobrador, float percentualCobranca, float valeCobrador) {
-		super();
-		this.cobrador = cobrador;
-		this.percentualCobranca = percentualCobranca;
-		this.valeCobrador = valeCobrador;
-	}
+
 
 
 	public Integer getId() {
@@ -42,9 +40,15 @@ public class Cobrador {
 	}
 
 
+
+
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
+
+
 
 
 	public Funcionario getCobrador() {
@@ -52,19 +56,31 @@ public class Cobrador {
 	}
 
 
+
+
+
 	public void setCobrador(Funcionario cobrador) {
 		this.cobrador = cobrador;
 	}
 
 
-	public float getPercentualCobranca() {
-		return percentualCobranca;
+
+
+
+	public float getPercComissao() {
+		return percComissao;
 	}
 
 
-	public void setPercentualCobranca(float percentualCobranca) {
-		this.percentualCobranca = percentualCobranca;
+
+
+
+	public void setPercComissao(float percComissao) {
+		this.percComissao = percComissao;
 	}
+
+
+
 
 
 	public float getValeCobrador() {
@@ -72,13 +88,56 @@ public class Cobrador {
 	}
 
 
+
+
+
 	public void setValeCobrador(float valeCobrador) {
 		this.valeCobrador = valeCobrador;
 	}
 
 
+
+
+
+	public float getDividaCobrador() {
+		return dividaCobrador;
+	}
+
+
+
+
+
+	public void setDividaCobrador(float dividaCobrador) {
+		this.dividaCobrador = dividaCobrador;
+	}
+
+
+
+
+
+	public Cobrador(Funcionario cobrador, float percComissao, float valeCobrador, float dividaCobrador) {
+		super();
+		this.cobrador = cobrador;
+		this.percComissao = percComissao;
+		this.valeCobrador = valeCobrador;
+		this.dividaCobrador = dividaCobrador;
+	}
+
+
+
+
+
 	public Cobrador() {
 		super();
+	}
+
+
+
+
+
+	public float getComissao(float recebidoTotal) {
+		// TODO Auto-generated method stub
+		return getPercComissao()*recebidoTotal/100;
 	}
 
 }

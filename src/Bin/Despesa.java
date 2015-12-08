@@ -9,19 +9,19 @@ import javax.persistence.Table;
 public class Despesa {
 	@Column(name = "gasolina", length = 3)
 	private float gasolina;
-	
+
 	@Column(name = "diesel", length = 100)
 	private float diesel;
-	
+
 	@Column(name = "desp_com_nota", length = 50)
 	private float despComNota;
-	
+
 	@Column(name = "desp_sem_nota", length = 50)
 	private float despSemNota;
-	
+
 	@Column(name = "diarias", length = 2)
 	private float diarias;
-	
+
 	@Column(name = "manutencao", length = 9)
 	private float manutencao;
 
@@ -61,6 +61,10 @@ public class Despesa {
 		return diarias;
 	}
 
+	public float getTotalDespesa() {
+		return getDespComNota()+getDespSemNota()+getDiarias()+getDiesel()+getGasolina()+getManutencao();
+	}
+
 	public void setDiarias(float diarias) {
 		this.diarias = diarias;
 	}
@@ -87,11 +91,5 @@ public class Despesa {
 	public Despesa() {
 		super();
 	}
-	
-	
-	
-	
-	
-	
-	
+
 }

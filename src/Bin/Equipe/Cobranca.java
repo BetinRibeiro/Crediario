@@ -27,6 +27,7 @@ public class Cobranca {
 	@Column(name = "data_saida")
 	private Date dataSaida;
 	
+	
 	@Column(name = "data_chegada")
 	private Date dataChegada;
 	
@@ -105,6 +106,13 @@ public class Cobranca {
 
 	public float getQuitado() {
 		return quitado;
+	}
+	public float getRecebidoTotal() {
+		return quitado+recebidoParcial;
+	}
+	
+	public float getPerdidoTotal() {
+		return perdido+perdidoParcial;
 	}
 
 	public void setQuitado(float quitado) {

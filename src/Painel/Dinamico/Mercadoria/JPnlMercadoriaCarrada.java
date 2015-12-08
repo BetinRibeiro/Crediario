@@ -11,21 +11,33 @@ import Persistence.Dao;
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import org.jboss.jandex.Main;
+
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
 import javax.swing.JProgressBar;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JPopupMenu;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
+
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 public class JPnlMercadoriaCarrada extends JPanel implements ActionListener{
 	/**
@@ -36,22 +48,32 @@ public class JPnlMercadoriaCarrada extends JPanel implements ActionListener{
 	private Equipe equipeLocal;
 	private ModelTabelaCarrada model = new ModelTabelaCarrada();
 	private JTable table;
-	private float valorTotal;
 	private Dao banco = new Dao();
+	private JButton btnAdicionar;
+	DecimalFormat df = new DecimalFormat("0.00");
+	private JTextField txtCustoTotal;
+	private JTextField txtValorFretes;
+	private JProgressBar progressBar;
 
 	/**
 	 * Create the 
 	 */
 	public JPnlMercadoriaCarrada(Equipe equipe) {
 		equipeLocal=equipe;
+		setBounds(10, 40, 1055, 250);
 		setLayout(null);
-		setBounds(0, 0, 1055, 250);
+		JLabel foto2 = new JLabel();
+		foto2.setBounds(885, 0, 40, 40);
+		ImageIcon img2 = new ImageIcon(Main.class.getResource("/Imagens/002.png"));
+		Image img02 = img2.getImage().getScaledInstance(foto2.getWidth(), foto2.getHeight(), Image.SCALE_DEFAULT);
+		foto2.setIcon(new ImageIcon(img02));
+		add(foto2);
 		
 	
-		JLabel label = new JLabel("Valor das Carradas");
-		label.setHorizontalAlignment(SwingConstants.RIGHT);
-		label.setBounds(10, 210, 148, 20);
-		add(label);
+		JLabel lblValorDasCarradas = new JLabel("VALOR DAS CARRADAS");
+		lblValorDasCarradas.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblValorDasCarradas.setBounds(10, 210, 148, 20);
+		add(lblValorDasCarradas);
 		
 		txtValorTotal = new JTextField();
 		txtValorTotal.setEnabled(false);
@@ -61,25 +83,31 @@ public class JPnlMercadoriaCarrada extends JPanel implements ActionListener{
 		add(txtValorTotal);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 41, 1035, 160);
+		scrollPane.setBounds(10, 40, 1035, 160);
 		add(scrollPane);
 		
 		
 		
 		table = new JTable(model);
+		table.getTableHeader().setReorderingAllowed(false);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.getColumn("CIDADE").setPreferredWidth(200);
+		table.getColumn("MOTORISTA").setPreferredWidth(200);
 		scrollPane.setViewportView(table);
 		JPopupMenu popupMenu = new JPopupMenu();
 		addPopup(table, popupMenu);
 		
-		JMenuItem mntmVisualizar = new JMenuItem("Visualizar");
+		JMenuItem mntmVisualizar = new JMenuItem("Deletar");
+		mntmVisualizar.addActionListener(this);
 		popupMenu.add(mntmVisualizar);
 		
 		JMenuItem mntmAlterar = new JMenuItem("Alterar");
 		mntmAlterar.addActionListener(this);
 		popupMenu.add(mntmAlterar);
 		
-		JProgressBar progressBar = new JProgressBar();
-		progressBar.setValue(50);
+		
+		 progressBar = new JProgressBar();
+		
 		progressBar.setForeground(new Color(173, 216, 230));
 		progressBar.setBounds(240, 10, 479, 25);
 		add(progressBar);
@@ -89,30 +117,79 @@ public class JPnlMercadoriaCarrada extends JPanel implements ActionListener{
 		label_1.setBounds(10, 11, 216, 25);
 		add(label_1);
 		
-		JButton btnAdicionar = new JButton("Adicionar");
+		btnAdicionar = new JButton("Adicionar");
 		btnAdicionar.addActionListener(this);
 		btnAdicionar.setBounds(925, 10, 120, 25);
 		add(btnAdicionar);
+		
+		JLabel lblCustoDasCarradas = new JLabel("CUSTO DAS CARRADAS");
+		lblCustoDasCarradas.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblCustoDasCarradas.setBounds(273, 210, 148, 20);
+		add(lblCustoDasCarradas);
+		
+		txtCustoTotal = new JTextField();
+		txtCustoTotal.setText("0,00");
+		txtCustoTotal.setEnabled(false);
+		txtCustoTotal.setDisabledTextColor(Color.BLACK);
+		txtCustoTotal.setColumns(10);
+		txtCustoTotal.setBounds(433, 210, 93, 20);
+		add(txtCustoTotal);
+		
+		txtValorFretes = new JTextField();
+		txtValorFretes.setText("0,00");
+		txtValorFretes.setEnabled(false);
+		txtValorFretes.setDisabledTextColor(Color.BLACK);
+		txtValorFretes.setColumns(10);
+		txtValorFretes.setBounds(719, 210, 93, 20);
+		add(txtValorFretes);
+		
+		JLabel lblValorDosFrets = new JLabel("VALOR DOS FRETES");
+		lblValorDosFrets.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblValorDosFrets.setBounds(559, 210, 148, 20);
+		add(lblValorDosFrets);
 		atualizar();
 
 	}
 
 	private void atualizar() {
+		try {
+		
 		model.removeTudo();
 		
 		equipeLocal = (Equipe) banco.buscarPorId(Equipe.class, equipeLocal.getId());
 		
 		Set<Carrada> listaCarrada = equipeLocal.getCarrada();
 		System.out.println(listaCarrada.size());
-		valorTotal = 0;
-		for (Carrada carrada : listaCarrada) {
+		float valorTotal = 0;
+		float custo = 0;
+		float fretes = 0;
+		List<Carrada> listCarr = new ArrayList<Carrada>(listaCarrada);
+		Collections.sort(listCarr);
+		for (Carrada carrada : listCarr) {
 			valorTotal=valorTotal+carrada.getValorTotal();
+			custo=custo+carrada.getCusto();
+			fretes=fretes+carrada.getValorFrete();
 			model.addRow(carrada);
 		}
-		txtValorTotal.setText(String.valueOf(valorTotal));
+		txtValorTotal.setText(String.valueOf(df.format(valorTotal)));
+		txtCustoTotal.setText(String.valueOf(df.format(custo)));
+		txtValorFretes.setText(String.valueOf(df.format(fretes)));
 		
 		equipeLocal.getVenda().setTotalCarradas(valorTotal);
-		banco.salvarOuAtualizarObjeto(equipeLocal);
+		equipeLocal.getVenda().setCustoCarrada(custo);
+		equipeLocal.setCustoCarradas(custo);
+		equipeLocal.setPrecoCarradas(valorTotal);
+		equipeLocal.setValorFretes(fretes);
+		
+		System.out.println(equipeLocal.getPrecoCarradas()/equipeLocal.getMetaVenda()+" valor impresso");
+		System.out.println((int) (equipeLocal.getMetaVenda()/equipeLocal.getPrecoCarradas()*100)+" aqui");
+		progressBar.setValue((int) (equipeLocal.getPrecoCarradas()/equipeLocal.getMetaVenda()*100));
+		boolean a= banco.salvarOuAtualizarObjeto(equipeLocal);
+		 a= banco.salvarOuAtualizarObjeto(equipeLocal.getVenda());
+		System.out.println(a);	
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
 	}
 
 	@Override
@@ -136,13 +213,9 @@ public class JPnlMercadoriaCarrada extends JPanel implements ActionListener{
 			altCar.setVisible(true);
 			atualizar();
 			break;
-		case "Visualizar":
+		case "Deletar":
 			Carrada carrad = (Carrada) model.getObj(table.getSelectedRow());
-			JFrmCadCarrada visCar = new JFrmCadCarrada();
-			visCar.inserirCarrada(carrad);
-			visCar.setModal(true);
-			visCar.setVisible(true);
-			visCar.setVisualizar();
+			banco.deletarObjeto(carrad);
 			atualizar();
 			break;
 

@@ -110,5 +110,8 @@ public class ModelTabelaItemCarrada extends AbstractTableModel {
 		}
 		return null;
 	}
+	public Object getObj(int linha ) {
+		return dados.get(linha);
+	}
 
 }

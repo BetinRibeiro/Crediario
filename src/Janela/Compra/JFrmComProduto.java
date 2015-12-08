@@ -16,7 +16,6 @@ import Bin.Compra.ItemCompra;
 import Bin.Produto.Produto;
 import Janela.Pesquisa.JFrmPesProduto;
 import Model.Tabela.ModelTabelaInstanciaCompra;
-import Model.Tabela.ModelTabelaProduto;
 import Persistence.Dao;
 
 import javax.swing.JScrollPane;
@@ -39,6 +38,10 @@ import javax.swing.JOptionPane;
 
 public class JFrmComProduto extends JDialog implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTable tableProduto;
 	private JTextField txtId;
@@ -266,7 +269,7 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 			}
 			txtValorTotal.setText(String.valueOf(valor));
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente");
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 			dispose();
 		}
 	}
@@ -278,7 +281,7 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 				btnFinalizar.setEnabled(false);
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente");
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 			dispose();
 		}
 	}
@@ -305,10 +308,7 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 			JOptionPane.showMessageDialog(contentPanel, "Insira numeros validos nos campos de quantidade e valor.");
 
 		} catch (Exception e) {
-			// System.out.println(e.getMessage());
-			// System.out.println(e);
-			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a Compra");
-			// compra novamente ");
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 			dispose();
 		}
 	}
@@ -323,7 +323,7 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 			txtQuantidade.setEnabled(false);
 			txtValorProduto.setEnabled(false);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente ");
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 			dispose();
 		}
 	}
@@ -343,9 +343,9 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 			txtQuantidade.setEnabled(true);
 			txtValorProduto.setEnabled(true);
 		} catch (java.lang.NullPointerException e) {
-			JOptionPane.showMessageDialog(contentPanel, "Escolha um produto para inserir");
+			JOptionPane.showMessageDialog(contentPanel, "Insira valores válidos no campo numerico");
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(contentPanel, "ERRO! Refaça a compra novamente ");
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 			dispose();
 		}
 
@@ -395,7 +395,6 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 				System.out.println(produto.getCusto());
 
 			}
-			// System.out.println(listaCompra);
 
 			Date data = (Date) dtCompra.getDate();
 			System.out.println("Data que inseriiii - " + data);
@@ -433,11 +432,10 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 				}
 			}
 
+		}  catch (java.lang.NullPointerException e) {
+			JOptionPane.showMessageDialog(contentPanel, "Insira valores válidos no campo numerico");
 		} catch (Exception e) {
-			// JOptionPane.showMessageDialog(contentPanel, "ERRO! Tente
-			// novamente");
-			System.out.println(e);
-			System.out.println(e.getMessage());
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 		}
 
 	}
@@ -456,7 +454,7 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 			System.out.println("Esta é a lista - " + lista);
 			for (ItemCompra instanciaCompra : lista) {
 				model.addRow(instanciaCompra);
-				
+
 			}
 
 			btnBuscar.setEnabled(false);
@@ -465,15 +463,11 @@ public class JFrmComProduto extends JDialog implements ActionListener {
 			tableProduto.setEnabled(false);
 			txtQuantidade.setEnabled(false);
 			txtValorProduto.setEnabled(false);
-		}catch(
+		} catch (Exception e)
 
-	Exception e)
+		{
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
+		}
 
-	{
-		JOptionPane.showMessageDialog(contentPanel, "Erro ao resgatar os produtos na pesquisa, tente novamente ");
-		System.out.println(e);
-		System.out.println(e.getMessage());
-		dispose();
 	}
-
-}}
+}

@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import Bin.Equipe.Equipe;
 import Bin.Produto.Produto;
 @Entity
 @Table(name = "item_retor")
@@ -28,28 +27,19 @@ public class ItemRetorno {
 	
 //	
 	
-	@ManyToOne
-    @JoinColumn(name="retorno_id")
+	@ManyToOne(optional = true)
+    @JoinColumn(name="retorno_id", nullable = true)
     private Retorno retorno;
 //	@ManyToOne(optional = false)
 //	private Compra compra;
 	
-	@ManyToOne(optional = false)
-	private Equipe equipe;
 	
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	private Produto produto;
 	
 	
 	
-	public Equipe getEquipe() {
-		return equipe;
-	}
-
-	public void setEquipe(Equipe equipe) {
-		this.equipe = equipe;
-	}
 
 	public ItemRetorno() {
 		super();

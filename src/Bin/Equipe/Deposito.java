@@ -3,13 +3,11 @@ package Bin.Equipe;
 import java.util.Date;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -27,9 +25,8 @@ public class Deposito {
 	private Date data;
 	private String banco;
 	
-	@ManyToOne(optional = true,cascade={CascadeType.ALL,CascadeType.REMOVE}  )
-    @JoinColumn(name="equipe_id")
-    private Equipe equipe;
+	@ManyToOne(optional = false)
+	private Equipe equipe;
 	
 	public Deposito(float valor, Date data, String banco, Equipe equipe) {
 		super();

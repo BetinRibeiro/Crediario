@@ -97,6 +97,7 @@ public class JFrmCadTransporte extends JDialog implements ActionListener {
 		contentPanel.add(lblCor);
 
 		txtAno = new JTextField();
+		txtAno.setText("2015");
 		txtAno.setColumns(10);
 		txtAno.setBounds(10, 132, 100, 20);
 		contentPanel.add(txtAno);
@@ -106,6 +107,7 @@ public class JFrmCadTransporte extends JDialog implements ActionListener {
 		contentPanel.add(lblAno);
 
 		txtPlaca = new JTextField();
+		txtPlaca.setText("ooo000");
 		txtPlaca.setColumns(10);
 		txtPlaca.setBounds(120, 132, 100, 20);
 		contentPanel.add(txtPlaca);
@@ -119,6 +121,7 @@ public class JFrmCadTransporte extends JDialog implements ActionListener {
 		contentPanel.add(lblRenavan);
 
 		txtRenavan = new JTextField();
+		txtRenavan.setText("00000000");
 		txtRenavan.setColumns(10);
 		txtRenavan.setBounds(10, 183, 100, 20);
 		contentPanel.add(txtRenavan);
@@ -137,6 +140,7 @@ public class JFrmCadTransporte extends JDialog implements ActionListener {
 		contentPanel.add(lblAnoDocumento);
 
 		txtAnoDoc = new JTextField();
+		txtAnoDoc.setText("2015");
 		txtAnoDoc.setColumns(10);
 		txtAnoDoc.setBounds(120, 183, 100, 20);
 		contentPanel.add(txtAnoDoc);
@@ -222,11 +226,16 @@ public class JFrmCadTransporte extends JDialog implements ActionListener {
 
 		} catch (java.lang.NumberFormatException e) {
 			JOptionPane.showMessageDialog(contentPanel, "Coloque numeros nos locais de numeros");
+		}catch (Exception e) {
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 		}
 
 	}
 
 	private boolean verificaValoresVazios(String[] lista) {
+		try {
+			
+		
 		for (int i = 0; i < lista.length; i++) {
 			if (lista[i].length() <= 0) {
 				msn.setVisible(true);
@@ -235,7 +244,10 @@ public class JFrmCadTransporte extends JDialog implements ActionListener {
 			}
 		}
 
-		return true;
+		return true;} catch (Exception e) {
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
+			return false;
+		}
 
 	}
 
@@ -254,7 +266,7 @@ public class JFrmCadTransporte extends JDialog implements ActionListener {
 			return true;
 
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(contentPanel, "ERRO - Abra novamente a aplicação.");
+			JOptionPane.showMessageDialog(contentPanel, e.getMessage());
 			dispose();
 			return false;
 		}

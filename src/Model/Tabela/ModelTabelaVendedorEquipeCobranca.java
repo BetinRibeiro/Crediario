@@ -93,16 +93,21 @@ public class ModelTabelaVendedorEquipeCobranca extends AbstractTableModel {
 		case 2:
 			return df.format(dados.get(linha).getvenda());
 		case 3:
-			return (dados.get(linha).getVlrComissaoVenda());
+			return df.format(dados.get(linha).getVlrTotalRecebido());
 		case 4:
-			return df.format(dados.get(linha).getValeLocal());
+			return df.format(dados.get(linha).getDevolvido());
 		case 5:
-			return df.format(dados.get(linha).getValeViagem());
+			return df.format(dados.get(linha).getVlrTotalPerdido());
 		case 6:
-			return df.format(dados.get(linha).getSaldoVenda());
-
+			return df.format(dados.get(linha).getVlrTotalRecebido()/dados.get(linha).getVenda()*100)+"%";
+		case 7:
+			return df.format(dados.get(linha).getVlrSaldoQuitacao());
 		}
 		return null;
+	}
+
+	public VendedorEquipe getObj(int selectedRow) {
+		return (dados.get(selectedRow));
 	}
 
 }
